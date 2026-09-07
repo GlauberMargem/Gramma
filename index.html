@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desafio Gramatical & Sintático Diário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-25..200&display=block" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="top-bar" class="top-bar">
+    <button id="btn-theme-toggle" class="icon-btn" aria-label="Alternar tema claro/escuro">
+      <span id="theme-toggle-icon" class="material-symbols-outlined" aria-hidden="true">dark_mode</span>
+    </button>
+    <button id="btn-open-accessibility" class="icon-btn" aria-label="Acessibilidade">
+      <span class="material-symbols-outlined" aria-hidden="true">accessibility_new</span>
+    </button>
+  </div>
+
+  <div class="game-container">
+
+    <!-- MENU -->
+    <section id="screen-menu" class="menu-screen">
+      <h1 class="menu-title">
+        <span class="material-symbols-outlined" aria-hidden="true">psychology</span>
+        GRAMMA
+      </h1>
+      <p class="menu-subtitle">Desafio Gramatical &amp; Sintático Diário</p>
+      <p class="streak-badge" id="menu-streak" hidden>
+        <span class="material-symbols-outlined" aria-hidden="true">local_fire_department</span>
+        <span id="menu-streak-text"></span>
+      </p>
+
+      <div id="study-type-toggle" class="study-type-toggle">
+        <button type="button" class="study-type-btn" data-study-type="morphology">
+          <span class="material-symbols-outlined" aria-hidden="true">psychology</span>
+          Morfologia
+        </button>
+        <button type="button" class="study-type-btn" data-study-type="syntax">
+          <span class="material-symbols-outlined" aria-hidden="true">account_tree</span>
+          Sintaxe
+        </button>
+        <button type="button" class="study-type-btn" data-study-type="synonyms">
+          <span class="material-symbols-outlined" aria-hidden="true">sync_alt</span>
+          Sinônimos
+        </button>
+      </div>
+
+      <div class="secondary-actions">
+        <button id="btn-open-how-to-play" class="secondary-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">help</span>
+          Como Jogar
+        </button>
+        <button id="btn-open-achievements" class="secondary-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">emoji_events</span>
+          Conquistas
+        </button>
+      </div>
+    </section>
+
+    <!-- HUB DO MODO ESCOLHIDO -->
+    <section id="screen-mode-hub" class="mode-hub-screen" hidden>
+      <header class="header">
+        <span id="mode-hub-badge" class="day-counter"></span>
+        <button id="btn-mode-hub-back" class="icon-btn" aria-label="Trocar modo">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <span id="mode-hub-icon" class="mode-hub-icon material-symbols-outlined" aria-hidden="true">psychology</span>
+      <p id="mode-hub-title" class="mode-hub-title"></p>
+
+      <button id="btn-play" class="cta-btn">
+        <span id="btn-play-icon" class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
+        <span id="btn-play-label">JOGAR</span>
+      </button>
+      <div class="secondary-actions">
+        <button id="btn-open-calendar" class="secondary-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+          Dias anteriores
+        </button>
+        <button id="btn-open-stats" class="secondary-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">query_stats</span>
+          Estatísticas
+        </button>
+      </div>
+    </section>
+
+    <!-- JOGO (Fase 1 e Fase 2 compartilham a mesma estrutura) -->
+    <section id="screen-game" class="screen-panel" hidden>
+      <header class="header">
+        <span id="game-badge" class="day-counter"></span>
+        <button id="btn-back-menu" class="icon-btn" aria-label="Fechar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <div class="question-card">
+        <span class="material-symbols-outlined icon-question" aria-hidden="true">quiz</span>
+        <p id="game-sentence" class="sentence"></p>
+      </div>
+
+      <p id="game-phase-label" class="phase-label"></p>
+
+      <div id="game-answers" class="answers-grid"></div>
+    </section>
+
+    <!-- FIM DE JOGO -->
+    <section id="screen-end" class="end-screen" hidden>
+      <div class="sparkles" id="end-sparkles"></div>
+      <p id="end-title" class="screen-title"></p>
+      <h2 id="end-score" class="score-total">0 pts</h2>
+      <div id="end-breakdown" class="score-breakdown"></div>
+      <p id="end-streak-line" class="streak-line"></p>
+      <div id="end-achievements" class="new-achievements"></div>
+      <div class="secondary-actions">
+        <button id="btn-share" class="secondary-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">share</span>
+          Compartilhar
+        </button>
+        <button id="btn-end-menu" class="secondary-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">home</span>
+          Menu
+        </button>
+      </div>
+    </section>
+
+    <!-- CALENDÁRIO -->
+    <section id="screen-calendar" class="screen-panel" hidden>
+      <header class="header">
+        <p class="screen-title">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+          Arquivo
+        </p>
+        <button id="btn-calendar-back" class="icon-btn" aria-label="Fechar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <p class="calendar-note">Dias arquivados não alteram sua ofensiva atual.</p>
+
+      <div class="calendar-month-nav">
+        <button id="btn-calendar-prev" class="icon-btn" aria-label="Mês anterior">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+        </button>
+        <span id="calendar-month-label" class="calendar-month-label"></span>
+        <button id="btn-calendar-next" class="icon-btn" aria-label="Próximo mês">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+        </button>
+      </div>
+
+      <div class="calendar-weekdays">
+        <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+      </div>
+
+      <div id="calendar-grid" class="calendar-grid"></div>
+
+      <div class="calendar-legend">
+        <span class="legend-item"><span class="legend-swatch status-won"></span> Ganhou</span>
+        <span class="legend-item"><span class="legend-swatch status-lost"></span> Perdeu</span>
+        <span class="legend-item"><span class="legend-swatch status-available"></span> Disponível</span>
+      </div>
+    </section>
+
+    <!-- ESTATÍSTICAS -->
+    <section id="screen-stats" class="screen-panel" hidden>
+      <header class="header">
+        <p class="screen-title">
+          <span class="material-symbols-outlined" aria-hidden="true">query_stats</span>
+          Estatísticas
+        </p>
+        <button id="btn-stats-back" class="icon-btn" aria-label="Fechar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+      <div id="stats-list" class="stats-list"></div>
+    </section>
+
+    <!-- CONQUISTAS -->
+    <section id="screen-achievements" class="screen-panel" hidden>
+      <header class="header">
+        <p class="screen-title">
+          <span class="material-symbols-outlined" aria-hidden="true">emoji_events</span>
+          Conquistas
+        </p>
+        <button id="btn-achievements-back" class="icon-btn" aria-label="Fechar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+      <div id="achievements-list" class="achievements-list"></div>
+    </section>
+
+    <!-- ACESSIBILIDADE -->
+    <section id="screen-accessibility" class="screen-panel" hidden>
+      <header class="header">
+        <p class="screen-title">
+          <span class="material-symbols-outlined" aria-hidden="true">accessibility_new</span>
+          Acessibilidade
+        </p>
+        <button id="btn-accessibility-back" class="icon-btn" aria-label="Fechar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <div class="a11y-list">
+        <div class="a11y-row">
+          <span class="a11y-label">
+            <span class="material-symbols-outlined" aria-hidden="true">format_size</span>
+            <span>
+              <span class="a11y-title">Tamanho da fonte</span>
+              <span class="a11y-hint">Ajusta o tamanho de todo o texto do jogo</span>
+            </span>
+          </span>
+          <span class="a11y-stepper">
+            <button id="btn-font-decrease" class="icon-btn" aria-label="Diminuir fonte">
+              <span class="material-symbols-outlined" aria-hidden="true">remove</span>
+            </button>
+            <span id="font-size-value" class="a11y-value">Normal</span>
+            <button id="btn-font-increase" class="icon-btn" aria-label="Aumentar fonte">
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+            </button>
+          </span>
+        </div>
+
+        <div class="a11y-row">
+          <span class="a11y-label">
+            <span id="music-volume-icon" class="material-symbols-outlined" aria-hidden="true">volume_up</span>
+            <span>
+              <span class="a11y-title">Música do jogo</span>
+              <span id="music-hint" class="a11y-hint">Adicione um arquivo em audio/theme.mp3 para ativá-la</span>
+            </span>
+          </span>
+          <span class="a11y-stepper">
+            <button id="btn-music-decrease" class="icon-btn" aria-label="Diminuir música">
+              <span class="material-symbols-outlined" aria-hidden="true">remove</span>
+            </button>
+            <span id="music-volume-value" class="a11y-value">50%</span>
+            <button id="btn-music-increase" class="icon-btn" aria-label="Aumentar música">
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMO JOGAR -->
+    <section id="screen-how-to-play" class="screen-panel" hidden>
+      <header class="header">
+        <p class="screen-title">
+          <span class="material-symbols-outlined" aria-hidden="true">help</span>
+          Como Jogar
+        </p>
+        <button id="btn-how-to-play-back" class="icon-btn" aria-label="Fechar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <div class="achievements-list">
+        <div class="achievement-card">
+          <span class="achievement-icon material-symbols-outlined" aria-hidden="true">tune</span>
+          <span>
+            <span class="achievement-name" style="display:block">Escolha seu modo</span>
+            <span class="achievement-desc">Morfologia, Sintaxe ou Sinônimos — cada um testa uma habilidade diferente.</span>
+          </span>
+        </div>
+        <div class="achievement-card">
+          <span class="achievement-icon material-symbols-outlined" aria-hidden="true">today</span>
+          <span>
+            <span class="achievement-name" style="display:block">Uma pergunta por dia</span>
+            <span class="achievement-desc">Cada dia do calendário traz um desafio novo. Responda com atenção: só existe uma tentativa!</span>
+          </span>
+        </div>
+        <div class="achievement-card">
+          <span class="achievement-icon material-symbols-outlined" aria-hidden="true">military_tech</span>
+          <span>
+            <span class="achievement-name" style="display:block">Pontuação</span>
+            <span class="achievement-desc">Morfologia vale 100 pts, Sinônimos 150 pts e Sintaxe 200 pts. Errar não desconta pontos.</span>
+          </span>
+        </div>
+        <div class="achievement-card">
+          <span class="achievement-icon material-symbols-outlined" aria-hidden="true">local_fire_department</span>
+          <span>
+            <span class="achievement-name" style="display:block">Bônus de sequência</span>
+            <span class="achievement-desc">A cada 5 acertos seguidos no mesmo modo, você ganha +10% de bônus e a tela brilha.</span>
+          </span>
+        </div>
+        <div class="achievement-card">
+          <span class="achievement-icon material-symbols-outlined" aria-hidden="true">emoji_events</span>
+          <span>
+            <span class="achievement-name" style="display:block">Conquistas</span>
+            <span class="achievement-desc">Desbloqueie medalhas conforme evolui em cada modo e mantém sua ofensiva diária.</span>
+          </span>
+        </div>
+        <div class="achievement-card">
+          <span class="achievement-icon material-symbols-outlined" aria-hidden="true">calendar_month</span>
+          <span>
+            <span class="achievement-name" style="display:block">Arquivo</span>
+            <span class="achievement-desc">Jogue dias anteriores quando quiser em "Dias anteriores" — isso não altera sua ofensiva atual.</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Reservado para a música de fundo do jogo: coloque o arquivo em audio/theme.mp3 -->
+  <audio id="bg-music" src="audio/theme.mp3" loop preload="none"></audio>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
