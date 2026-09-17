@@ -82,9 +82,8 @@ body {
   color: var(--color-text-primary);
   letter-spacing: 0.3px;
   background: var(--color-bg);
-  background: radial-gradient(circle at 50% -10%, var(--color-bg-gradient-end) 0%, var(--color-bg) 55%);
   min-height: 100vh;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: color 0.25s ease;
 }
 
 button {
@@ -93,6 +92,101 @@ button {
 
 [hidden] {
   display: none !important;
+}
+
+/* ===== Fundo animado ===== */
+/* Duas camadas fixas (clara/escura) sobrepostas atrás de todo o conteúdo:
+ * o tema troca com um crossfade suave de opacidade. Dentro de cada camada,
+ * "manchas" de luz grandes e desfocadas flutuam devagar (tipo aurora), cada
+ * uma com sua própria órbita e duração, para um movimento orgânico e nunca
+ * repetitivo — sem disputar atenção com a interface. */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+
+.bg-layer-light {
+  background: #F5EEDD;
+  opacity: 1;
+}
+
+.bg-layer-dark {
+  background: #0B2739;
+  opacity: 0;
+}
+
+:root[data-theme="dark"] .bg-layer-light {
+  opacity: 0;
+}
+
+:root[data-theme="dark"] .bg-layer-dark {
+  opacity: 1;
+}
+
+.bg-blob {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+}
+
+.bg-blob-1 {
+  top: -22%;
+  left: -18%;
+  animation: blob-orbit-1 32s ease-in-out infinite;
+}
+
+.bg-blob-2 {
+  top: 22%;
+  right: -24%;
+  width: 46vmax;
+  height: 46vmax;
+  animation: blob-orbit-2 26s ease-in-out infinite;
+}
+
+.bg-blob-3 {
+  bottom: -26%;
+  left: 18%;
+  width: 50vmax;
+  height: 50vmax;
+  animation: blob-orbit-3 38s ease-in-out infinite;
+}
+
+.bg-layer-light .bg-blob-1 { background: #FBF7EE; opacity: 0.9; }
+.bg-layer-light .bg-blob-2 { background: #84B3CE; opacity: 0.35; }
+.bg-layer-light .bg-blob-3 { background: #ECE0C6; opacity: 0.8; }
+
+.bg-layer-dark .bg-blob-1 { background: #16587B; opacity: 0.8; }
+.bg-layer-dark .bg-blob-2 { background: #2C86AF; opacity: 0.45; }
+.bg-layer-dark .bg-blob-3 { background: #081C2A; opacity: 0.9; }
+
+@keyframes blob-orbit-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10%, 8%) scale(1.12); }
+  66% { transform: translate(4%, 14%) scale(0.94); }
+}
+
+@keyframes blob-orbit-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-14%, 10%) scale(1.15); }
+}
+
+@keyframes blob-orbit-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40% { transform: translate(-8%, -12%) scale(1.08); }
+  75% { transform: translate(6%, -6%) scale(0.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-blob {
+    animation: none;
+  }
 }
 
 .game-container {
@@ -123,6 +217,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .header .day-counter {
@@ -247,13 +342,85 @@ button {
 }
 
 /* ===== Menu screen ===== */
+/* ===== Cutscene de abertura ===== */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 32px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 25%, #1D6E96 0%, #0B2739 72%);
+  color: #F5EEDD;
+  overflow: hidden;
+}
+
+.intro-eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245, 238, 221, 0.7);
+}
+
+.intro-logo {
+  width: min(260px, 55vw);
+  height: auto;
+}
+
+.intro-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: clamp(2.2rem, 9vw, 3.6rem);
+}
+
+.intro-title .material-symbols-outlined {
+  font-size: 0.75em;
+  color: #F5EEDD;
+}
+
+.intro-subtitle {
+  margin: 0;
+  font-weight: 500;
+  color: rgba(245, 238, 221, 0.8);
+}
+
+.intro-skip-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(245, 238, 221, 0.45);
+  background: rgba(245, 238, 221, 0.08);
+  color: #F5EEDD;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.intro-skip-btn:hover {
+  background: rgba(245, 238, 221, 0.18);
+}
+
 .menu-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   text-align: center;
-  padding-top: 10vh;
+  flex: 1;
 }
 
 .menu-title {
