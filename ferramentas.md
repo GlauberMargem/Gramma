@@ -1,3 +1,8 @@
+> **Nota:** este é o documento de especificação técnica original. Várias
+> decisões mudaram durante o desenvolvimento — veja
+> [`CHANGELOG.md`](CHANGELOG.md) para o que é diferente hoje e
+> [`README.md`](README.md) para a arquitetura como ela é atualmente.
+
 # Arquitetura e Especificação Técnica: Jogo Gramatical/Sintático Diário
 
 **Instrução Inicial (System Prompt):**

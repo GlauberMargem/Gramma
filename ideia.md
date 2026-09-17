@@ -1,3 +1,8 @@
+> **Nota:** este é o documento de proposta original. Várias decisões
+> mudaram durante o desenvolvimento — veja [`CHANGELOG.md`](CHANGELOG.md)
+> para o que é diferente hoje e [`README.md`](README.md) para o jogo como
+> ele é atualmente.
+
 # Conceito do Jogo: Desafio Gramatical & Sintático Diário
 
 ## 1. A Ideia Central

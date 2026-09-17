@@ -1,3 +1,8 @@
+> **Nota:** este é o documento de especificação visual original (paleta
+> azul-marinho/ciano/amarelo). A identidade visual adotada no jogo mudou
+> — veja [`CHANGELOG.md`](CHANGELOG.md) para o que é diferente hoje e
+> [`README.md`](README.md) para o design atual.
+
 # Especificação Visual — Desafio Gramatical Diário
 
 Baseado nas 3 imagens de referência: fundo azul-marinho profundo, cartão de pergunta com borda ciano arredondada, ícone de calendário/interrogação, palavra-alvo em amarelo, e grade 2x2 de botões de resposta com feedback verde/vermelho.
