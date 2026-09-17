@@ -3,12 +3,26 @@ import { SynonymStore } from './synonymStore.js';
 import { StorageService } from './storageService.js';
 import { STUDY_TYPES } from './scoreEngine.js';
 
+/**
+ * As opções de cada pergunta vêm do banco de dados sempre na mesma ordem
+ * (a resposta certa cai em B na grande maioria dos dias) — embaralha antes
+ * de exibir para que a posição nunca entregue a resposta.
+ */
+function shuffle(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 function buildPrompt(studyType, dayId) {
   if (studyType === STUDY_TYPES.SYNONYMS) {
     const entry = SynonymStore.getDay(dayId);
     return {
       promptHtml: `Qual é o sinônimo de <span>${entry.word}</span>?`,
-      options: entry.options,
+      options: shuffle(entry.options),
       answer: entry.answer,
     };
   }
@@ -16,7 +30,7 @@ function buildPrompt(studyType, dayId) {
   const entry = DataStore.getDay(dayId);
   return {
     promptHtml: entry.sentence,
-    options: entry[studyType].options,
+    options: shuffle(entry[studyType].options),
     answer: entry[studyType].answer,
   };
 }
