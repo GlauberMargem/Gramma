@@ -4,6 +4,8 @@ Desafio gramatical e sintático diário, no estilo Wordle/Termo — todo dia
 traz uma frase nova para analisar morfologicamente ou sintaticamente, ou
 uma palavra difícil para associar ao sinônimo certo.
 
+**Jogue em: https://glaubermargem.github.io/Gramma/**
+
 ![Tela inicial do GRAMMA](docs/screenshot-menu.png)
 
 Projeto desenvolvido para a disciplina de Jogos Digitais (UniRios), com
