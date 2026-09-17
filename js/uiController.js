@@ -3,17 +3,40 @@ import { ACHIEVEMENTS } from './achievements.js';
 const el = (id) => document.getElementById(id);
 
 const SCREENS = [
-  'screen-menu', 'screen-mode-hub', 'screen-game', 'screen-end', 'screen-calendar',
+  'screen-intro', 'screen-menu', 'screen-mode-hub', 'screen-game', 'screen-end', 'screen-calendar',
   'screen-stats', 'screen-achievements', 'screen-accessibility', 'screen-how-to-play',
 ];
 
+let currentScreenId = null;
+
 export function showScreen(screenId) {
-  for (const id of SCREENS) {
-    el(id).hidden = id !== screenId;
+  const gsap = window.gsap;
+  const prevId = currentScreenId;
+  const prevEl = prevId ? el(prevId) : null;
+  const nextEl = el(screenId);
+  currentScreenId = screenId;
+
+  const activateNext = () => {
+    for (const id of SCREENS) {
+      if (id !== screenId) el(id).hidden = true;
+    }
+    nextEl.hidden = false;
+    // Nas telas com cabeçalho próprio (botão "✕"), esconde a barra de ícones
+    // flutuante para não colidir com ele em telas estreitas.
+    el('top-bar').hidden = screenId !== 'screen-menu';
+
+    // A cutscene de abertura já cuida da própria animação de entrada.
+    if (gsap && screenId !== 'screen-intro') {
+      gsap.fromTo(nextEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' });
+    }
+  };
+
+  const shouldAnimateExit = Boolean(gsap) && prevEl && prevEl !== nextEl && !prevEl.hidden && prevId !== 'screen-intro';
+  if (shouldAnimateExit) {
+    gsap.to(prevEl, { opacity: 0, y: -8, duration: 0.14, ease: 'power1.in', onComplete: activateNext });
+  } else {
+    activateNext();
   }
-  // Nas telas com cabeçalho próprio (botão "✕"), esconde a barra de ícones
-  // flutuante para não colidir com ele em telas estreitas.
-  el('top-bar').hidden = screenId !== 'screen-menu';
 }
 
 const STUDY_TYPE_LABEL = {
