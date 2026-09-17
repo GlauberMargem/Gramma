@@ -1,98 +1,126 @@
 # GRAMMA
 
-Desafio gramatical e sintático diário, no estilo Wordle/Termo — todo dia
-traz uma frase nova para analisar morfologicamente ou sintaticamente, ou
-uma palavra difícil para associar ao sinônimo certo.
+![GitHub repo size](https://img.shields.io/github/repo-size/GlauberMargem/Gramma)
+![GitHub language count](https://img.shields.io/github/languages/count/GlauberMargem/Gramma)
 
-**Jogue em: https://glaubermargem.github.io/Gramma/**
+Este projeto foi desenvolvido para a matéria de Jogos Digitais do curso de
+Sistemas de Informação do Centro Universitário do Rio São Francisco -
+UniRios, ministrada pelo Professor Dr. Erick Barros.
+
+GRAMMA é um desafio gramatical e sintático diário, no estilo Wordle/Termo,
+focado em três frentes da língua portuguesa: classes gramaticais, funções
+sintáticas e sinônimos.
+
+Jogue em: https://glaubermargem.github.io/Gramma/
+
+## Tela Inicial
 
 ![Tela inicial do GRAMMA](docs/screenshot-menu.png)
 
-Projeto desenvolvido para a disciplina de Jogos Digitais (UniRios), com
-apresentação prevista no **SIFGAMES em 27/10/2026**.
+Tela inicial do jogo, onde o jogador escolhe o modo de estudo do dia:
+Morfologia, Sintaxe ou Sinônimos.
 
-## O jogo
+## Menu do Modo
 
-Ao abrir o GRAMMA, você escolhe um dos três modos de estudo e responde ao
-desafio do dia — uma tentativa só, sem retry:
+![Menu do modo escolhido](docs/screenshot-modo.png)
 
-- **Morfologia** — identifique a classe gramatical da palavra em destaque.
-- **Sintaxe** — identifique a função sintática da palavra em destaque.
-- **Sinônimos** — escolha o sinônimo certo para uma palavra difícil, entre
-  quatro opções.
+Depois de escolher o modo, o jogador acessa o desafio do dia, o
+calendário de dias anteriores e as estatísticas daquele modo.
 
-Cada acerto some pontos (100/200/150, respectivamente) e a cada 5 acertos
-seguidos no mesmo modo você ganha um bônus de +10%. O progresso fica salvo
-no `localStorage`: ofensiva diária, conquistas por sequência de acertos, e
-o calendário com os dias já jogados (venceu/perdeu/disponível).
+## Interface do Jogo
 
-Sem servidor, sem conta, sem backend — é só HTML/CSS/JS puro rodando no
-seu navegador.
+![Interface de uma pergunta do jogo](docs/screenshot-question.png)
 
-## Como rodar localmente
+Interface de uma pergunta, com a frase do dia, a palavra em destaque e as
+quatro alternativas de resposta.
+
+## Ajustes e melhorias
+
+O jogo ainda está em desenvolvimento e as próximas atualizações serão
+voltadas para as seguintes tarefas:
+
+- Mascote ou fio narrativo leve nas telas de feedback
+- Jogo instalável (PWA / manifest.json)
+- Testes automatizados do motor de pontuação e do banco de dados
+- Camada Canvas/WebGL nos efeitos de celebração
+
+## Pré-requisitos
+
+Não há dependências para jogar: é HTML, CSS e JavaScript puro, sem
+build step, sem framework e sem backend. Para rodar localmente, só é
+necessário um navegador atual e, opcionalmente, Python ou Node (veja
+abaixo o motivo).
+
+## Estrutura do Projeto
+
+- `index.html`: marcação de todas as telas
+- `css/style.css`: design system (temas claro/escuro, animações)
+- `js/main.js`: orquestração — navegação, eventos, cutscene de abertura
+- `js/gameEngine.js`: máquina de estados de uma partida
+- `js/scoreEngine.js`: pontuação e bônus de sequência
+- `js/storageService.js`: leitura/escrita do progresso (localStorage)
+- `js/achievements.js`: catálogo de conquistas
+- `js/dataStore.js`: acesso ao banco de frases (morfologia/sintaxe)
+- `js/synonymStore.js`: acesso ao banco de sinônimos
+- `js/uiController.js`: renderização das telas
+- `js/theme.js` / `js/accessibility.js`: tema claro/escuro, tamanho de fonte
+- `js/vendor/gsap.min.js`: GSAP (animações), vendorizado localmente
+- `scripts/build-data.js`: regenera `js/database.js` e
+  `js/synonymsDatabase.js` a partir dos `.json`
+
+## Executando localmente
 
 O jogo usa ES Modules (`<script type="module">`), que a maioria dos
 navegadores bloqueia se você abrir o `index.html` direto pelo disco
 (`file://`). Sirva a pasta por HTTP:
 
-```bash
-# com Python (já vem instalado na maioria dos sistemas)
+```
 python -m http.server 8000
+```
 
-# ou com Node, sem instalar nada globalmente
+ou, sem instalar nada globalmente:
+
+```
 npx serve .
 ```
 
 Depois abra `http://localhost:8000` no navegador.
-
-## Estrutura do projeto
-
-```
-index.html               marcação de todas as telas
-css/style.css             design system (temas claro/escuro, animações)
-js/
-  main.js                 orquestração: navegação, eventos, cutscene
-  gameEngine.js            máquina de estados de uma partida
-  scoreEngine.js           pontuação e bônus de sequência
-  storageService.js        leitura/escrita do progresso (localStorage)
-  achievements.js          catálogo de conquistas
-  dataStore.js             acesso ao banco de frases (morfologia/sintaxe)
-  synonymStore.js          acesso ao banco de sinônimos
-  uiController.js          renderização das telas
-  theme.js / accessibility.js   tema claro/escuro, tamanho de fonte
-  vendor/gsap.min.js       GSAP (animações), vendorizado localmente
-scripts/build-data.js      regenera js/database.js e js/synonymsDatabase.js
-```
 
 ## Banco de dados
 
 O conteúdo do jogo (frases de morfologia/sintaxe e palavras de sinônimos)
 tem o `.json` como fonte oficial, editável por qualquer pessoa do time:
 
-- `database_completo_365.json` — 365 dias de morfologia + sintaxe
-- `database_sinonimos.json` — banco de palavras difíceis para o modo Sinônimos
+- `database_completo_365.json`: 365 dias de morfologia e sintaxe
+- `database_sinonimos.json`: banco de palavras difíceis do modo Sinônimos
 
-O jogo em si **não lê esses `.json` diretamente** — ele importa os módulos
-`js/database.js` e `js/synonymsDatabase.js`, que são cópias geradas a partir
-dos JSON acima (evita `fetch`/CORS ao abrir o jogo direto pelo `file://`).
+O jogo em si não lê esses `.json` diretamente — ele importa os módulos
+`js/database.js` e `js/synonymsDatabase.js`, cópias geradas a partir dos
+JSON acima (evita `fetch`/CORS ao abrir o jogo direto pelo `file://`).
 
-**Por isso: depois de editar qualquer um dos `.json`, rode**
+Por isso, depois de editar qualquer um dos `.json`, rode:
 
-```bash
+```
 node scripts/build-data.js
 ```
 
-e commite os `.js` atualizados junto com o `.json`. Se pular esse passo, a
+e comite os `.js` atualizados junto com o `.json`. Se pular esse passo, a
 edição fica só no `.json` e nunca aparece dentro do jogo de verdade.
 
-## Tecnologias
+## Concepção do projeto
 
-Vanilla JS (ES Modules, sem framework nem build step), CSS puro com
-variáveis nativas para os temas, [GSAP](https://gsap.com/) para as
-transições e animações, e ícones do
-[Material Symbols](https://fonts.google.com/icons) do Google.
+O desenho do jogo mudou bastante desde a proposta inicial (modo difícil
+removido, sinônimos adicionado, paleta de cores refeita, entre outros).
+O histórico dessas decisões está em [`CHANGELOG.md`](CHANGELOG.md); os
+documentos originais de proposta (`ideia.md`, `ferramentas.md`,
+`spec-design-jogo.md`) ficam no repositório como registro histórico.
 
-## Equipe
+## Colaboradores
 
-[GlauberMargem](https://github.com/GlauberMargem) ·
-[Yurialvessmoreiraaa](https://github.com/Yurialvessmoreiraaa)
+Este projeto foi desenvolvido para a matéria de Jogos Digitais do curso
+de Sistemas de Informação do Centro Universitário do Rio São Francisco -
+UniRios, ministrada pelo Professor Dr. Erick Barros:
+
+| [GlauberMargem](https://github.com/GlauberMargem) | [Yurialvessmoreiraaa](https://github.com/Yurialvessmoreiraaa) |
+| :---: | :---: |
+| <img src="https://github.com/GlauberMargem.png" width="100"> | <img src="https://github.com/Yurialvessmoreiraaa.png" width="100"> |
