@@ -204,6 +204,25 @@ function openHowToPlay() {
   UI.showScreen('screen-how-to-play');
 }
 
+/** Lê a frase/pergunta atual em voz alta (recurso de acessibilidade). */
+function speakCurrentSentence() {
+  if (!window.speechSynthesis) return;
+  const text = document.getElementById('game-sentence').textContent.trim();
+  if (!text) return;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'pt-BR';
+  window.speechSynthesis.speak(utterance);
+}
+
+function initSpeechSupport() {
+  const btn = document.getElementById('btn-listen');
+  if (window.speechSynthesis) return;
+  btn.disabled = true;
+  btn.title = 'Leitura em voz alta não é suportada neste navegador';
+}
+
 async function shareResult() {
   const data = window.currentShareData;
   if (!data) return;
@@ -246,6 +265,7 @@ function wireEvents() {
   document.getElementById('btn-how-to-play-back').addEventListener('click', goToMenu);
   document.getElementById('btn-share').addEventListener('click', shareResult);
   document.getElementById('btn-theme-toggle').addEventListener('click', toggleTheme);
+  document.getElementById('btn-listen').addEventListener('click', speakCurrentSentence);
 
   document.getElementById('btn-font-decrease').addEventListener('click', () => changeFontScale(-1));
   document.getElementById('btn-font-increase').addEventListener('click', () => changeFontScale(1));
@@ -297,6 +317,7 @@ function playIntro() {
 function init() {
   initTheme();
   initAccessibility();
+  initSpeechSupport();
   wireEvents();
 
   const requestedDay = getRequestedDayFromUrl();

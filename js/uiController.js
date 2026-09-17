@@ -81,6 +81,14 @@ export function renderModeHub({ studyType, currentDay, playIcon, playLabel }) {
 
 const LETTERS = ['A', 'B', 'C', 'D'];
 
+function appendResultIcon(btn, isCorrect) {
+  const icon = document.createElement('span');
+  icon.className = 'material-symbols-outlined result-icon';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = isCorrect ? 'check_circle' : 'cancel';
+  btn.appendChild(icon);
+}
+
 /**
  * Renderiza a frase + grade de opções para o tipo de estudo escolhido.
  * onSelect(isCorrect) é chamado uma única vez, na primeira escolha do jogador.
@@ -110,10 +118,12 @@ export function renderQuestion({ dayId, totalDays, isArchive, studyType, sentenc
     const selected = btn.dataset.option;
     const isCorrect = selected === correctAnswer;
     btn.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+    appendResultIcon(btn, isCorrect);
 
     if (!isCorrect) {
       const correctBtn = [...container.children].find((c) => c.dataset.option === correctAnswer);
       correctBtn?.classList.add('is-correct');
+      if (correctBtn) appendResultIcon(correctBtn, true);
     }
 
     [...container.children].forEach((c) => (c.disabled = true));

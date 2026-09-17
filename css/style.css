@@ -245,6 +245,15 @@ button {
   font-size: 48px;
 }
 
+.question-card .listen-btn {
+  flex-shrink: 0;
+}
+
+.question-card .listen-btn[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .question-card .sentence {
   text-align: center;
   line-height: 1.35;
@@ -321,6 +330,15 @@ button {
   border-color: var(--color-answer-wrong-border);
   color: #FFFFFF;
   animation: shake 0.3s ease;
+}
+
+/* Ícone de resultado além da cor (acerto/erro não pode depender só de
+ * vermelho/verde, que é justamente o par mais difícil de diferenciar
+ * para quem tem daltonismo). */
+.answer-btn .result-icon {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 1.3em;
 }
 
 @keyframes shake {
