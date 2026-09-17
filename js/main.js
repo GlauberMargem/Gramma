@@ -3,10 +3,11 @@ import { GameEngine, getCurrentDayId, dateForDay, dayIdForDate } from './gameEng
 import { StorageService } from './storageService.js';
 import { STUDY_TYPES } from './scoreEngine.js';
 import { initTheme, toggleTheme } from './theme.js';
-import { initAccessibility, changeFontScale, changeMusicVolume } from './accessibility.js';
+import { initAccessibility, changeFontScale } from './accessibility.js';
 import * as UI from './uiController.js';
 
 const PHASE_TRANSITION_DELAY_MS = 900;
+const INTRO_SESSION_KEY = 'gramma_intro_seen';
 
 const STUDY_TYPE_LABEL_TITLE = {
   [STUDY_TYPES.MORPHOLOGY]: 'Morfologia',
@@ -248,8 +249,49 @@ function wireEvents() {
 
   document.getElementById('btn-font-decrease').addEventListener('click', () => changeFontScale(-1));
   document.getElementById('btn-font-increase').addEventListener('click', () => changeFontScale(1));
-  document.getElementById('btn-music-decrease').addEventListener('click', () => changeMusicVolume(-1));
-  document.getElementById('btn-music-increase').addEventListener('click', () => changeMusicVolume(1));
+}
+
+function playIntro() {
+  let alreadySeen = false;
+  try {
+    alreadySeen = Boolean(sessionStorage.getItem(INTRO_SESSION_KEY));
+  } catch {
+    alreadySeen = false;
+  }
+
+  if (alreadySeen || typeof window.gsap === 'undefined') {
+    goToMenu();
+    return;
+  }
+
+  try {
+    sessionStorage.setItem(INTRO_SESSION_KEY, '1');
+  } catch {
+    // Sem localStorage/sessionStorage disponível: a cutscene simplesmente
+    // pode aparecer de novo na próxima carga, o que é inofensivo.
+  }
+
+  UI.showScreen('screen-intro');
+
+  const finishIntro = () => {
+    tl.kill();
+    goToMenu();
+  };
+
+  document.getElementById('btn-intro-skip').addEventListener('click', finishIntro, { once: true });
+
+  const tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: goToMenu });
+
+  tl.set(['#intro-eyebrow', '#intro-logo', '#intro-title', '#intro-subtitle'], { opacity: 0 })
+    .set('#intro-logo', { scale: 0.7, y: 10 })
+    .set('#intro-title', { y: 20 })
+    .to('#intro-eyebrow', { opacity: 1, duration: 0.5 })
+    .to('#intro-logo', { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'back.out(1.7)' }, '-=0.1')
+    .to({}, { duration: 0.7 })
+    .to(['#intro-logo', '#intro-eyebrow'], { opacity: 0, y: -10, duration: 0.45 })
+    .to('#intro-title', { opacity: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)' })
+    .to('#intro-subtitle', { opacity: 1, duration: 0.5 }, '-=0.2')
+    .to('#screen-intro', { opacity: 0, duration: 0.6 }, '+=1');
 }
 
 function init() {
@@ -261,7 +303,7 @@ function init() {
   if (requestedDay) {
     playDay(requestedDay);
   } else {
-    goToMenu();
+    playIntro();
   }
 }
 

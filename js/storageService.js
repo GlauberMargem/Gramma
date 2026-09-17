@@ -32,7 +32,6 @@ function createDefaultUserData() {
       dark_mode: prefersDarkByDefault(),
       study_type: STUDY_TYPES.MORPHOLOGY,
       font_scale_index: 1,
-      music_volume: 50,
     },
     stats: {
       current_streak: 0,
