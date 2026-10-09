@@ -1,10 +1,13 @@
+import { useCallback, useState } from 'react';
 import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { AchievementToast } from '../components/AchievementToast';
 import { MaterialIcon } from '../components/MaterialIcon';
 import { ScreenTransition } from '../components/ScreenTransition';
 import { Sparkles } from '../components/Sparkles';
+import { Toast } from '../components/Toast';
 import { getAchievement } from '../domain/achievements';
-import type { Achievement, StudyType } from '../domain/types';
+import { shareResult } from '../domain/share';
+import type { Achievement, HistoryEntry, StudyType } from '../domain/types';
 import { useAnimatedNavigate } from '../hooks/useAnimatedNavigate';
 import { useUserData } from '../state/hooks';
 
@@ -20,6 +23,9 @@ export function End() {
   const navigate = useAnimatedNavigate();
   const { settings, history } = useUserData();
 
+  const [toast, setToast] = useState<string | null>(null);
+  const dismissToast = useCallback(() => setToast(null), []);
+
   const studyType = settings.study_type;
   const entry = history[`${Number(dia)}:${studyType}`];
   if (!entry) return <Navigate to="/" replace />;
@@ -30,6 +36,17 @@ export function End() {
     .map((id) => getAchievement(id))
     .filter((a): a is Achievement => a !== null);
   const label = STUDY_TYPE_LABEL[entry.study_type];
+
+  async function share(e: HistoryEntry) {
+    const text = shareResult(e);
+    try {
+      await navigator.clipboard.writeText(text);
+      setToast('Resultado copiado para a área de transferência!');
+    } catch {
+      // clipboard ausente (undefined) também cai aqui via TypeError
+      setToast(text);
+    }
+  }
 
   return (
     <ScreenTransition className="game-container">
@@ -59,9 +76,9 @@ export function End() {
             <AchievementToast key={a.id} achievement={a} />
           ))}
         </div>
+        {toast && <Toast message={toast} onDismiss={dismissToast} />}
         <div className="secondary-actions">
-          {/* T30 liga o onClick (compartilhar) */}
-          <button type="button" className="secondary-btn">
+          <button type="button" className="secondary-btn" onClick={() => void share(entry)}>
             <MaterialIcon name="share" />
             Compartilhar
           </button>

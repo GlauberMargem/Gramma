@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { HistoryEntry, StudyType } from '../domain/types';
 import { createDefaultUserData } from '../state/userData';
 import { userStore } from '../state/userStore';
@@ -106,6 +106,42 @@ describe('End', () => {
     const { container } = renderEnd();
     expect(screen.getByText('110 pts')).toBeInTheDocument();
     expect(container.querySelectorAll('.achievement-toast')).toHaveLength(0);
+  });
+
+  it('Compartilhar copia o texto e mostra toast de sucesso', async () => {
+    seed(entry());
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
+    renderEnd();
+    await userEvent.click(screen.getByRole('button', { name: /Compartilhar/ }));
+    expect(writeText).toHaveBeenCalledWith('GRAMMA — Dia 3 (Morfologia): 🟩 — 110 pts');
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'Resultado copiado para a área de transferência!',
+    );
+    vi.unstubAllGlobals();
+  });
+
+  it('Compartilhar com clipboard rejeitado mostra o texto no toast', async () => {
+    seed(entry({ correct: false, points: 0, study_type: 'syntax' }), 'syntax');
+    const writeText = vi.fn().mockRejectedValue(new Error('negado'));
+    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
+    renderEnd();
+    await userEvent.click(screen.getByRole('button', { name: /Compartilhar/ }));
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'GRAMMA — Dia 3 (Sintaxe): 🟥 — 0 pts',
+    );
+    vi.unstubAllGlobals();
+  });
+
+  it('Compartilhar sem navigator.clipboard mostra o texto no toast', async () => {
+    seed(entry());
+    vi.stubGlobal('navigator', { ...navigator, clipboard: undefined });
+    renderEnd();
+    await userEvent.click(screen.getByRole('button', { name: /Compartilhar/ }));
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'GRAMMA — Dia 3 (Morfologia): 🟩 — 110 pts',
+    );
+    vi.unstubAllGlobals();
   });
 
   it('Menu vai para /modo', async () => {
