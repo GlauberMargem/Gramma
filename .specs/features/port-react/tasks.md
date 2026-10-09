@@ -409,13 +409,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 7: Intro e acabamento
 
-### T34: Intro animada
+### ✅ T34: Intro animada
 **What**: Timeline GSAP equivalente à do legado (eyebrow, logo, título, subtítulo, fade final), botão PULAR, `sessionStorage` `gramma_intro_seen`, cleanup no desmonte.
 **Where**: `src/screens/Intro.tsx` + `.test.tsx`
 **Depends on**: T15, T31 · **Reuses**: `legacy/js/main.js` `playIntro` · **Reqs**: NAV-03
 **Done when**:
-- [ ] Pular ou terminar → `/`; segunda abertura na sessão não toca a intro
-- [ ] `timeline.kill()` ao desmontar
+- [x] Pular ou terminar → `/`; segunda abertura na sessão não toca a intro
+- [x] `timeline.kill()` ao desmontar
 **Verify**: `npm test -- Intro`
 **Commit**: `feat(screens): Intro animada com GSAP`
 
