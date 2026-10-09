@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–I concluídas (T1–T30, T32, T33); próxima: Onda J (T31)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–J concluídas (T1–T33); próxima: Onda K (T34 → T35 → T36, sequencial)
 
 ---
 
@@ -84,6 +84,7 @@ Nenhum.
 - T29: `End` redireciona a `/` sem entrada no histórico; botão Compartilhar sem `onClick` (T30 liga). "Menu" do End vai a `/modo` (como no legado).
 - T33: Calendário volta a `/modo`.
 - T30: `Toast` reutiliza `.achievement-toast` (CSS congelado, E3) com `role=status`; `shareResult(entry)` em `src/domain/share.ts`. Aparência igual ao toast de conquista, sem ícone — avaliar na T37.
+- T31: `Game` → `GameDay` (decide uma vez, na montagem, se redireciona a `/fim/:dia`) → `GameSession`. O agente reformatou Game.tsx/Game.test.tsx inteiros com aspas duplas; o orquestrador refez só as mudanças lógicas no estilo original (sem Prettier no projeto — se quiser formatação automática, é decisão fora do port). Lição: pedir aos agentes para não reformatar arquivos.
 
 ---
 

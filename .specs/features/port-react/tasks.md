@@ -371,13 +371,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- share Toast`
 **Commit**: `feat: compartilhar resultado com toast no lugar de alert`
 
-### T31: Abrir resultado salvo
+### ✅ T31: Abrir resultado salvo
 **What**: `Game` redireciona a `/fim/:dia` quando o dia atual já foi jogado no modo (não arquivo); via ModeHub e `?day=N`.
 **Where**: `src/screens/Game.tsx` (modify)
 **Depends on**: T26, T29 · **Reqs**: GAME-06, NAV-02
 **Done when**:
-- [ ] Dia de hoje jogado → vai direto ao resultado
-- [ ] Arquivo já jogado → pergunta aparece de novo (paridade)
+- [x] Dia de hoje jogado → vai direto ao resultado
+- [x] Arquivo já jogado → pergunta aparece de novo (paridade)
 **Verify**: `npm test -- Game`
 **Commit**: `feat(screens): abre resultado salvo ao jogar dia já concluído`
 
