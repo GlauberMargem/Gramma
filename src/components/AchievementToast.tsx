@@ -3,7 +3,7 @@ import type { Achievement } from '../domain/types';
 /** Aviso de conquista nova na tela de resultado (paridade com `buildAchievementToast`). */
 export function AchievementToast({ achievement }: { achievement: Achievement }) {
   return (
-    <div className="achievement-toast">
+    <div className="achievement-toast" role="status">
       <span className="achievement-icon material-symbols-outlined" aria-hidden="true">
         {achievement.icon}
       </span>

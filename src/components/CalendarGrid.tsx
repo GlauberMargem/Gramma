@@ -13,7 +13,7 @@ export function CalendarGrid({ cells, todayDayId, getStatus, onSelectDay }: Cale
   return (
     <div id="calendar-grid" className="calendar-grid">
       {cells.map((cell, index) => {
-        if (!cell) return <button key={`empty-${index}`} type="button" className="calendar-day is-empty" />;
+        if (!cell) return <div key={`empty-${index}`} className="calendar-day is-empty" aria-hidden="true" />;
 
         const status = getStatus(cell.dayId);
         const classes = ['calendar-day', `status-${status}`];

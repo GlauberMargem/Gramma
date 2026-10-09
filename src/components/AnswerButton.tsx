@@ -1,3 +1,5 @@
+import { MaterialIcon } from './MaterialIcon';
+
 export type AnswerState = 'idle' | 'correct' | 'wrong';
 
 interface AnswerButtonProps {
@@ -15,9 +17,7 @@ export function AnswerButton({ letter, text, state = 'idle', disabled = false, o
       <span className="option-letter">{letter}</span>
       <span>{text}</span>
       {state !== 'idle' && (
-        <span className="material-symbols-outlined result-icon" aria-hidden="true">
-          {state === 'correct' ? 'check_circle' : 'cancel'}
-        </span>
+        <MaterialIcon name={state === 'correct' ? 'check_circle' : 'cancel'} className="result-icon" />
       )}
     </button>
   );

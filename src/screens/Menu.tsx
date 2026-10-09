@@ -51,11 +51,11 @@ export function Menu() {
         </div>
 
         <div className="secondary-actions">
-          <button className="secondary-btn" onClick={() => go('/como-jogar')}>
+          <button type="button" className="secondary-btn" onClick={() => go('/como-jogar')}>
             <MaterialIcon name="help" />
             Como Jogar
           </button>
-          <button className="secondary-btn" onClick={() => go('/conquistas')}>
+          <button type="button" className="secondary-btn" onClick={() => go('/conquistas')}>
             <MaterialIcon name="emoji_events" />
             Conquistas
           </button>
