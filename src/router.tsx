@@ -1,4 +1,6 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Background } from './components/Background';
+import { TopBar } from './components/TopBar';
 import { Accessibility } from './screens/Accessibility';
 import { Achievements } from './screens/Achievements';
 import { Calendar } from './screens/Calendar';
@@ -31,6 +33,8 @@ export function AppRoutes() {
 export function AppRouter() {
   return (
     <HashRouter>
+      <Background />
+      <TopBar />
       <AppRoutes />
     </HashRouter>
   );
