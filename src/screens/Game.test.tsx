@@ -113,4 +113,38 @@ describe('Game', () => {
     render(tree('/jogo/50'));
     expect(screen.getByText('DIA 3 / 365')).toBeInTheDocument();
   });
+
+  describe('botão ouvir', () => {
+    afterEach(() => {
+      Reflect.deleteProperty(window, 'speechSynthesis');
+      Reflect.deleteProperty(window, 'SpeechSynthesisUtterance');
+    });
+
+    it('sem suporte fica desabilitado com title', () => {
+      render(tree('/jogo/3'));
+      const btn = screen.getByRole('button', { name: 'Ouvir a frase em voz alta' });
+      expect(btn).toBeDisabled();
+      expect(btn).toHaveAttribute('title', 'Leitura em voz alta não é suportada neste navegador');
+    });
+
+    it('com suporte fala a frase sem marcação', () => {
+      const speak = vi.fn();
+      const cancel = vi.fn();
+      Object.defineProperty(window, 'speechSynthesis', { value: { speak, cancel }, configurable: true, writable: true });
+      Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+        value: class {
+          lang = '';
+          constructor(public text: string) {}
+        },
+        configurable: true,
+        writable: true,
+      });
+      render(tree('/jogo/3'));
+      fireEvent.click(screen.getByRole('button', { name: 'Ouvir a frase em voz alta' }));
+      expect(cancel).toHaveBeenCalled();
+      expect(speak).toHaveBeenCalledWith(
+        expect.objectContaining({ lang: 'pt-BR', text: day3.sentence.replace(/<\/?span>/g, '') }),
+      );
+    });
+  });
 });

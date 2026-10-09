@@ -9,6 +9,7 @@ import { resolveDay } from '../domain/game';
 import type { StudyType } from '../domain/types';
 import { DataStore } from '../data/stores';
 import { useAnimatedNavigate } from '../hooks/useAnimatedNavigate';
+import { useSpeech } from '../hooks/useSpeech';
 import { useUserData } from '../state/hooks';
 import { useQuestionSession } from './useQuestionSession';
 
@@ -29,6 +30,7 @@ interface SessionProps {
 function GameSession({ dayId, type, isArchive }: SessionProps) {
   const go = useAnimatedNavigate();
   const { question, selected, select } = useQuestionSession({ dayId, type, isArchive });
+  const { supported, speak } = useSpeech(question.prompt.map((part) => part.text).join(''));
   const badge = isArchive ? `DIA ${dayId} (ARQUIVO)` : `DIA ${dayId} / ${DataStore.getTotalDays()}`;
 
   const stateOf = (option: string): AnswerState => {
@@ -50,6 +52,14 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
           <p className="sentence">
             {question.prompt.map((part, i) => (part.highlight ? <span key={i}>{part.text}</span> : part.text))}
           </p>
+          <IconButton
+            icon="volume_up"
+            label="Ouvir a frase em voz alta"
+            className="listen-btn"
+            onClick={speak}
+            disabled={!supported}
+            title={supported ? undefined : 'Leitura em voz alta não é suportada neste navegador'}
+          />
         </div>
 
         <p className="phase-label">{PHASE_LABEL[type]}</p>
