@@ -237,59 +237,59 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 4: Telas simples (paralelizáveis)
 
-### T18: Menu [P]
+### ✅ T18: Menu [P]
 **What**: Logo/título, badge de ofensiva (se > 0), seletor de modo (salva `study_type`, navega a `/modo`), atalhos para Como jogar e Conquistas.
 **Where**: `src/screens/Menu.tsx` + `.test.tsx`
 **Depends on**: T13, T17 · **Reuses**: marcação de `legacy/index.html` `#screen-menu` · **Reqs**: SCR-01
 **Done when**:
-- [ ] Badge só com `current_streak > 0`
-- [ ] Clicar em um modo persiste e navega
-- [ ] Modo salvo aparece com `is-active`
+- [x] Badge só com `current_streak > 0`
+- [x] Clicar em um modo persiste e navega
+- [x] Modo salvo aparece com `is-active`
 **Verify**: `npm test -- Menu`
 **Commit**: `feat(screens): Menu com seletor de modo e ofensiva`
 
-### T19: ModeHub [P]
+### ✅ T19: ModeHub [P]
 **What**: Ícone/título do modo, `DIA N`, botão JOGAR/VER RESULTADO conforme `history`, atalhos Calendário e Estatísticas, voltar.
 **Where**: `src/screens/ModeHub.tsx` + `.test.tsx`
 **Depends on**: T13, T17, T7 · **Reqs**: SCR-02
 **Done when**:
-- [ ] Rótulo/ícone corretos nos dois estados
+- [x] Rótulo/ícone corretos nos dois estados
 **Verify**: `npm test -- ModeHub`
 **Commit**: `feat(screens): ModeHub (jogar ou ver resultado)`
 
-### T20: Estatísticas [P]
+### ✅ T20: Estatísticas [P]
 **What**: As 14 linhas de `renderStats`; componente `StatRow`.
 **Where**: `src/screens/Stats.tsx`, `src/components/StatRow.tsx` + `.test.tsx`
 **Depends on**: T13, T17, T6 · **Reqs**: SCR-03
 **Done when**:
-- [ ] 14 linhas; conquistas `n / 17`
+- [x] 14 linhas; conquistas `n / 17`
 **Verify**: `npm test -- Stats`
 **Commit**: `feat(screens): Estatísticas`
 
-### T21: Conquistas [P]
+### ✅ T21: Conquistas [P]
 **What**: Lista das 17 com `AchievementCard`, bloqueadas em `is-locked`.
 **Where**: `src/screens/Achievements.tsx`, `src/components/AchievementCard.tsx` + `.test.tsx`
 **Depends on**: T13, T17, T6 · **Reqs**: SCR-04
 **Done when**:
-- [ ] 17 cards; só os ids desbloqueados sem `is-locked`
+- [x] 17 cards; só os ids desbloqueados sem `is-locked`
 **Verify**: `npm test -- Achievements`
 **Commit**: `feat(screens): Conquistas`
 
-### T22: Acessibilidade [P]
+### ✅ T22: Acessibilidade [P]
 **What**: Controles de fonte (−/+, rótulo) e voltar.
 **Where**: `src/screens/Accessibility.tsx` + `.test.tsx`
 **Depends on**: T13, T17 · **Reqs**: PREF-03
 **Done when**:
-- [ ] Botões desabilitam nos limites; rótulo acompanha
+- [x] Botões desabilitam nos limites; rótulo acompanha
 **Verify**: `npm test -- Accessibility`
 **Commit**: `feat(screens): Acessibilidade (tamanho da fonte)`
 
-### T23: Como jogar [P]
+### ✅ T23: Como jogar [P]
 **What**: Conteúdo textual de `#screen-how-to-play`.
 **Where**: `src/screens/HowToPlay.tsx`
 **Depends on**: T17 · **Reqs**: SCR-07
 **Done when**:
-- [ ] Texto equivalente ao legado; botão voltar vai ao Menu
+- [x] Texto equivalente ao legado; botão voltar vai ao Menu
 **Verify**: `npm test -- HowToPlay`
 **Commit**: `feat(screens): Como jogar`
 

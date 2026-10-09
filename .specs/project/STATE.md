@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–F concluídas (T1–T17, T25, T28, T32 + T14–T16); próxima: Onda G (T18–T23)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–G concluídas (T1–T23, T25, T28, T32); próxima: Onda H (T24,T26,T29,T33)
 
 ---
 
@@ -76,6 +76,9 @@ Nenhum.
 - Convenção de tela (Onda G em diante): `<ScreenTransition className="game-container"><section className="screen-panel|menu-screen|…">…</section></ScreenTransition>` (section é filha direta de `.game-container`, como no legado). Intro não usa `ScreenTransition`/`game-container`. `Background` e `TopBar` (auto-oculta fora de `/`) ficam em `AppRouter`, fora dos `Routes`, porque `.top-bar` é `position: fixed` e quebraria dentro de um ancestral com `transform`. Menu NÃO renderiza TopBar.
 - Componentes prontos: `MaterialIcon({name,className})`, `IconButton({icon,label,...})`, `AnswerButton({letter,text,state,disabled,onSelect})`, `Sparkles({count,rng})`, `AchievementToast({achievement})` (recebe o objeto, não o id), `CalendarGrid({cells,todayDayId,getStatus,onSelectDay})` + tipo `DayStatus`.
 - A11y a revisar na T35: `CalendarGrid` renderiza células vazias como `<button>` (paridade); `AnswerButton` tem ícone inline (trocar por MaterialIcon); toast sem `aria-live`.
+- T19: o agente usou `min(diaAtual, total)` no hub; revertido para `getCurrentDayId()` puro (paridade, AD-006).
+- `src/smoke.test.tsx` quebra a cada tela real que substitui um stub (assertava o `<h1>` do stub); o orquestrador atualiza o texto esperado da rota a cada onda (agentes não editam esse arquivo).
+- Navegação de "voltar": Stats→`/modo`; Achievements, Accessibility, HowToPlay e ModeHub(fechar)→`/`.
 
 ---
 
