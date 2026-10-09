@@ -419,13 +419,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- Intro`
 **Commit**: `feat(screens): Intro animada com GSAP`
 
-### T35: Revisão de acessibilidade
+### ✅ T35: Revisão de acessibilidade
 **What**: Foco visível, `aria-label`, ordem de tab, `aria-live` para o resultado, `aria-hidden` nos ícones decorativos.
 **Where**: componentes e telas (modify)
 **Depends on**: T34 · **Reqs**: A11Y-01
 **Done when**:
-- [ ] Fluxo Menu→Jogo→Resultado operável só com teclado
-- [ ] Sem violação crítica no `jest-axe` nas telas principais
+- [x] Fluxo Menu→Jogo→Resultado operável só com teclado
+- [x] Sem violação crítica no `jest-axe` nas telas principais
 **Verify**: `npm test -- a11y`
 **Commit**: `fix: foco, rótulos e navegação por teclado`
 
