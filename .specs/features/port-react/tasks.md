@@ -330,14 +330,14 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- Game`
 **Commit**: `feat(screens): Game com pergunta, opções embaralhadas e registro do resultado`
 
-### T27: Leitura em voz alta
+### ✅ T27: Leitura em voz alta
 **What**: `useSpeech(text)` (`pt-BR`, `cancel` antes de falar); botão "ouvir" no Game, desabilitado sem suporte.
 **Where**: `src/hooks/useSpeech.ts`, integração em `Game.tsx` + `.test.ts`
 **Emenda E4**: T27 e T31 editam `Game.tsx`; nunca em paralelo (T27 ∥ T30; T31 depois).
 **Depends on**: T26 · **Reqs**: PREF-04
 **Done when**:
-- [ ] Com mock de `speechSynthesis`, fala o texto da frase em `pt-BR`
-- [ ] Sem suporte: `disabled` e `title`
+- [x] Com mock de `speechSynthesis`, fala o texto da frase em `pt-BR`
+- [x] Sem suporte: `disabled` e `title`
 **Verify**: `npm test -- useSpeech`
 **Commit**: `feat: leitura da frase em voz alta`
 
@@ -361,13 +361,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- End`
 **Commit**: `feat(screens): tela de resultado`
 
-### T30: Compartilhar com Toast
+### ✅ T30: Compartilhar com Toast
 **What**: `shareResult(entry)` monta `GRAMMA — Dia N (Modo): 🟩|🟥 — X pts`; `navigator.clipboard.writeText`; `Toast` de sucesso, ou com o texto em caso de falha. Sem `alert`.
 **Where**: `src/domain/share.ts`, `src/components/Toast.tsx`, integração em `End.tsx` + `.test.ts`
 **Depends on**: T29 · **Reqs**: SCR-06
 **Done when**:
-- [ ] Texto exato para acerto e erro nos 3 modos
-- [ ] Rejeição do clipboard mostra o texto no toast
+- [x] Texto exato para acerto e erro nos 3 modos
+- [x] Rejeição do clipboard mostra o texto no toast
 **Verify**: `npm test -- share Toast`
 **Commit**: `feat: compartilhar resultado com toast no lugar de alert`
 

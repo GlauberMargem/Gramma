@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–H concluídas (T1–T26, T28, T29, T32, T33); próxima: Onda I (T27,T30)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–I concluídas (T1–T30, T32, T33); próxima: Onda J (T31)
 
 ---
 
@@ -83,6 +83,7 @@ Nenhum.
 - T26: `Game` = `GameSession` com `key={dia-modo}` + `useQuestionSession` (`src/screens/useQuestionSession.ts`, 900 ms, guard `useRef`, `userStore.update(() => result.data)`, `go('/fim/:dia', {state:{newlyUnlocked}})`). `timeMs` inclui os 900 ms (paridade). Saída por "Fechar" nos 900 ms não cancela o timeout (paridade com o legado).
 - T29: `End` redireciona a `/` sem entrada no histórico; botão Compartilhar sem `onClick` (T30 liga). "Menu" do End vai a `/modo` (como no legado).
 - T33: Calendário volta a `/modo`.
+- T30: `Toast` reutiliza `.achievement-toast` (CSS congelado, E3) com `role=status`; `shareResult(entry)` em `src/domain/share.ts`. Aparência igual ao toast de conquista, sem ícone — avaliar na T37.
 
 ---
 
