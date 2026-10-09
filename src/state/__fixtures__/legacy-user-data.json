@@ -1,0 +1,30 @@
+{
+  "uuid": "3f1c2b9e-7a54-4c1d-9b0e-5d2a8f6e1c47",
+  "settings": { "dark_mode": false, "study_type": "syntax", "font_scale_index": 2 },
+  "stats": {
+    "current_streak": 3,
+    "max_streak": 5,
+    "last_streak_day": 20,
+    "games_played": 7,
+    "total_score": 410,
+    "morph_correct_streak": 2,
+    "morph_correct_streak_max": 4,
+    "syntax_correct_streak": 1,
+    "syntax_correct_streak_max": 3,
+    "total_correct_morph": 5,
+    "total_correct_syntax": 2,
+    "unlocked_achievements": ["first_win"]
+  },
+  "history": {
+    "19:morphology": {
+      "day_id": 19, "study_type": "morphology", "correct": true, "points": 100,
+      "base": 100, "bonus": 0, "is_milestone": false, "streak_after": 2,
+      "time_ms": 8200, "is_archive": false
+    },
+    "20:syntax": {
+      "day_id": 20, "study_type": "syntax", "correct": true, "points": 110,
+      "base": 100, "bonus": 10, "is_milestone": true, "streak_after": 1,
+      "time_ms": 12000, "is_archive": false
+    }
+  }
+}
