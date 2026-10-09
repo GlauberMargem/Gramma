@@ -1,7 +1,7 @@
 # Port para React + TypeScript: Tasks
 
 **Design**: `.specs/features/port-react/design.md`
-**Status**: Draft
+**Status**: Em execução (emendas E1–E6 aplicadas)
 
 Convenções: 1 task = 1 commit (Conventional Commits em pt-BR). Gates em todo commit a partir da T3: `npm run typecheck && npm run lint && npm test`. `legacy/` fica consultável até a T40. Tools: MCP nenhum; Skills: `tdd` nas tasks de domínio/estado, `frontend-design` não é necessário (paridade visual). Execução paralela com agentes: ver `EXECUTION.md` (ondas, regras e emendas E1–E6, que prevalecem sobre T2/T3/T14/T15/T26/T27/T31 abaixo).
 
@@ -50,7 +50,8 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Commit**: `chore: move o app legado para legacy/ durante o port`
 
 ### T2: Inicializar Vite + React + TypeScript
-**What**: `package.json`, `tsconfig.json` (`strict`, `resolveJsonModule`), `vite.config.ts` (`base: '/Gramma/'`), `index.html` mínimo, `src/main.tsx`, `src/App.tsx` com placeholder, `.gitignore` (`node_modules`, `dist`).
+**What**: `package.json`, `tsconfig.json` (`strict`, `resolveJsonModule`), `vite.config.ts` (`base: '/Gramma/'`), `index.html` mínimo, `src/main.tsx`, `src/App.tsx` com placeholder, `.gitignore` (`node_modules`, `dist`; `package-lock.json` passa a ser versionado, necessário para `npm ci`).
+**Emenda E1**: instalar já aqui **todas** as dependências: `react`, `react-dom`, `react-router-dom`, `gsap`, `@gsap/react`, `vitest`, `jsdom`, `@testing-library/{react,user-event,jest-dom}`, `jest-axe`, `typescript-eslint`, `eslint-plugin-react-hooks`. Depois da T3 nenhum agente edita `package.json`.
 **Where**: raiz
 **Depends on**: T1
 **Reqs**: -
@@ -62,6 +63,7 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ### T3: Vitest, ESLint e scripts
 **What**: Vitest (`jsdom`), Testing Library, ESLint (typescript-eslint + react-hooks), scripts `typecheck`, `lint`, `test`, `test:cov`. Um teste de fumaça.
+**Emenda E1**: as dependências já vêm da T2; a T3 só configura. Depois dela, `package.json` é proibido para agentes.
 **Where**: `package.json`, `vitest.config.ts`, `eslint.config.js`, `src/setupTests.ts`
 **Depends on**: T2
 **Done when**:
@@ -193,6 +195,7 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 ### T14: CSS, assets e shell HTML
 **What**: Copiar `style.css` para `src/styles/`, `favicon.svg` e `unirios-logo.png` para `public/`, `<link>` da fonte Material Symbols e título no `index.html`.
 **Where**: `src/styles/style.css`, `public/`, `index.html`
+**Emenda E3**: `style.css` fica congelado após esta task; CSS novo vira task `fix:` serial do orquestrador.
 **Depends on**: T3 · **Reqs**: paridade visual
 **Done when**:
 - [ ] Placeholder renderiza com as variáveis do tema
@@ -201,7 +204,8 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ### T15: Router, App e boot
 **What**: `HashRouter` com as rotas do design, rotas inválidas → `/`; boot lê `?day=N` (válido → `#/jogo/N`, limpa a query) e decide por `/intro` (sessão).
-**Where**: `src/router.tsx`, `src/App.tsx`, `src/main.tsx`, `src/boot.ts` + `.test.ts`
+**Where**: `src/router.tsx`, `src/App.tsx`, `src/main.tsx`, `src/boot.ts` + `.test.ts`, stubs `src/screens/{Menu,ModeHub,Game,End,Calendar,Stats,Achievements,Accessibility,HowToPlay,Intro}.tsx`
+**Emenda E2**: o router importa todas as telas desses stubs (cada um exporta um componente placeholder). Tasks de tela substituem só o próprio arquivo, sem tocar `router.tsx`.
 **Depends on**: T14 · **Reuses**: `legacy/js/main.js` (`getRequestedDayFromUrl`, `playIntro`) · **Reqs**: NAV-01, NAV-02, NAV-03
 **Done when**:
 - [ ] `resolveBoot(search, introSeen)` coberto: `?day=5`, `?day=0`, `?day=abc`, sem query
@@ -315,6 +319,7 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 ### T26: Tela Game
 **What**: Resolve o dia (`resolveDay`) e redireciona a `/` se inválido; `key` por `(dia, modo)`; `useState(() => buildQuestion)`; badge, rótulo da fase, frase por `PromptPart[]`; primeira escolha trava, marca certa/errada e a certa se errou; `setTimeout(900)` → `recordResult` (guard `useRef`) → `navigate('/fim/:dia', {state})`; `timeMs` por `useRef`.
 **Where**: `src/screens/Game.tsx` + `.test.tsx`
+**Emenda E5**: se `Game.tsx` passar de ~150 linhas, extrair `useQuestionSession` no mesmo commit.
 **Depends on**: T9, T11, T13, T19, T25 · **Reuses**: `legacy/js/uiController.js` `renderQuestion`, `legacy/js/main.js` `runQuestionPhase` · **Reqs**: GAME-01..05, GAME-07, CAL-05, DOM-05
 **Done when**:
 - [ ] Opções não reembaralham em re-render (teste com rerender)
@@ -328,6 +333,7 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 ### T27: Leitura em voz alta
 **What**: `useSpeech(text)` (`pt-BR`, `cancel` antes de falar); botão "ouvir" no Game, desabilitado sem suporte.
 **Where**: `src/hooks/useSpeech.ts`, integração em `Game.tsx` + `.test.ts`
+**Emenda E4**: T27 e T31 editam `Game.tsx`; nunca em paralelo (T27 ∥ T30; T31 depois).
 **Depends on**: T26 · **Reqs**: PREF-04
 **Done when**:
 - [ ] Com mock de `speechSynthesis`, fala o texto da frase em `pt-BR`
