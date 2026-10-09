@@ -443,22 +443,22 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 8: Substituição e entrega
 
-### T37: Paridade visual e funcional
+### ✅ T37: Paridade visual e funcional
 **What**: Rodar o app novo e o `legacy/` lado a lado (claro/escuro, 4 escalas de fonte, mobile) com a checklist da spec; corrigir diferenças em commits `fix:` próprios. Se não houver diferença, nenhum commit.
 **Where**: `.specs/features/port-react/parity.md` (registro)
 **Depends on**: T36 · **Reqs**: Success Criteria
 **Done when**:
-- [ ] Checklist preenchida, sem item bloqueante
+- [x] Checklist preenchida, sem item bloqueante
 **Verify**: `npm run build && npm run preview` + comparação manual com `docs/screenshot-*.png`
 **Commit**: `docs: registro de paridade visual do port` (+ `fix:` conforme achados)
 
-### T38: Deploy no GitHub Pages
+### ✅ T38: Deploy no GitHub Pages
 **What**: Workflow Actions: `npm ci`, typecheck, lint, test, build, `upload-pages-artifact`, `deploy-pages`; permissões mínimas. Configurar Pages para "GitHub Actions" (ação do usuário).
 **Where**: `.github/workflows/deploy.yml`
 **Depends on**: T37 · **Reqs**: OPS-01
 **Done when**:
-- [ ] Workflow verde na `main`
-- [ ] `https://glaubermargem.github.io/Gramma/` serve o app novo
+- [x] Workflow verde na `main`
+- [x] `https://glaubermargem.github.io/Gramma/` serve o app novo
 **Verify**: `gh run watch` e abrir a URL
 **Commit**: `ci: build e deploy no GitHub Pages`
 
