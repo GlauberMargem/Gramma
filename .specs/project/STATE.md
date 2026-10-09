@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Onda A concluída (T1–T3); próxima: Onda B (T4)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A e B concluídas (T1–T4); próxima: Onda C (T5,T6,T7,T8,T10,T14)
 
 ---
 
@@ -62,6 +62,8 @@ Nenhum.
 - `package-lock.json` estava no `.gitignore`; passou a ser versionado (necessário para `npm ci`/CI).
 - `@vitest/coverage-v8` não estava na lista E1 mas `test:cov` exige; instalado na T3 (versão igual à do vitest).
 - `npm i` incremental quebrou com `edgesOut` após muitas instalações; recriar `node_modules`+lock resolveu.
+- Worktrees de agentes nascem de `origin/main` (antigo), não da `main` local: o prompt dos agentes ganhou o passo 0 `git reset --hard <hash da main>` na branch da worktree.
+- Em worktree, o hook `rtk` faz o sandbox recusar `git add/commit/status` do agente. Fluxo adotado: o agente deixa as mudanças sem commit e reporta; o orquestrador revisa, commita na worktree com a mensagem exata e faz cherry-pick.
 
 ---
 

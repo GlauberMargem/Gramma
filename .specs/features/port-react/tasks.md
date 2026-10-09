@@ -75,13 +75,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 1: Domínio e dados
 
-### T4: Tipos centrais
+### ✅ T4: Tipos centrais
 **What**: `StudyType`, `Settings`, `Stats`, `HistoryEntry`, `UserData`, `Score`, `GrammarDay`, `SynonymEntry`, `PromptPart`, `Question`, `Achievement` (conforme design).
 **Where**: `src/domain/types.ts`
 **Depends on**: T3
 **Reqs**: STO-01
 **Done when**:
-- [ ] Compila em `strict`
+- [x] Compila em `strict`
 **Verify**: `npm run typecheck`
 **Commit**: `feat(domain): tipos centrais (StudyType, UserData, Stats, HistoryEntry)`
 
