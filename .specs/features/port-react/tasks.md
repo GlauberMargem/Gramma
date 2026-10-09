@@ -3,7 +3,7 @@
 **Design**: `.specs/features/port-react/design.md`
 **Status**: Draft
 
-Convenções: 1 task = 1 commit (Conventional Commits em pt-BR). Gates em todo commit a partir da T3: `npm run typecheck && npm run lint && npm test`. `legacy/` fica consultável até a T40. Tools: MCP nenhum; Skills: `tdd` nas tasks de domínio/estado, `frontend-design` não é necessário (paridade visual). **Confirmar com o usuário** antes de executar.
+Convenções: 1 task = 1 commit (Conventional Commits em pt-BR). Gates em todo commit a partir da T3: `npm run typecheck && npm run lint && npm test`. `legacy/` fica consultável até a T40. Tools: MCP nenhum; Skills: `tdd` nas tasks de domínio/estado, `frontend-design` não é necessário (paridade visual). Execução paralela com agentes: ver `EXECUTION.md` (ondas, regras e emendas E1–E6, que prevalecem sobre T2/T3/T14/T15/T26/T27/T31 abaixo).
 
 ---
 
@@ -29,6 +29,8 @@ Fase 6:         T7,T13,T19 → T32 → T33
 Fase 7:         T33,T31 → T34 → T35 → T36
 Fase 8 (seq):   T36 → T37 → T38 → T39 → T40
 ```
+
+Ondas de execução (EXECUTION.md): A=T1–T3 · B=T4 · C=T5,T6,T7,T8,T10,T14 · D=T9,T11,T12,T15 · E=T13,T16 · F=T17,T25,T28,T32 · G=T18–T23 · H=T24,T26,T29,T33 · I=T27,T30 · J=T31 · K=T34–T36 · L=T37–T40.
 
 Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **M-B** (fim da Fase 4): navegar por todas as telas simples. **M-C** (fim da Fase 5): jogar e ver resultado. **M-D** (fim da Fase 7): paridade completa. **M-E** (Fase 8): publicado e legado removido.
 
