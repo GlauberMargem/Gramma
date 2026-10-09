@@ -452,13 +452,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm run build && npm run preview` + comparação manual com `docs/screenshot-*.png`
 **Commit**: `docs: registro de paridade visual do port` (+ `fix:` conforme achados)
 
-### ✅ T38: Deploy no GitHub Pages
+### T38: Deploy no GitHub Pages
 **What**: Workflow Actions: `npm ci`, typecheck, lint, test, build, `upload-pages-artifact`, `deploy-pages`; permissões mínimas. Configurar Pages para "GitHub Actions" (ação do usuário).
 **Where**: `.github/workflows/deploy.yml`
 **Depends on**: T37 · **Reqs**: OPS-01
 **Done when**:
-- [x] Workflow verde na `main`
-- [x] `https://glaubermargem.github.io/Gramma/` serve o app novo
+- [ ] Workflow verde na `main`
+- [ ] `https://glaubermargem.github.io/Gramma/` serve o app novo
 **Verify**: `gh run watch` e abrir a URL
 **Commit**: `ci: build e deploy no GitHub Pages`
 
