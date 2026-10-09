@@ -223,13 +223,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- ScreenTransition` (gsap mockado) + checagem manual
 **Commit**: `feat: transição de tela com GSAP`
 
-### T17: TopBar e primitivos
+### ✅ T17: TopBar e primitivos
 **What**: `MaterialIcon`, `IconButton`, `TopBar` (tema + acessibilidade), exibida só no Menu (por layout de rota).
 **Where**: `src/components/{MaterialIcon,IconButton,TopBar}.tsx`
 **Depends on**: T13, T16 · **Reqs**: NAV-05
 **Done when**:
-- [ ] `TopBar` só presente na rota `/`
-- [ ] Botões com `aria-label`
+- [x] `TopBar` só presente na rota `/`
+- [x] Botões com `aria-label`
 **Verify**: `npm test -- TopBar`
 **Commit**: `feat(components): TopBar e primitivos de ícone/botão`
 
@@ -307,12 +307,12 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 5: Núcleo do jogo
 
-### T25: AnswerButton
+### ✅ T25: AnswerButton
 **What**: Letra A–D + texto, estados `idle|correct|wrong`, ícone `check_circle`/`cancel`, `disabled` após responder.
 **Where**: `src/components/AnswerButton.tsx` + `.test.tsx`
 **Depends on**: T14 · **Reqs**: GAME-02, GAME-04
 **Done when**:
-- [ ] Classes `is-correct`/`is-wrong` e ícone corretos por estado
+- [x] Classes `is-correct`/`is-wrong` e ícone corretos por estado
 **Verify**: `npm test -- AnswerButton`
 **Commit**: `feat(components): AnswerButton com estados de resposta`
 
@@ -341,12 +341,12 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- useSpeech`
 **Commit**: `feat: leitura da frase em voz alta`
 
-### T28: Sparkles e AchievementToast
+### ✅ T28: Sparkles e AchievementToast
 **What**: `Sparkles` (16 ícones aleatórios `auto_awesome|star|stars`, posições/atrasos aleatórios, `aria-hidden`) e `AchievementToast`.
 **Where**: `src/components/{Sparkles,AchievementToast}.tsx` + `.test.tsx`
 **Depends on**: T14 · **Reqs**: SCR-05
 **Done when**:
-- [ ] 16 sparkles; toast mostra nome e descrição
+- [x] 16 sparkles; toast mostra nome e descrição
 **Verify**: `npm test -- Sparkles AchievementToast`
 **Commit**: `feat(components): Sparkles e toast de conquista`
 
@@ -385,12 +385,12 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 6: Calendário
 
-### T32: CalendarGrid
+### ✅ T32: CalendarGrid
 **What**: Grade com células vazias, `status-{won|lost|available|future}`, `is-today`, desabilitado no futuro, `onSelectDay`.
 **Where**: `src/components/CalendarGrid.tsx` + `.test.tsx`
 **Depends on**: T7, T14 · **Reqs**: CAL-02, CAL-03
 **Done when**:
-- [ ] Classes por status; futuro desabilitado; hoje marcado
+- [x] Classes por status; futuro desabilitado; hoje marcado
 **Verify**: `npm test -- CalendarGrid`
 **Commit**: `feat(components): CalendarGrid com status por dia`
 

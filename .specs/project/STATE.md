@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–E concluídas (T1–T16); próxima: Onda F (T17,T25,T28,T32)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–F concluídas (T1–T17, T25, T28, T32 + T14–T16); próxima: Onda G (T18–T23)
 
 ---
 
@@ -73,6 +73,9 @@ Nenhum.
 - T11: o agente não viu o teste falhar antes de implementar (sandbox recusou comando composto); revisão manual confirmou paridade com o legado.
 - T13: `useTheme`/`useFontScale` só aplicam no DOM onde são montados; `App` monta um `Preferences` (commit extra) para valer em todas as telas.
 - T16: `ScreenTransition({children, className})` envolve a tela; `useAnimatedNavigate()` anima a saída via registro de módulo (um `ScreenTransition` por vez). Intro NÃO usa `ScreenTransition`. Risco: o `<div>` wrapper pode afetar o layout do CSS legado; usar `className` se necessário.
+- Convenção de tela (Onda G em diante): `<ScreenTransition className="game-container"><section className="screen-panel|menu-screen|…">…</section></ScreenTransition>` (section é filha direta de `.game-container`, como no legado). Intro não usa `ScreenTransition`/`game-container`. `Background` e `TopBar` (auto-oculta fora de `/`) ficam em `AppRouter`, fora dos `Routes`, porque `.top-bar` é `position: fixed` e quebraria dentro de um ancestral com `transform`. Menu NÃO renderiza TopBar.
+- Componentes prontos: `MaterialIcon({name,className})`, `IconButton({icon,label,...})`, `AnswerButton({letter,text,state,disabled,onSelect})`, `Sparkles({count,rng})`, `AchievementToast({achievement})` (recebe o objeto, não o id), `CalendarGrid({cells,todayDayId,getStatus,onSelectDay})` + tipo `DayStatus`.
+- A11y a revisar na T35: `CalendarGrid` renderiza células vazias como `<button>` (paridade); `AnswerButton` tem ícone inline (trocar por MaterialIcon); toast sem `aria-live`.
 
 ---
 
