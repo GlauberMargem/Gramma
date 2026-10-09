@@ -7,9 +7,9 @@ import { userStore } from './state/userStore';
 const placeholders: [string, string][] = [
   ['/', 'Desafio Gramatical & Sintático Diário'],
   ['/modo', 'Dias anteriores'],
-  ['/jogo/3', 'Game'],
-  ['/fim/3', 'End'],
-  ['/calendario', 'Calendar'],
+  ['/jogo/1', 'MORFOLOGIA — CLASSE GRAMATICAL'],
+  ['/fim/3', 'Desafio Gramatical & Sintático Diário'],
+  ['/calendario', 'Arquivo'],
   ['/estatisticas', 'Estatísticas'],
   ['/conquistas', 'Conquistas'],
   ['/acessibilidade', 'Tamanho da fonte'],
