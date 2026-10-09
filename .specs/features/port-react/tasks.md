@@ -293,13 +293,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- HowToPlay`
 **Commit**: `feat(screens): Como jogar`
 
-### T24: Flip do tema com GSAP
+### ✅ T24: Flip do tema com GSAP
 **What**: Timeline: `scaleX→0` (0.14 s) → trocar `data-theme`+ícone → `scaleX→1` (0.24 s `back.out(2.4)`) → `clearProps`. Valor persiste no clique.
 **Where**: `src/components/ThemeToggle.tsx`, usado na `TopBar`
 **Depends on**: T17, T22 · **Reuses**: `legacy/js/theme.js` · **Reqs**: PREF-02
 **Done when**:
-- [ ] `data-theme` muda no ponto fechado; sem animação em `reduced-motion`
-- [ ] Clique rápido repetido não deixa o botão em escala ≠ 1
+- [x] `data-theme` muda no ponto fechado; sem animação em `reduced-motion`
+- [x] Clique rápido repetido não deixa o botão em escala ≠ 1
 **Verify**: `npm test -- ThemeToggle`
 **Commit**: `feat: alternância de tema com flip em GSAP`
 
@@ -316,17 +316,17 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- AnswerButton`
 **Commit**: `feat(components): AnswerButton com estados de resposta`
 
-### T26: Tela Game
+### ✅ T26: Tela Game
 **What**: Resolve o dia (`resolveDay`) e redireciona a `/` se inválido; `key` por `(dia, modo)`; `useState(() => buildQuestion)`; badge, rótulo da fase, frase por `PromptPart[]`; primeira escolha trava, marca certa/errada e a certa se errou; `setTimeout(900)` → `recordResult` (guard `useRef`) → `navigate('/fim/:dia', {state})`; `timeMs` por `useRef`.
 **Where**: `src/screens/Game.tsx` + `.test.tsx`
 **Emenda E5**: se `Game.tsx` passar de ~150 linhas, extrair `useQuestionSession` no mesmo commit.
 **Depends on**: T9, T11, T13, T19, T25 · **Reuses**: `legacy/js/uiController.js` `renderQuestion`, `legacy/js/main.js` `runQuestionPhase` · **Reqs**: GAME-01..05, GAME-07, CAL-05, DOM-05
 **Done when**:
-- [ ] Opções não reembaralham em re-render (teste com rerender)
-- [ ] Segundo clique é ignorado
-- [ ] Erro destaca a certa; `recordResult` chamado 1× mesmo em StrictMode
-- [ ] Dia de arquivo mostra `DIA N (ARQUIVO)`
-- [ ] Fake timers: nada acontece antes de 900 ms
+- [x] Opções não reembaralham em re-render (teste com rerender)
+- [x] Segundo clique é ignorado
+- [x] Erro destaca a certa; `recordResult` chamado 1× mesmo em StrictMode
+- [x] Dia de arquivo mostra `DIA N (ARQUIVO)`
+- [x] Fake timers: nada acontece antes de 900 ms
 **Verify**: `npm test -- Game`
 **Commit**: `feat(screens): Game com pergunta, opções embaralhadas e registro do resultado`
 
@@ -350,14 +350,14 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- Sparkles AchievementToast`
 **Commit**: `feat(components): Sparkles e toast de conquista`
 
-### T29: Tela End
+### ✅ T29: Tela End
 **What**: Lê `history` do `:dia`/modo atual; título (certa/errada), pontos, quebra base+bônus, linha de streak (só se acertou), toasts de `location.state.newlyUnlocked`, sparkles em marco ou conquista nova, classe `is-perfect`; sem entrada → `/`.
 **Where**: `src/screens/End.tsx` + `.test.tsx`
 **Depends on**: T13, T28 · **Reuses**: `renderEnd` · **Reqs**: SCR-05
 **Done when**:
-- [ ] Texto "Resposta certa!" / "Não foi dessa vez"
-- [ ] Linha de bônus só com `bonus > 0`
-- [ ] Recarregar a página mostra o mesmo resultado sem toasts
+- [x] Texto "Resposta certa!" / "Não foi dessa vez"
+- [x] Linha de bônus só com `bonus > 0`
+- [x] Recarregar a página mostra o mesmo resultado sem toasts
 **Verify**: `npm test -- End`
 **Commit**: `feat(screens): tela de resultado`
 
@@ -394,14 +394,14 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- CalendarGrid`
 **Commit**: `feat(components): CalendarGrid com status por dia`
 
-### T33: Tela Calendário
+### ✅ T33: Tela Calendário
 **What**: Rótulo "MÊS ANO" em maiúsculas, navegação prev/next com limites, status via `history` do modo atual, clique → `/jogo/:dia`.
 **Where**: `src/screens/Calendar.tsx` + `.test.tsx`
 **Depends on**: T32, T13, T19 · **Reuses**: `legacy/js/main.js` `renderCalendarScreen` · **Reqs**: CAL-01, CAL-04, CAL-05, CAL-06
 **Done when**:
-- [ ] Abre no mês do dia atual
-- [ ] Prev desabilitado no mês inicial; next no final
-- [ ] Clicar em dia disponível navega ao jogo
+- [x] Abre no mês do dia atual
+- [x] Prev desabilitado no mês inicial; next no final
+- [x] Clicar em dia disponível navega ao jogo
 **Verify**: `npm test -- Calendar`
 **Commit**: `feat(screens): Calendário com navegação mensal`
 

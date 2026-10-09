@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–G concluídas (T1–T23, T25, T28, T32); próxima: Onda H (T24,T26,T29,T33)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–H concluídas (T1–T26, T28, T29, T32, T33); próxima: Onda I (T27,T30)
 
 ---
 
@@ -79,6 +79,10 @@ Nenhum.
 - T19: o agente usou `min(diaAtual, total)` no hub; revertido para `getCurrentDayId()` puro (paridade, AD-006).
 - `src/smoke.test.tsx` quebra a cada tela real que substitui um stub (assertava o `<h1>` do stub); o orquestrador atualiza o texto esperado da rota a cada onda (agentes não editam esse arquivo).
 - Navegação de "voltar": Stats→`/modo`; Achievements, Accessibility, HowToPlay e ModeHub(fechar)→`/`.
+- T24: `ThemeToggle` usa um gate de módulo (`holdThemeApply` em `state/hooks.ts`) para o efeito de `useTheme` não aplicar `data-theme` antes do ponto fechado do flip; persiste `dark_mode` no clique. Orquestrador adicionou: ao desmontar no meio do flip, aplica o tema pendente. Wrapper `<span style="display:contents">` — conferir layout da `.top-bar` na T37.
+- T26: `Game` = `GameSession` com `key={dia-modo}` + `useQuestionSession` (`src/screens/useQuestionSession.ts`, 900 ms, guard `useRef`, `userStore.update(() => result.data)`, `go('/fim/:dia', {state:{newlyUnlocked}})`). `timeMs` inclui os 900 ms (paridade). Saída por "Fechar" nos 900 ms não cancela o timeout (paridade com o legado).
+- T29: `End` redireciona a `/` sem entrada no histórico; botão Compartilhar sem `onClick` (T30 liga). "Menu" do End vai a `/modo` (como no legado).
+- T33: Calendário volta a `/modo`.
 
 ---
 
