@@ -127,15 +127,15 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- stores`
 **Commit**: `feat(data): importa os JSON e cria stores tipadas`
 
-### T9: Lógica da partida
+### ✅ T9: Lógica da partida
 **What**: `shuffle(rng)`, `splitHighlight`, `resolveDay`, `buildQuestion`.
 **Where**: `src/domain/game.ts` + `.test.ts`
 **Depends on**: T8 · **Reuses**: `legacy/js/gameEngine.js`, `dataStore.ensureHighlighted` · **Reqs**: DOM-05, DOM-04, GAME-03
 **Done when**:
-- [ ] `splitHighlight` usa `<span>` existente ou a primeira ocorrência de `target_word`
-- [ ] `resolveDay`: dia > atual vira atual, `isArchive` correto; clamp pelo total
-- [ ] `buildQuestion` mantém o conjunto das opções e contém `answer`; `rng` fixo é determinístico
-- [ ] Sinônimos: prompt "Qual é o sinônimo de **X**?"
+- [x] `splitHighlight` usa `<span>` existente ou a primeira ocorrência de `target_word`
+- [x] `resolveDay`: dia > atual vira atual, `isArchive` correto; clamp pelo total
+- [x] `buildQuestion` mantém o conjunto das opções e contém `answer`; `rng` fixo é determinístico
+- [x] Sinônimos: prompt "Qual é o sinônimo de **X**?"
 **Verify**: `npm test -- game`
 **Commit**: `feat(domain): montagem da pergunta, shuffle e resolução de dia`
 
@@ -154,27 +154,27 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- userData`
 **Commit**: `feat(state): defaults e parse compatível com o formato legado`
 
-### T11: recordResult
+### ✅ T11: recordResult
 **What**: Função pura com a regra de `StorageService.recordResult`.
 **Where**: `src/domain/recordResult.ts` + `.test.ts`
 **Depends on**: T5, T6, T10 · **Reuses**: `legacy/js/storageService.js` · **Reqs**: STO-02, STO-03, DOM-01, DOM-02
 **Done when**:
-- [ ] Acerto incrementa streak, total e máximo; erro zera o streak do modo
-- [ ] Gravação de `history["{dia}:{modo}"]` com todos os campos
-- [ ] Ofensiva: primeiro jogo, dia consecutivo, salto de dias (volta a 1), mesmo dia (sem mudança)
-- [ ] Arquivo não altera `current_streak`/`last_streak_day`
-- [ ] `newlyUnlocked` só traz ids novos; não muta a entrada
+- [x] Acerto incrementa streak, total e máximo; erro zera o streak do modo
+- [x] Gravação de `history["{dia}:{modo}"]` com todos os campos
+- [x] Ofensiva: primeiro jogo, dia consecutivo, salto de dias (volta a 1), mesmo dia (sem mudança)
+- [x] Arquivo não altera `current_streak`/`last_streak_day`
+- [x] `newlyUnlocked` só traz ids novos; não muta a entrada
 **Verify**: `npm test -- recordResult`
 **Commit**: `feat(domain): recordResult (pontos, streaks, ofensiva e conquistas)`
 
-### T12: userStore
+### ✅ T12: userStore
 **What**: Store com `getSnapshot` cacheado, `subscribe`, `update`, escuta de `storage`, `try/catch` em leitura/escrita.
 **Where**: `src/state/userStore.ts` + `.test.ts`
 **Depends on**: T10 · **Reqs**: STO-01, STO-04
 **Done when**:
-- [ ] `getSnapshot()` devolve a mesma referência até um `update`
-- [ ] `update` persiste na chave `gramma_user_data` e notifica assinantes
-- [ ] `setItem` lançando erro não quebra e o estado em memória segue válido
+- [x] `getSnapshot()` devolve a mesma referência até um `update`
+- [x] `update` persiste na chave `gramma_user_data` e notifica assinantes
+- [x] `setItem` lançando erro não quebra e o estado em memória segue válido
 **Verify**: `npm test -- userStore`
 **Commit**: `feat(state): userStore persistente com snapshot estável`
 
@@ -202,14 +202,14 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm run build`; abrir `dev` e conferir fundo/tema
 **Commit**: `feat: traz style.css e assets para o app React`
 
-### T15: Router, App e boot
+### ✅ T15: Router, App e boot
 **What**: `HashRouter` com as rotas do design, rotas inválidas → `/`; boot lê `?day=N` (válido → `#/jogo/N`, limpa a query) e decide por `/intro` (sessão).
 **Where**: `src/router.tsx`, `src/App.tsx`, `src/main.tsx`, `src/boot.ts` + `.test.ts`, stubs `src/screens/{Menu,ModeHub,Game,End,Calendar,Stats,Achievements,Accessibility,HowToPlay,Intro}.tsx`
 **Emenda E2**: o router importa todas as telas desses stubs (cada um exporta um componente placeholder). Tasks de tela substituem só o próprio arquivo, sem tocar `router.tsx`.
 **Depends on**: T14 · **Reuses**: `legacy/js/main.js` (`getRequestedDayFromUrl`, `playIntro`) · **Reqs**: NAV-01, NAV-02, NAV-03
 **Done when**:
-- [ ] `resolveBoot(search, introSeen)` coberto: `?day=5`, `?day=0`, `?day=abc`, sem query
-- [ ] Todas as rotas resolvem para um placeholder
+- [x] `resolveBoot(search, introSeen)` coberto: `?day=5`, `?day=0`, `?day=abc`, sem query
+- [x] Todas as rotas resolvem para um placeholder
 **Verify**: `npm test -- boot`
 **Commit**: `feat: roteamento (HashRouter) e decisão de boot`
 

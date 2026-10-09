@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–C concluídas (T1–T8, T10, T14); próxima: Onda D (T9,T11,T12,T15)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–D concluídas (T1–T12, T14, T15); próxima: Onda E (T13,T16)
 
 ---
 
@@ -67,6 +67,10 @@ Nenhum.
 - Spec errada: 1º/jul/2026 é quarta, não quinta (T7 corrigida em tasks.md).
 - T14: `import './styles/style.css'` foi adicionado em `src/main.tsx` pelo orquestrador no mesmo commit (não estava em Where). `unirios-logo.png` fica em `public/`; usar `import.meta.env.BASE_URL` na Intro.
 - Fixture legada da T10 usa o id `first_win`, que não existe no catálogo (17 ids); irrelevante para o parse.
+- Convenção dos stubs de tela (T15): named export (`export function Menu()`), mesmo nome do arquivo; telas reais mantêm isso. `router.tsx` exporta `AppRoutes` e `AppRouter`; `boot.ts` expõe `markIntroSeen`, que a Intro (T34) deve chamar.
+- `userStore` (T12) é `createUserStore()` + singleton `userStore` + `USER_DATA_KEY`; API `getSnapshot/subscribe/update` (não `save`).
+- `recordResult(data, {dayId,type,correct,timeMs,isArchive}) → {data,score,streak,newlyUnlocked}`; `isArchive` obrigatório.
+- T11: o agente não viu o teste falhar antes de implementar (sandbox recusou comando composto); revisão manual confirmou paridade com o legado.
 
 ---
 
