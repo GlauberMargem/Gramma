@@ -13,10 +13,18 @@ export function useUserData(): UserData {
   return useSyncExternalStore(userStore.subscribe, userStore.getSnapshot);
 }
 
+let themeApplyHeld = false;
+
+/** O ThemeToggle segura a aplicação de `data-theme` até o ponto fechado do flip. */
+export function holdThemeApply(held: boolean): void {
+  themeApplyHeld = held;
+}
+
 export function useTheme(): { isDark: boolean; toggle: () => void } {
   const isDark = Boolean(useUserData().settings.dark_mode);
 
   useEffect(() => {
+    if (themeApplyHeld) return;
     document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
   }, [isDark]);
 

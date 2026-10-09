@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { TopBar } from './TopBar';
 
 function renderAt(path: string) {
@@ -25,6 +25,7 @@ describe('TopBar', () => {
   });
 
   it('alterna o tema e o ícone', async () => {
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true }) as unknown as typeof window.matchMedia;
     renderAt('/');
     const btn = screen.getByRole('button', { name: 'Alternar tema claro/escuro' });
     const before = btn.textContent;
