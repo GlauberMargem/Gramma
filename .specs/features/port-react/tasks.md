@@ -429,13 +429,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- a11y`
 **Commit**: `fix: foco, rótulos e navegação por teclado`
 
-### T36: Testes de fluxo
+### ✅ T36: Testes de fluxo
 **What**: Testes de integração com `MemoryRouter`/store real: jogar e acertar, jogar e errar, marco de 5, arquivo sem mexer na ofensiva, tema/fonte persistidos, fixture legada abrindo estatísticas.
 **Where**: `src/__tests__/flows.test.tsx`
 **Depends on**: T35 · **Reqs**: STO-01..03, P1 completo
 **Done when**:
-- [ ] ≥ 6 fluxos verdes
-- [ ] Cobertura de `src/domain` e `src/state` ≥ 90%
+- [x] ≥ 6 fluxos verdes
+- [x] Cobertura de `src/domain` e `src/state` ≥ 90%
 **Verify**: `npm run test:cov`
 **Commit**: `test: fluxos de tela e cobertura do domínio`
 

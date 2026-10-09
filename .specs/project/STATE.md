@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–J concluídas (T1–T33); Onda K em andamento: T34 e T35 concluídas; próxima: T36
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–J concluídas (T1–T33); Ondas A–K concluídas (T1–T36). AGUARDANDO O USUÁRIO: T37 (validação de paridade, ver parity.md)
 
 ---
 
@@ -86,6 +86,8 @@ Nenhum.
 - T30: `Toast` reutiliza `.achievement-toast` (CSS congelado, E3) com `role=status`; `shareResult(entry)` em `src/domain/share.ts`. Aparência igual ao toast de conquista, sem ícone — avaliar na T37.
 - T31: `Game` → `GameDay` (decide uma vez, na montagem, se redireciona a `/fim/:dia`) → `GameSession`. O agente reformatou Game.tsx/Game.test.tsx inteiros com aspas duplas; o orquestrador refez só as mudanças lógicas no estilo original (sem Prettier no projeto — se quiser formatação automática, é decisão fora do port). Lição: pedir aos agentes para não reformatar arquivos.
 - T35: `aria-live="polite"` no título/pontos do End é montado junto com a tela (leitores de tela só anunciam mudanças), então o ganho real é pequeno; mover foco ao trocar de tela NÃO foi feito (arrisca paridade). Contraste de cor e foco visível não são verificáveis em jsdom: checar na T37. Células vazias do calendário viraram `<div aria-hidden>`.
+- T36: 7 fluxos em `src/__tests__/flows.test.tsx`; cobertura de linhas 100% em `src/domain` + `src/state`. Fluxo da fixture legada usa o evento `storage` (sem `vi.resetModules`, que duplicaria o React).
+- Ao fim da Onda K: 245 testes verdes, typecheck/lint/build OK. Pendente só validação humana (T37), Pages (T38) e remoção do legado/documentação (T39, T40).
 
 ---
 
