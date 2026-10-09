@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: planejamento (spec/design/tasks em Draft, aguardando aprovação)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Onda A concluída (T1–T3); próxima: Onda B (T4)
 
 ---
 
@@ -59,7 +59,9 @@ Nenhum.
 
 ## Lessons Learned
 
-Nenhuma ainda.
+- `package-lock.json` estava no `.gitignore`; passou a ser versionado (necessário para `npm ci`/CI).
+- `@vitest/coverage-v8` não estava na lista E1 mas `test:cov` exige; instalado na T3 (versão igual à do vitest).
+- `npm i` incremental quebrou com `edgesOut` após muitas instalações; recriar `node_modules`+lock resolveu.
 
 ---
 

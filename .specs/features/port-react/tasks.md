@@ -38,36 +38,36 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 0: Preparação
 
-### T1: Mover o app legado para `legacy/`
+### ✅ T1: Mover o app legado para `legacy/`
 **What**: `git mv` de `index.html`, `css/`, `js/`, `scripts/`, `favicon.svg`, `img/`, `database_*.json` para `legacy/`. Mantém `docs/`, `README.md`, `CHANGELOG.md`, `*.md` e `.specs/` na raiz.
 **Where**: raiz → `legacy/`
 **Depends on**: -
 **Reqs**: OPS-02 (preparação)
 **Done when**:
-- [ ] `legacy/index.html` abre com `python -m http.server` dentro de `legacy/`
-- [ ] Nenhum arquivo fora do escopo foi movido
+- [x] `legacy/index.html` abre com `python -m http.server` dentro de `legacy/`
+- [x] Nenhum arquivo fora do escopo foi movido
 **Verify**: `git status --short | head`; `cd legacy && python -m http.server 8000` e abrir a página
 **Commit**: `chore: move o app legado para legacy/ durante o port`
 
-### T2: Inicializar Vite + React + TypeScript
+### ✅ T2: Inicializar Vite + React + TypeScript
 **What**: `package.json`, `tsconfig.json` (`strict`, `resolveJsonModule`), `vite.config.ts` (`base: '/Gramma/'`), `index.html` mínimo, `src/main.tsx`, `src/App.tsx` com placeholder, `.gitignore` (`node_modules`, `dist`; `package-lock.json` passa a ser versionado, necessário para `npm ci`).
 **Emenda E1**: instalar já aqui **todas** as dependências: `react`, `react-dom`, `react-router-dom`, `gsap`, `@gsap/react`, `vitest`, `jsdom`, `@testing-library/{react,user-event,jest-dom}`, `jest-axe`, `typescript-eslint`, `eslint-plugin-react-hooks`. Depois da T3 nenhum agente edita `package.json`.
 **Where**: raiz
 **Depends on**: T1
 **Reqs**: -
 **Done when**:
-- [ ] `npm run dev` serve o placeholder
-- [ ] `npm run build` gera `dist/`
+- [x] `npm run dev` serve o placeholder
+- [x] `npm run build` gera `dist/`
 **Verify**: `npm ci && npm run build` → exit 0
 **Commit**: `chore: inicializa Vite + React + TypeScript (strict)`
 
-### T3: Vitest, ESLint e scripts
+### ✅ T3: Vitest, ESLint e scripts
 **What**: Vitest (`jsdom`), Testing Library, ESLint (typescript-eslint + react-hooks), scripts `typecheck`, `lint`, `test`, `test:cov`. Um teste de fumaça.
 **Emenda E1**: as dependências já vêm da T2; a T3 só configura. Depois dela, `package.json` é proibido para agentes.
 **Where**: `package.json`, `vitest.config.ts`, `eslint.config.js`, `src/setupTests.ts`
 **Depends on**: T2
 **Done when**:
-- [ ] Os quatro scripts rodam e passam
+- [x] Os quatro scripts rodam e passam
 **Verify**: `npm run typecheck && npm run lint && npm test`
 **Commit**: `chore: configura Vitest, ESLint e scripts npm`
 
