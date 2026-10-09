@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A e B concluídas (T1–T4); próxima: Onda C (T5,T6,T7,T8,T10,T14)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–C concluídas (T1–T8, T10, T14); próxima: Onda D (T9,T11,T12,T15)
 
 ---
 
@@ -64,6 +64,9 @@ Nenhum.
 - `npm i` incremental quebrou com `edgesOut` após muitas instalações; recriar `node_modules`+lock resolveu.
 - Worktrees de agentes nascem de `origin/main` (antigo), não da `main` local: o prompt dos agentes ganhou o passo 0 `git reset --hard <hash da main>` na branch da worktree.
 - Em worktree, o hook `rtk` faz o sandbox recusar `git add/commit/status` do agente. Fluxo adotado: o agente deixa as mudanças sem commit e reporta; o orquestrador revisa, commita na worktree com a mensagem exata e faz cherry-pick.
+- Spec errada: 1º/jul/2026 é quarta, não quinta (T7 corrigida em tasks.md).
+- T14: `import './styles/style.css'` foi adicionado em `src/main.tsx` pelo orquestrador no mesmo commit (não estava em Where). `unirios-logo.png` fica em `public/`; usar `import.meta.env.BASE_URL` na Intro.
+- Fixture legada da T10 usa o id `first_win`, que não existe no catálogo (17 ids); irrelevante para o parse.
 
 ---
 

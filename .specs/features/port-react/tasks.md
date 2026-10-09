@@ -85,45 +85,45 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm run typecheck`
 **Commit**: `feat(domain): tipos centrais (StudyType, UserData, Stats, HistoryEntry)`
 
-### T5: scoreEngine [P]
+### ✅ T5: scoreEngine [P]
 **What**: Portar `legacy/js/scoreEngine.js`.
 **Where**: `src/domain/scoreEngine.ts` + `.test.ts`
 **Depends on**: T4 · **Reuses**: `legacy/js/scoreEngine.js` · **Reqs**: DOM-01
 **Done when**:
-- [ ] Errou = `{0,0,0,false}`; bases 100/200/150
-- [ ] Marcos em 5, 10, 15; bônus 10/20/15 por modo; streak 0 não é marco
+- [x] Errou = `{0,0,0,false}`; bases 100/200/150
+- [x] Marcos em 5, 10, 15; bônus 10/20/15 por modo; streak 0 não é marco
 **Verify**: `npm test -- scoreEngine`
 **Commit**: `feat(domain): scoreEngine em TS com testes`
 
-### T6: achievements [P]
+### ✅ T6: achievements [P]
 **What**: Portar o catálogo (17) e `evaluateAchievements`/`getAchievement`.
 **Where**: `src/domain/achievements.ts` + `.test.ts`
 **Depends on**: T4 · **Reuses**: `legacy/js/achievements.js` · **Reqs**: DOM-02
 **Done when**:
-- [ ] 17 ids únicos
-- [ ] Teste de limiar por conquista (borda: n−1 não, n sim); `equilibrado` exige 10 de cada
+- [x] 17 ids únicos
+- [x] Teste de limiar por conquista (borda: n−1 não, n sim); `equilibrado` exige 10 de cada
 **Verify**: `npm test -- achievements`
 **Commit**: `feat(domain): conquistas em TS com testes`
 
-### T7: calendar [P]
+### ✅ T7: calendar [P]
 **What**: `getCurrentDayId(now?)`, `dateForDay`, `dayIdForDate`, `buildMonthCells`, `canNavigate`.
 **Where**: `src/domain/calendar.ts` + `.test.ts`
 **Depends on**: T4 · **Reuses**: `legacy/js/gameEngine.js`, `legacy/js/main.js` (`buildMonthCells`, limites) · **Reqs**: DOM-03, CAL-01, CAL-02, CAL-04
 **Done when**:
-- [ ] 17/07/2026 → dia 1; antes de START → dia 1 (clamp `max(1,…)`)
-- [ ] Grade de julho/2026 começa na quinta; células nulas de preenchimento
-- [ ] Limites de navegação nos meses do dia 1 e do dia 365
+- [x] 17/07/2026 → dia 1; antes de START → dia 1 (clamp `max(1,…)`)
+- [x] Grade de julho/2026 começa na quarta (3 células nulas, domingo primeiro); células nulas de preenchimento
+- [x] Limites de navegação nos meses do dia 1 e do dia 365
 **Verify**: `npm test -- calendar`
 **Commit**: `feat(domain): calendário com relógio injetável e testes`
 
-### T8: Dados e stores [P]
+### ✅ T8: Dados e stores [P]
 **What**: Copiar os JSON de `legacy/` para `src/data/`, criar `DataStore` (`getTotalDays`, `getDay`) e `SynonymStore` (`getPoolSize`, `getDay` com ciclo).
 **Where**: `src/data/*.json`, `src/data/stores.ts` + `.test.ts`
 **Depends on**: T4 · **Reuses**: `legacy/js/dataStore.js`, `synonymStore.js` · **Reqs**: DOM-04
 **Done when**:
-- [ ] 365 dias; `getDay(366)` → `null`
-- [ ] Sinônimo do dia `pool+1` = dia 1
-- [ ] JSON validado contra os tipos (4 opções, `answer` ∈ `options`)
+- [x] 365 dias; `getDay(366)` → `null`
+- [x] Sinônimo do dia `pool+1` = dia 1
+- [x] JSON validado contra os tipos (4 opções, `answer` ∈ `options`)
 **Verify**: `npm test -- stores`
 **Commit**: `feat(data): importa os JSON e cria stores tipadas`
 
@@ -143,14 +143,14 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 2: Persistência e estado
 
-### T10: Defaults e parse do storage
+### ✅ T10: Defaults e parse do storage
 **What**: `createDefaultUserData()` (uuid com fallback, tema por `prefers-color-scheme`) e `parseStored(raw)` com merge de `settings`/`stats`. Fixture `legacy-user-data.json` com dados reais do formato antigo.
 **Where**: `src/state/userData.ts`, `src/state/__fixtures__/legacy-user-data.json` + `.test.ts`
 **Depends on**: T4 · **Reuses**: `legacy/js/storageService.js` · **Reqs**: STO-01
 **Done when**:
-- [ ] Fixture legada carrega com `history` e `uuid` preservados
-- [ ] `null`, vazio e JSON inválido → defaults
-- [ ] Campo novo ausente em `stats` recebe default
+- [x] Fixture legada carrega com `history` e `uuid` preservados
+- [x] `null`, vazio e JSON inválido → defaults
+- [x] Campo novo ausente em `stats` recebe default
 **Verify**: `npm test -- userData`
 **Commit**: `feat(state): defaults e parse compatível com o formato legado`
 
@@ -192,13 +192,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 
 ## Fase 3: Esqueleto da aplicação
 
-### T14: CSS, assets e shell HTML
+### ✅ T14: CSS, assets e shell HTML
 **What**: Copiar `style.css` para `src/styles/`, `favicon.svg` e `unirios-logo.png` para `public/`, `<link>` da fonte Material Symbols e título no `index.html`.
 **Where**: `src/styles/style.css`, `public/`, `index.html`
 **Emenda E3**: `style.css` fica congelado após esta task; CSS novo vira task `fix:` serial do orquestrador.
 **Depends on**: T3 · **Reqs**: paridade visual
 **Done when**:
-- [ ] Placeholder renderiza com as variáveis do tema
+- [x] Placeholder renderiza com as variáveis do tema
 **Verify**: `npm run build`; abrir `dev` e conferir fundo/tema
 **Commit**: `feat: traz style.css e assets para o app React`
 
