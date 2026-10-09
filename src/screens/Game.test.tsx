@@ -114,6 +114,77 @@ describe('Game', () => {
     expect(screen.getByText('DIA 3 / 365')).toBeInTheDocument();
   });
 
+  describe('resultado salvo', () => {
+    const played = (day: number) =>
+      userStore.update((d) => ({
+        ...d,
+        history: {
+          ...d.history,
+          [`${day}:morphology`]: {
+            day_id: day,
+            study_type: 'morphology',
+            correct: true,
+            points: 10,
+            base: 10,
+            bonus: 0,
+            is_milestone: false,
+            streak_after: 1,
+            time_ms: 1000,
+            is_archive: day !== 3,
+          },
+        },
+      }));
+
+    it('dia atual já jogado no modo redireciona a /fim/:dia sem state', () => {
+      played(3);
+      render(tree('/jogo/3'));
+      expect(screen.getByTestId('where').textContent).toBe('/fim/3 null');
+    });
+
+    it('dia futuro que cai no dia atual já jogado também redireciona', () => {
+      played(3);
+      render(tree('/jogo/50'));
+      expect(screen.getByTestId('where').textContent).toBe('/fim/3 null');
+    });
+
+    it('jogado em outro modo não redireciona', () => {
+      userStore.update((d) => ({
+        ...d,
+        history: {
+          ...d.history,
+          '3:syntax': {
+            day_id: 3,
+            study_type: 'syntax',
+            correct: true,
+            points: 10,
+            base: 10,
+            bonus: 0,
+            is_milestone: false,
+            streak_after: 1,
+            time_ms: 1000,
+            is_archive: false,
+          },
+        },
+      }));
+      render(tree('/jogo/3'));
+      expect(screen.getByText('DIA 3 / 365')).toBeInTheDocument();
+    });
+
+    it('arquivo já jogado mostra a pergunta de novo', () => {
+      played(2);
+      render(tree('/jogo/2'));
+      expect(screen.getByText('DIA 2 (ARQUIVO)')).toBeInTheDocument();
+    });
+
+    it('após responder, a sessão montada não redireciona sozinha (só o hook, com state)', async () => {
+      render(tree('/jogo/3'));
+      click(right);
+      await act(() => vi.advanceTimersByTimeAsync(2000));
+      expect(screen.getByTestId('where').textContent).toMatch(
+        /^\/fim\/3 \{"newlyUnlocked"/,
+      );
+    });
+  });
   describe('botão ouvir', () => {
     afterEach(() => {
       Reflect.deleteProperty(window, 'speechSynthesis');

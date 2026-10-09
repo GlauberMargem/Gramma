@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { AnswerButton } from '../components/AnswerButton';
 import type { AnswerState } from '../components/AnswerButton';
@@ -11,6 +12,7 @@ import { DataStore } from '../data/stores';
 import { useAnimatedNavigate } from '../hooks/useAnimatedNavigate';
 import { useSpeech } from '../hooks/useSpeech';
 import { useUserData } from '../state/hooks';
+import { userStore } from '../state/userStore';
 import { useQuestionSession } from './useQuestionSession';
 
 const PHASE_LABEL: Record<StudyType, string> = {
@@ -81,6 +83,17 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
   );
 }
 
+/**
+ * A decisão de redirecionar é tomada uma vez, na montagem: depois que o jogador
+ * responde e o resultado é gravado, a sessão já montada não deve se redirecionar
+ * (a navegação para /fim com state é do hook).
+ */
+function GameDay({ dayId, type, isArchive }: SessionProps) {
+  const [alreadyPlayed] = useState(() => !isArchive && userStore.getSnapshot().history[`${dayId}:${type}`] !== undefined);
+  if (alreadyPlayed) return <Navigate to={`/fim/${dayId}`} replace />;
+  return <GameSession dayId={dayId} type={type} isArchive={isArchive} />;
+}
+
 export function Game() {
   const { dia } = useParams();
   const { settings } = useUserData();
@@ -90,6 +103,6 @@ export function Game() {
   const { dayId, isArchive } = resolveDay(requested, getCurrentDayId(), DataStore.getTotalDays());
 
   return (
-    <GameSession key={`${dayId}-${settings.study_type}`} dayId={dayId} type={settings.study_type} isArchive={isArchive} />
+    <GameDay key={`${dayId}-${settings.study_type}`} dayId={dayId} type={settings.study_type} isArchive={isArchive} />
   );
 }
