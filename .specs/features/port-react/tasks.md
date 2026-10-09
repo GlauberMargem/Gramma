@@ -178,13 +178,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- userStore`
 **Commit**: `feat(state): userStore persistente com snapshot estável`
 
-### T13: Hooks de estado, tema e fonte
+### ✅ T13: Hooks de estado, tema e fonte
 **What**: `useUserData`, `useTheme`, `useFontScale` (aplica `data-theme`/`--font-scale` em `<html>`, rótulos Pequena…Extra Grande, clamp 0..3).
 **Where**: `src/state/hooks.ts` + `.test.tsx`
 **Depends on**: T12 · **Reuses**: `legacy/js/theme.js`, `accessibility.js` · **Reqs**: PREF-01, PREF-03
 **Done when**:
-- [ ] Alternar tema muda `document.documentElement.dataset.theme` e persiste
-- [ ] Fonte não passa de 0..3
+- [x] Alternar tema muda `document.documentElement.dataset.theme` e persiste
+- [x] Fonte não passa de 0..3
 **Verify**: `npm test -- hooks`
 **Commit**: `feat(state): hooks de dados do usuário, tema e escala de fonte`
 
@@ -213,13 +213,13 @@ Marcos verificáveis: **M-A** (fim da Fase 2): domínio+estado 100% testados. **
 **Verify**: `npm test -- boot`
 **Commit**: `feat: roteamento (HashRouter) e decisão de boot`
 
-### T16: ScreenTransition (GSAP)
+### ✅ T16: ScreenTransition (GSAP)
 **What**: Entrada `fromTo({opacity:0,y:10}→{1,0}, 0.25s power2.out)`; saída `to({opacity:0,y:-8}, 0.14s power1.in)` antes de navegar; `prefers-reduced-motion` desliga.
 **Where**: `src/components/ScreenTransition.tsx`, `src/hooks/useAnimatedNavigate.ts`
 **Depends on**: T15 · **Reuses**: `legacy/js/uiController.js` `showScreen` · **Reqs**: NAV-04
 **Done when**:
-- [ ] Navegar entre dois placeholders anima e não deixa 2 telas visíveis
-- [ ] Sem `reduced-motion` aplicado, nada de timeline pendente ao desmontar
+- [x] Navegar entre dois placeholders anima e não deixa 2 telas visíveis
+- [x] Sem `reduced-motion` aplicado, nada de timeline pendente ao desmontar
 **Verify**: `npm test -- ScreenTransition` (gsap mockado) + checagem manual
 **Commit**: `feat: transição de tela com GSAP`
 

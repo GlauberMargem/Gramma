@@ -1,7 +1,7 @@
 # State
 
 **Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–D concluídas (T1–T12, T14, T15); próxima: Onda E (T13,T16)
+**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–E concluídas (T1–T16); próxima: Onda F (T17,T25,T28,T32)
 
 ---
 
@@ -71,6 +71,8 @@ Nenhum.
 - `userStore` (T12) é `createUserStore()` + singleton `userStore` + `USER_DATA_KEY`; API `getSnapshot/subscribe/update` (não `save`).
 - `recordResult(data, {dayId,type,correct,timeMs,isArchive}) → {data,score,streak,newlyUnlocked}`; `isArchive` obrigatório.
 - T11: o agente não viu o teste falhar antes de implementar (sandbox recusou comando composto); revisão manual confirmou paridade com o legado.
+- T13: `useTheme`/`useFontScale` só aplicam no DOM onde são montados; `App` monta um `Preferences` (commit extra) para valer em todas as telas.
+- T16: `ScreenTransition({children, className})` envolve a tela; `useAnimatedNavigate()` anima a saída via registro de módulo (um `ScreenTransition` por vez). Intro NÃO usa `ScreenTransition`. Risco: o `<div>` wrapper pode afetar o layout do CSS legado; usar `className` se necessário.
 
 ---
 
