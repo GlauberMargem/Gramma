@@ -23,3 +23,11 @@ export function getMe(token: string): Promise<UserPublic> {
 export function recoverPassword(email: string): Promise<Message> {
   return apiRequest<Message>(`/password-recovery/${encodeURIComponent(email)}`, { method: 'POST' });
 }
+
+/** Troca a senha usando o token enviado por e-mail. */
+export function resetPassword(token: string, newPassword: string): Promise<Message> {
+  return apiRequest<Message>('/reset-password/', {
+    method: 'POST',
+    json: { token, new_password: newPassword },
+  });
+}

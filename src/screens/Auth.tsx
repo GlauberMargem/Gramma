@@ -149,6 +149,10 @@ export function Auth() {
             <span>{busy ? 'Aguarde…' : copy.submit}</span>
           </button>
         </form>
+
+        <button type="button" className="auth-link-btn" onClick={() => go('/recuperar-senha')}>
+          Esqueci minha senha
+        </button>
       </section>
     </ScreenTransition>
   );

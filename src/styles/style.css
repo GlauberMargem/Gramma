@@ -1057,6 +1057,19 @@ button {
   text-align: center;
 }
 
+.auth-link-btn {
+  border: none;
+  background: transparent;
+  color: var(--color-pop);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 4px;
+  cursor: pointer;
+  align-self: center;
+  text-decoration: underline;
+}
+
 /* ===== Perfil ===== */
 .profile-card {
   display: flex;
