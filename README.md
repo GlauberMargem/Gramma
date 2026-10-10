@@ -11,7 +11,9 @@ GRAMMA é um desafio gramatical e sintático diário, no estilo Wordle/Termo,
 focado em três frentes da língua portuguesa: classes gramaticais, funções
 sintáticas e sinônimos.
 
-Jogue em: https://glaubermargem.github.io/Gramma/
+O jogo funciona offline como convidado (progresso no navegador) e, de forma
+**opcional**, com conta no backend (FastAPI) para manter a sessão entre
+dispositivos.
 
 ## Tela Inicial
 
@@ -47,16 +49,19 @@ voltadas para as seguintes tarefas:
 
 - **React 19** + **TypeScript** (strict)
 - **Vite** como bundler e servidor de desenvolvimento
-- **React Router** com `HashRouter` (o GitHub Pages não tem fallback de SPA)
+- **React Router** (`HashRouter`, funciona em qualquer host estático)
 - **GSAP** + `@gsap/react` para as animações
 - Estado do jogador em store externa (`useSyncExternalStore`) sobre o
   `localStorage`
 - **Vitest** + Testing Library para os testes
+- **Backend opcional**: **FastAPI** + **SQLModel** + **Alembic** + **JWT**
+  (conta e sessão), em `backend/`
 
 ## Pré-requisitos
 
 - Node.js 20 ou superior
 - npm
+- Python 3.13 (apenas para rodar o backend)
 
 ## Executando localmente
 
@@ -69,6 +74,16 @@ npm run dev
 
 Depois abra o endereço exibido no terminal (por padrão,
 `http://localhost:5173`).
+
+### Backend (opcional)
+
+O front conversa com o backend para login/cadastro. Em desenvolvimento, o Vite
+faz proxy de `/api` para `http://localhost:8000`, então não há CORS. Para subir
+a API, veja [`backend/README.md`](backend/README.md). Sem backend no ar, o jogo
+segue funcionando como convidado — a tela de acesso exibe um erro de conexão.
+
+A variável `VITE_API_URL` (veja `.env.example`) define a origem do backend. Em
+produção, aponte para o backend publicado.
 
 ## Scripts disponíveis
 
@@ -86,16 +101,18 @@ Depois abra o endereço exibido no terminal (por padrão,
 
 ```
 src/
+  api/          client HTTP tipado (client.ts, auth.ts, types.ts)
   domain/       tipos e regras puras (scoreEngine, achievements, calendar, game, share)
   data/         grammar-days.json (365 dias), synonyms.json (100 palavras) e stores.ts
-  state/        userStore (localStorage), userData, hooks de estado
+  state/        userStore (localStorage), authStore (sessão/backend), hooks
   hooks/        useSpeech, useAnimatedNavigate
   components/   AnswerButton, CalendarGrid, TopBar, Sparkles, Toast, ...
   screens/      Intro, Menu, ModeHub, Game, End, Calendar, Stats,
-                Achievements, Accessibility, HowToPlay
+                Achievements, Accessibility, HowToPlay, Auth, Profile
   styles/       style.css (design system, temas claro/escuro)
   App.tsx, main.tsx, router.tsx, boot.ts
 public/         favicon.svg, unirios-logo.png
+backend/        API FastAPI (auth: login, cadastro, /users/me)
 legacy/         versão antiga (HTML/CSS/JS puro), mantida como referência
 ```
 
@@ -105,10 +122,23 @@ As telas são acessadas por hash (ex.: `/#/modo`):
 
 `/` · `/modo` · `/jogo/:dia` · `/fim/:dia` · `/calendario` ·
 `/estatisticas` · `/conquistas` · `/acessibilidade` · `/como-jogar` ·
-`/intro`
+`/intro` · `/entrar` · `/perfil`
 
 O parâmetro `?day=N` (ex.: `http://localhost:5173/?day=42`) abre
 diretamente o desafio daquele dia e pula a introdução.
+
+## Conta e backend
+
+O acesso é **opcional**. Como convidado, tudo fica no `localStorage`. Ao criar
+conta ou entrar (tela `/entrar`), o front usa o backend FastAPI:
+
+- `POST /api/v1/users/signup` — cria a conta
+- `POST /api/v1/login/access-token` — login (OAuth2, e-mail + senha) → JWT
+- `GET /api/v1/users/me` — valida a sessão
+
+A sessão (token + usuário) fica em `gramma_auth` no `localStorage`. Endpoints de
+progresso/ranking na nuvem ainda não existem — o progresso do jogo continua
+local.
 
 ## Banco de dados
 
@@ -123,6 +153,9 @@ pelos `DataStore` e `SynonymStore` tipados — não há mais passo de geração
 (`build-data.js`) nem cópias `.js`. Como o banco de sinônimos tem menos
 entradas que os 365 dias, ele repete em ciclo.
 
+O backend tem seu próprio banco (PostgreSQL via Docker Compose) para as contas
+de usuário; veja [`backend/README.md`](backend/README.md).
+
 ## Progresso do jogador
 
 O progresso fica no `localStorage` sob a chave `gramma_user_data`, no
@@ -131,9 +164,10 @@ atualizar.
 
 ## Deploy
 
-O deploy é automático: a cada push na `main`, o workflow
-`.github/workflows/deploy.yml` roda typecheck, lint, testes e build, e
-publica o `dist/` no GitHub Pages. O `base` do Vite é `/Gramma/`.
+O front é um build estático (`npm run build` → `dist/`), servido por qualquer
+host estático (Vercel, Netlify, Nginx, `npm run preview`, ...). O backend é
+publicado separadamente; configure `VITE_API_URL` no build do front e
+`FRONTEND_HOST` no backend para liberar o CORS.
 
 ## Histórico e documentos originais
 

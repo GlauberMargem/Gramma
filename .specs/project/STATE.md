@@ -1,9 +1,13 @@
 # State
 
 **Last Updated:** 2026-10-10
-**Current Work:** backend-auth (M0+M1): spec criada em `.specs/features/backend-auth/`,
-**aguardando revisão e autorização do usuário** antes de executar T41–T57.
-Contexto anterior: port-react T1–T36 concluídas; T37 (validação de paridade) pendente.
+**Current Work:** backend-auth: front passou a **consumir o backend** para
+autenticação (login/cadastro/sessão) via `src/api/**` + `src/state/authStore.ts`
+e tela genérica de acesso `/entrar` + `/perfil`. Progresso competitivo continua
+100% local (endpoints de progresso/ranking ainda não existem no backend).
+GitHub Pages removido: deploy agora é manual/estático + backend à parte.
+Contexto anterior: backend vendorizado (T41); spec T41–T57 em
+`.specs/features/backend-auth/`.
 
 ---
 

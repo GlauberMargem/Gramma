@@ -33,7 +33,7 @@ CI verde. **M1-D** (fim de T56): conta, sync e ranking no front, testados.
 
 ### T41: Scaffold do backend a partir do template
 **What**: vendorizar `backend/` do `fastapi/full-stack-fastapi-template` (Python
-3.11, uv, SQLModel, Alembic, JWT, reset). Remover o **front React do template** e
+3.13, uv, SQLModel, Alembic, JWT, reset). Remover o **front React do template** e
 o exemplo `Item`; manter `app/api` (login/users/utils), `app/core`,
 `app/models.py`, `alembic/`, `tests/` e Docker Compose (Postgres + Mailpit).
 **Where**: `backend/**`, `.gitignore` (entradas Python/uv/venv)
