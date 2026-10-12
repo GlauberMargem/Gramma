@@ -3,13 +3,17 @@ import { Background } from './components/Background';
 import { TopBar } from './components/TopBar';
 import { Accessibility } from './screens/Accessibility';
 import { Achievements } from './screens/Achievements';
+import { Auth } from './screens/Auth';
 import { Calendar } from './screens/Calendar';
 import { End } from './screens/End';
+import { ForgotPassword } from './screens/ForgotPassword';
 import { Game } from './screens/Game';
 import { HowToPlay } from './screens/HowToPlay';
 import { Intro } from './screens/Intro';
 import { Menu } from './screens/Menu';
 import { ModeHub } from './screens/ModeHub';
+import { Profile } from './screens/Profile';
+import { ResetPassword } from './screens/ResetPassword';
 import { Stats } from './screens/Stats';
 
 export function AppRoutes() {
@@ -25,6 +29,10 @@ export function AppRoutes() {
       <Route path="/acessibilidade" element={<Accessibility />} />
       <Route path="/como-jogar" element={<HowToPlay />} />
       <Route path="/intro" element={<Intro />} />
+      <Route path="/entrar" element={<Auth />} />
+      <Route path="/recuperar-senha" element={<ForgotPassword />} />
+      <Route path="/redefinir-senha" element={<ResetPassword />} />
+      <Route path="/perfil" element={<Profile />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

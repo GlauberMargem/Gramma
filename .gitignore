@@ -4,3 +4,8 @@ coverage/
 .DS_Store
 Thumbs.db
 .claude/worktrees/
+
+# Ambiente local (segredos e URLs). Use os .env.example como modelo.
+.env
+.env.local
+.env.*.local

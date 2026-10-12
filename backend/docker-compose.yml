@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:17
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d app"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changethis}
+      - POSTGRES_DB=app
+    ports:
+      - "5433:5432"
+    volumes:
+      - app-db-data:/var/lib/postgresql/data
+
+  mailpit:
+    image: axllent/mailpit:v1.30
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  backend:
+    image: gramma-backend:dev
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      FASTAPI_ENV: ${FASTAPI_ENV:-development}
+      PROJECT_NAME: ${PROJECT_NAME:-GRAMMA}
+      SECRET_KEY: ${SECRET_KEY:-changethis}
+      FIRST_SUPERUSER: ${FIRST_SUPERUSER:-admin@example.com}
+      FIRST_SUPERUSER_PASSWORD: ${FIRST_SUPERUSER_PASSWORD:-changethis}
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-changethis}@db:5432/app
+      FRONTEND_HOST: ${FRONTEND_HOST:-http://localhost:5173}
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      SMTP_TLS: "false"
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys;sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/utils/health-check/').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  app-db-data:

@@ -1,7 +1,13 @@
 # State
 
-**Last Updated:** 2026-10-09
-**Current Work:** port-react: execução em ondas (EXECUTION.md). Ondas A–J concluídas (T1–T33); Ondas A–K concluídas (T1–T36). AGUARDANDO O USUÁRIO: T37 (validação de paridade, ver parity.md)
+**Last Updated:** 2026-10-10
+**Current Work:** backend-auth: front passou a **consumir o backend** para
+autenticação (login/cadastro/sessão) via `src/api/**` + `src/state/authStore.ts`
+e tela genérica de acesso `/entrar` + `/perfil`. Progresso competitivo continua
+100% local (endpoints de progresso/ranking ainda não existem no backend).
+GitHub Pages removido: deploy agora é manual/estático + backend à parte.
+Contexto anterior: backend vendorizado (T41); spec T41–T57 em
+`.specs/features/backend-auth/`.
 
 ---
 
@@ -51,9 +57,21 @@
 
 ---
 
+### AD-007: Backend FastAPI + login opcional (2026-10-10)
+
+**Decision:** Backend em FastAPI a partir do `full-stack-fastapi-template` (só o
+backend; front do template descartado). Login **opcional** — convidado segue
+100% local. Sync "link device" com merge determinístico e outbox.
+**Reason:** Escolha do usuário; o template traz JWT, reset de senha e Alembic
+prontos, menos risco que escrever do zero.
+**Trade-off:** Dois deploys (front no Pages, backend à parte) e CORS.
+**Impact:** Feature `backend-auth` (T41–T57). Preferências ficam só no
+`localStorage`; nuvem guarda apenas progresso competitivo.
+
 ## Active Blockers
 
-Nenhum.
+- **Hospedagem do backend + Postgres** (T48, T57): decidir provedor com a equipe
+  antes de concluir M0/M1.
 
 ---
 
