@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -24,7 +24,8 @@ router = APIRouter(tags=["login"])
 @router.post("/login/access-token")
 @auth_limit
 def login_access_token(
-    request: Request,  # noqa: ARG001 - exigido pelo slowapi
+    request: Request,  # noqa: ARG001 - exigidos pelo slowapi (headers do limite)
+    response: Response,  # noqa: ARG001
     session: SessionDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
@@ -57,7 +58,8 @@ def test_token(current_user: CurrentUser) -> Any:
 @router.post("/password-recovery/{email}")
 @auth_limit
 def recover_password(
-    request: Request,  # noqa: ARG001 - exigido pelo slowapi
+    request: Request,  # noqa: ARG001 - exigidos pelo slowapi (headers do limite)
+    response: Response,  # noqa: ARG001
     email: str,
     session: SessionDep,
 ) -> Message:
@@ -86,7 +88,8 @@ def recover_password(
 @router.post("/reset-password/")
 @auth_limit
 def reset_password(
-    request: Request,  # noqa: ARG001 - exigido pelo slowapi
+    request: Request,  # noqa: ARG001 - exigidos pelo slowapi (headers do limite)
+    response: Response,  # noqa: ARG001
     session: SessionDep,
     body: NewPassword,
 ) -> Message:

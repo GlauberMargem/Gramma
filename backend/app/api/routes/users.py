@@ -1,7 +1,7 @@
 import uuid
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlmodel import col, func, select
 
 from app import crud
@@ -146,7 +146,8 @@ def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
 @router.post("/signup", response_model=UserPublic)
 @auth_limit
 def register_user(
-    request: Request,  # noqa: ARG001 - exigido pelo slowapi
+    request: Request,  # noqa: ARG001 - exigidos pelo slowapi (headers do limite)
+    response: Response,  # noqa: ARG001
     session: SessionDep,
     user_in: UserRegister,
 ) -> Any:
