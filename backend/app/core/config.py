@@ -24,6 +24,18 @@ class Settings(BaseSettings):
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     FRONTEND_HOST: str = "http://localhost:5173"
+    # Origens extras liberadas no CORS, separadas por vírgula.
+    BACKEND_CORS_ORIGINS: str = ""
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def all_cors_origins(self) -> list[str]:
+        extra = [o.strip().rstrip("/") for o in self.BACKEND_CORS_ORIGINS.split(",")]
+        return [self.FRONTEND_HOST.rstrip("/"), *(o for o in extra if o)]
+
+    # Limite por IP nas rotas de autenticação (sintaxe do slowapi/limits).
+    RATE_LIMIT_ENABLED: bool = True
+    AUTH_RATE_LIMIT: str = "10/minute"
     FASTAPI_ENV: Literal["development"] | None = None
 
     PROJECT_NAME: str

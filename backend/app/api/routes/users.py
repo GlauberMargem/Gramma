@@ -1,7 +1,7 @@
 import uuid
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import col, func, select
 
 from app import crud
@@ -11,6 +11,7 @@ from app.api.deps import (
     get_current_active_superuser,
 )
 from app.core.config import settings
+from app.core.rate_limit import auth_limit
 from app.core.security import get_password_hash, verify_password
 from app.models import (
     Message,
@@ -143,7 +144,12 @@ def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
 
 
 @router.post("/signup", response_model=UserPublic)
-def register_user(session: SessionDep, user_in: UserRegister) -> Any:
+@auth_limit
+def register_user(
+    request: Request,  # noqa: ARG001 - exigido pelo slowapi
+    session: SessionDep,
+    user_in: UserRegister,
+) -> Any:
     """
     Create new user without the need to be logged in.
     """

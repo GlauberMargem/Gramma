@@ -14,6 +14,7 @@ from sqlmodel import Session, SQLModel  # noqa: E402
 
 from app.core.config import settings  # noqa: E402
 from app.core.db import engine, init_db  # noqa: E402
+from app.core.rate_limit import limiter  # noqa: E402
 from app.main import app  # noqa: E402
 from tests.utils.user import authentication_token_from_email  # noqa: E402
 from tests.utils.utils import get_superuser_token_headers  # noqa: E402
@@ -28,6 +29,14 @@ def _migrate_from_scratch() -> None:
     config = Config(str(BACKEND_DIR / "alembic.ini"))
     config.set_main_option("script_location", str(BACKEND_DIR / "app" / "alembic"))
     command.upgrade(config, "head")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def disable_rate_limit() -> Generator[None]:
+    """Os testes fazem muitos logins seguidos; test_security liga o limite."""
+    limiter.enabled = False
+    yield
+    limiter.enabled = True
 
 
 @pytest.fixture(scope="session", autouse=True)
