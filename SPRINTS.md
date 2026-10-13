@@ -52,7 +52,7 @@ Legenda: `[x]` feito · `[~]` parcialmente feito · `[ ]` a fazer · 🔒 bloque
 
 **Banco de dados e login**
 
-- [x] Backend FastAPI + PostgreSQL + Alembic (tabela `user`)
+- [x] Backend FastAPI + Alembic (tabela `user`)
 - [x] Cadastro, login (JWT) e sessão persistida no front (`/entrar`, `/perfil`)
 - [x] Recuperação de senha (esqueci / redefinir)
 
@@ -67,16 +67,22 @@ Legenda: `[x]` feito · `[~]` parcialmente feito · `[ ]` a fazer · 🔒 bloque
 
 ---
 
-## Sprint 1 — Progresso e ofensiva no banco
+## Sprint 1 — Progresso e ofensiva no banco ✅
 
 Objetivo: o progresso e a ofensiva do jogador ficam salvos na conta dele.
+Branch: `feature/sprint-1-progresso`.
 
-- [ ] Modelo de progresso no banco: partidas, pontuação e ofensiva por usuário (T43)
-- [ ] Endpoint de progresso (T44)
-- [ ] Merge do progresso local com o da conta (T52)
-- [ ] Sincronizar ao fazer login, com fila offline (T53)
-- [ ] Ofensiva (foguinho) lida da conta quando o jogador está logado
-- [ ] CORS, expiração de token e rate limit no login (T46)
+- [x] Banco **SQLite** como padrão (dev e testes); PostgreSQL segue opcional
+- [x] Modelo de progresso no banco: partidas, pontuação e ofensiva por usuário (T43)
+- [x] Endpoint de progresso `GET/PUT /api/v1/me/progress` (T44)
+- [x] Merge do progresso local com o da conta (T52)
+- [x] Sincronizar ao abrir logado, no login e após cada jogada, com fila offline (T53)
+- [x] Ofensiva (foguinho) lida da conta quando o jogador está logado
+- [x] CORS, expiração de token, rate limit e headers de segurança (T46)
+
+Ponto de atenção: o progresso do aparelho é mesclado na conta que fizer login
+nele. Se duas pessoas usarem contas diferentes no mesmo navegador, o progresso
+local de uma vai para a conta da outra (comportamento "link device" do design).
 
 ## Sprint 2 — Ranking e auditoria de segurança
 

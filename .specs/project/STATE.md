@@ -1,13 +1,10 @@
 # State
 
-**Last Updated:** 2026-10-10
-**Current Work:** backend-auth: front passou a **consumir o backend** para
-autenticação (login/cadastro/sessão) via `src/api/**` + `src/state/authStore.ts`
-e tela genérica de acesso `/entrar` + `/perfil`. Progresso competitivo continua
-100% local (endpoints de progresso/ranking ainda não existem no backend).
-GitHub Pages removido: deploy agora é manual/estático + backend à parte.
-Contexto anterior: backend vendorizado (T41); spec T41–T57 em
-`.specs/features/backend-auth/`.
+**Last Updated:** 2026-10-13
+**Current Work:** Sprint 1 (`SPRINTS.md`) concluída na branch
+`feature/sprint-1-progresso`: banco SQLite como padrão, modelos e endpoint de
+progresso (T43, T44), CORS/rate limit (T46), `mergeProgress` (T52) e sync no
+login com fila offline (T53). Próxima: Sprint 2 (ranking + auditoria).
 
 ---
 
@@ -67,6 +64,24 @@ prontos, menos risco que escrever do zero.
 **Trade-off:** Dois deploys (front no Pages, backend à parte) e CORS.
 **Impact:** Feature `backend-auth` (T41–T57). Preferências ficam só no
 `localStorage`; nuvem guarda apenas progresso competitivo.
+
+### AD-008: SQLite como banco padrão (2026-10-13)
+
+**Decision:** `DATABASE_URL` padrão `sqlite:///./gramma.db`; testes em
+`test.db` próprio, recriado pelas migrações. PostgreSQL continua suportado.
+**Reason:** Escolha do usuário; roda sem Docker/serviço.
+**Trade-off:** SQLite tem escrita concorrente limitada; reavaliar na hospedagem.
+**Impact:** `render_as_batch` no Alembic; pragma `foreign_keys` ligado.
+
+### AD-009: Sync por snapshot completo (2026-10-13)
+
+**Decision:** Toda sincronização é GET → `mergeProgress` → adota local → PUT do
+snapshot; a "outbox" é só uma marca de pendência (`gramma_sync_outbox`).
+**Reason:** O PUT já é idempotente e o servidor mantém a melhor jogada; uma
+fila de deltas não traria ganho.
+**Trade-off:** Um GET a mais por jogada logada.
+**Impact:** `src/state/sync.ts`; chamado em `App` (boot/login/online) e em
+`useQuestionSession` (após cada jogada).
 
 ## Active Blockers
 
