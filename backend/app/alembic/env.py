@@ -73,7 +73,11 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata, compare_type=True
+            connection=connection,
+            target_metadata=target_metadata,
+            compare_type=True,
+            # SQLite não tem ALTER TABLE completo: recria a tabela no lugar.
+            render_as_batch=connection.dialect.name == "sqlite",
         )
 
         with context.begin_transaction():

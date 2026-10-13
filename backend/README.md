@@ -6,20 +6,16 @@ consome estes endpoints.
 
 ## Requirements
 
-* [Docker](https://www.docker.com/) (para PostgreSQL e Mailpit)
 * [uv](https://docs.astral.sh/uv/) para gerenciar o ambiente Python
-* Python 3.13
+* Python 3.13+
+* Opcional: [Docker](https://www.docker.com/) para PostgreSQL e Mailpit
 
 ## Local Development
 
-A partir do diretório `backend/`, suba o PostgreSQL e o Mailpit (SMTP de
-desenvolvimento):
-
-```console
-$ docker compose up -d db mailpit
-```
-
-Instale as dependências, prepare o banco e inicie o servidor:
+O banco padrão é **SQLite** (arquivo `backend/gramma.db`, fora do git), então
+não é preciso subir nenhum serviço. A partir de `backend/`, copie o
+`.env.example` para `.env`, instale as dependências, prepare o banco e inicie o
+servidor:
 
 ```console
 $ uv sync
@@ -71,7 +67,10 @@ A partir de `backend/`:
 $ uv run bash ./scripts/test.sh
 ```
 
-Os testes usam Pytest; adicione/edite em `./backend/tests/`.
+Os testes usam Pytest; adicione/edite em `./backend/tests/`. Eles rodam num
+banco próprio (`backend/test.db`, recriado pelas migrações a cada execução) e
+nunca tocam no `gramma.db`. Para testar contra PostgreSQL, defina
+`TEST_DATABASE_URL`.
 
 ### Coverage
 
