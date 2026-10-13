@@ -4,9 +4,7 @@ from pathlib import Path
 
 # Os testes usam um banco próprio (nunca o de desenvolvimento): precisa estar no
 # ambiente antes de `app.core.config` ser importado.
-os.environ["DATABASE_URL"] = os.environ.get(
-    "TEST_DATABASE_URL", "sqlite:///./test.db"
-)
+os.environ["DATABASE_URL"] = os.environ.get("TEST_DATABASE_URL", "sqlite:///./test.db")
 
 import pytest  # noqa: E402
 from alembic import command  # noqa: E402
