@@ -1,8 +1,8 @@
 import uuid
 from datetime import UTC, date, datetime, timedelta
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import EmailStr
+from pydantic import EmailStr, StringConstraints
 from sqlalchemy import DateTime, PrimaryKeyConstraint, String
 from sqlmodel import Field, SQLModel
 
@@ -103,6 +103,9 @@ GAME_START_DATE = date(2026, 7, 17)
 MAX_DAY_ID = 100_000
 MAX_POINTS = 10_000
 MAX_TIME_MS = 24 * 60 * 60 * 1000
+# Limites do snapshot enviado no PUT /me/progress.
+MAX_HISTORY_ENTRIES = 5_000
+MAX_ACHIEVEMENTS = 200
 
 
 def played_on_for_day(day_id: int) -> date:
@@ -173,4 +176,26 @@ class AchievementUnlocked(SQLModel, table=True):
     unlocked_at: datetime | None = Field(
         default_factory=get_datetime_utc,
         sa_type=DateTime(timezone=True),
+    )
+
+
+AchievementId = Annotated[str, StringConstraints(min_length=1, max_length=64)]
+
+
+class StatsPublic(StatsBase):
+    unlocked_achievements: list[AchievementId] = Field(
+        default_factory=list, max_length=MAX_ACHIEVEMENTS
+    )
+
+
+class HistoryEntryPublic(HistoryEntryBase):
+    pass
+
+
+class Progress(SQLModel):
+    """Snapshot do progresso competitivo (GET e PUT de /me/progress)."""
+
+    stats: StatsPublic
+    history: list[HistoryEntryPublic] = Field(
+        default_factory=list, max_length=MAX_HISTORY_ENTRIES
     )
