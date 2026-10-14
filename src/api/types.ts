@@ -1,6 +1,6 @@
 // Contratos espelhados dos schemas do backend (backend/app/models.py).
 
-import type { HistoryEntry, Stats } from '../domain/types';
+import type { HistoryEntry, Stats, StudyType } from '../domain/types';
 
 export interface Token {
   access_token: string;
@@ -30,4 +30,24 @@ export interface RegisterInput {
 export interface ProgressDTO {
   stats: Stats;
   history: HistoryEntry[];
+}
+
+export type RankingPeriod = 'daily' | 'weekly' | 'monthly';
+
+export interface RankingEntry {
+  rank: number;
+  display_name: string;
+  score: number;
+  streak: number;
+  is_me: boolean;
+}
+
+/** Resposta de `GET /ranking/`; `me` vem só com token e se o usuário pontuou. */
+export interface RankingDTO {
+  period: RankingPeriod;
+  study_type: StudyType | null;
+  start_date: string;
+  end_date: string;
+  entries: RankingEntry[];
+  me: RankingEntry | null;
 }

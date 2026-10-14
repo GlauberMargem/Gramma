@@ -13,6 +13,7 @@ import { Intro } from './screens/Intro';
 import { Menu } from './screens/Menu';
 import { ModeHub } from './screens/ModeHub';
 import { Profile } from './screens/Profile';
+import { Ranking } from './screens/Ranking';
 import { ResetPassword } from './screens/ResetPassword';
 import { Stats } from './screens/Stats';
 
@@ -33,6 +34,7 @@ export function AppRoutes() {
       <Route path="/recuperar-senha" element={<ForgotPassword />} />
       <Route path="/redefinir-senha" element={<ResetPassword />} />
       <Route path="/perfil" element={<Profile />} />
+      <Route path="/ranking" element={<Ranking />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

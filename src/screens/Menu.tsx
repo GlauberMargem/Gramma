@@ -59,6 +59,10 @@ export function Menu() {
             <MaterialIcon name="emoji_events" />
             Conquistas
           </button>
+          <button type="button" className="secondary-btn" onClick={() => go('/ranking')}>
+            <MaterialIcon name="leaderboard" />
+            Ranking
+          </button>
         </div>
       </section>
     </ScreenTransition>

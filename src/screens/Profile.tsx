@@ -46,6 +46,11 @@ export function Profile() {
           {since && <p className="profile-since">Conta desde {since}</p>}
         </div>
 
+        <button type="button" className="secondary-btn" onClick={() => go('/ranking')}>
+          <MaterialIcon name="leaderboard" />
+          Ver ranking
+        </button>
+
         <button type="button" className="secondary-btn" onClick={signOut}>
           <MaterialIcon name="logout" />
           Sair
