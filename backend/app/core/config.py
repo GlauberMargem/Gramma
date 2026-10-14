@@ -33,6 +33,9 @@ class Settings(BaseSettings):
         extra = [o.strip().rstrip("/") for o in self.BACKEND_CORS_ORIGINS.split(",")]
         return [self.FRONTEND_HOST.rstrip("/"), *(o for o in extra if o)]
 
+    # Fuso que define o "hoje" do jogo (dias e janelas do ranking).
+    GAME_TIMEZONE: str = "America/Sao_Paulo"
+
     # Limite por IP nas rotas de autenticação (sintaxe do slowapi/limits).
     RATE_LIMIT_ENABLED: bool = True
     AUTH_RATE_LIMIT: str = "10/minute"

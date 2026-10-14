@@ -199,3 +199,27 @@ class Progress(SQLModel):
     history: list[HistoryEntryPublic] = Field(
         default_factory=list, max_length=MAX_HISTORY_ENTRIES
     )
+
+
+RankingPeriod = Literal["daily", "weekly", "monthly"]
+# Tamanho de cada janela em dias, terminando hoje (inclusive).
+RANKING_WINDOW_DAYS: dict[str, int] = {"daily": 1, "weekly": 7, "monthly": 30}
+MAX_RANKING_LIMIT = 100
+
+
+class RankingEntry(SQLModel):
+    rank: int
+    display_name: str
+    score: int
+    streak: int
+    is_me: bool = False
+
+
+class RankingPublic(SQLModel):
+    period: RankingPeriod
+    study_type: StudyType | None
+    start_date: date
+    end_date: date
+    entries: list[RankingEntry]
+    # Posição do usuário logado, mesmo fora do top `limit` (null se não pontuou).
+    me: RankingEntry | None = None

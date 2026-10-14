@@ -17,6 +17,9 @@ from app.models import TokenPayload, User
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
 )
+optional_oauth2 = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/login/access-token", auto_error=False
+)
 
 
 def get_db() -> Generator[Session]:
@@ -57,3 +60,18 @@ def get_current_active_superuser(current_user: CurrentUser) -> User:
             status_code=403, detail="The user doesn't have enough privileges"
         )
     return current_user
+
+
+def get_optional_user(
+    session: SessionDep, token: Annotated[str | None, Depends(optional_oauth2)]
+) -> User | None:
+    """Usuário do token, se houver um válido; rotas públicas seguem sem ele."""
+    if not token:
+        return None
+    try:
+        return get_current_user(session, token)
+    except HTTPException:
+        return None
+
+
+OptionalUser = Annotated[User | None, Depends(get_optional_user)]
