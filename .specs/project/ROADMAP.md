@@ -55,14 +55,17 @@ autorização do usuário. Hospedagem (T48/T57) pendente de decisão da equipe.
 
 ## M4: Jogos, acessibilidade e extras (futuro)
 
-Ideias capturadas para milestones seguintes (ainda sem spec):
+Ideias capturadas para milestones seguintes (ainda sem spec). Divisão em
+sprints de 2 semanas em [`SPRINTS.md`](../../SPRINTS.md).
 
-- Modos: Antônimos, Aleatório e módulo ENEM (API `enem.dev`)
+- Modos: Antônimos e ENEM (livre), com questões de JSONs fornecidos pela
+  equipe, e Aleatório (mescla as questões de todos os modos)
 - Acessibilidade: fonte para dislexia, tema de alto contraste, suporte a
   leitor de tela e jogo 100% por teclado
-- Foguinho da sequência (visual estilo TikTok/Duolingo) nas telas
-- Modo Carreira (trilha progressiva de dificuldade) — adiado pelo usuário
-- Skill de auditoria de segurança (`.opencode/skills/security-audit/`) + execução
+- Foguinho da sequência: visual já existe; falta salvar a ofensiva vinculada
+  ao usuário (entra no sync de progresso do M3)
+- Skill de auditoria de segurança + execução
+- ~~Modo Carreira~~ — descartado
 
 ---
 

@@ -1,25 +1,51 @@
+import os
 from collections.abc import Generator
+from pathlib import Path
 
-import pytest
-from fastapi.testclient import TestClient
-from sqlmodel import Session, delete
+# Os testes usam um banco próprio (nunca o de desenvolvimento): precisa estar no
+# ambiente antes de `app.core.config` ser importado.
+os.environ["DATABASE_URL"] = os.environ.get("TEST_DATABASE_URL", "sqlite:///./test.db")
 
-from app.core.config import settings
-from app.core.db import engine, init_db
-from app.main import app
-from app.models import User
-from tests.utils.user import authentication_token_from_email
-from tests.utils.utils import get_superuser_token_headers
+import pytest  # noqa: E402
+from alembic import command  # noqa: E402
+from alembic.config import Config  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
+from sqlmodel import Session, SQLModel  # noqa: E402
+
+from app.core.config import settings  # noqa: E402
+from app.core.db import engine, init_db  # noqa: E402
+from app.core.rate_limit import limiter  # noqa: E402
+from app.main import app  # noqa: E402
+from tests.utils.user import authentication_token_from_email  # noqa: E402
+from tests.utils.utils import get_superuser_token_headers  # noqa: E402
+
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+
+
+def _migrate_from_scratch() -> None:
+    SQLModel.metadata.drop_all(engine)
+    with engine.begin() as connection:
+        connection.exec_driver_sql("DROP TABLE IF EXISTS alembic_version")
+    config = Config(str(BACKEND_DIR / "alembic.ini"))
+    config.set_main_option("script_location", str(BACKEND_DIR / "app" / "alembic"))
+    command.upgrade(config, "head")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def disable_rate_limit() -> Generator[None]:
+    """Os testes fazem muitos logins seguidos; test_security liga o limite."""
+    limiter.enabled = False
+    yield
+    limiter.enabled = True
 
 
 @pytest.fixture(scope="session", autouse=True)
 def db() -> Generator[Session]:
+    _migrate_from_scratch()
     with Session(engine) as session:
         init_db(session)
         yield session
-        statement = delete(User)
-        session.execute(statement)
-        session.commit()
+    SQLModel.metadata.drop_all(engine)
 
 
 @pytest.fixture(scope="module")

@@ -4,12 +4,12 @@ from typing import Literal, Self
 from pydantic import (
     EmailStr,
     HttpUrl,
-    PostgresDsn,
     computed_field,
     field_validator,
     model_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy import make_url
 
 
 class Settings(BaseSettings):
@@ -24,20 +24,39 @@ class Settings(BaseSettings):
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     FRONTEND_HOST: str = "http://localhost:5173"
+    # Origens extras liberadas no CORS, separadas por vírgula.
+    BACKEND_CORS_ORIGINS: str = ""
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def all_cors_origins(self) -> list[str]:
+        extra = [o.strip().rstrip("/") for o in self.BACKEND_CORS_ORIGINS.split(",")]
+        return [self.FRONTEND_HOST.rstrip("/"), *(o for o in extra if o)]
+
+    # Limite por IP nas rotas de autenticação (sintaxe do slowapi/limits).
+    RATE_LIMIT_ENABLED: bool = True
+    AUTH_RATE_LIMIT: str = "10/minute"
     FASTAPI_ENV: Literal["development"] | None = None
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None
-    DATABASE_URL: PostgresDsn
+    # SQLite só em desenvolvimento/testes; produção usa PostgreSQL,
+    # ex.: postgresql://usuario:senha@host:5432/app
+    DATABASE_URL: str = "sqlite:///./gramma.db"
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
-    def _use_psycopg_driver(cls, value: str | PostgresDsn) -> str:
+    def _use_psycopg_driver(cls, value: str) -> str:
         database_url = str(value)
         for scheme in ("postgres://", "postgresql://"):
             if database_url.startswith(scheme):
                 return database_url.replace(scheme, "postgresql+psycopg://", 1)
         return database_url
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def is_sqlite(self) -> bool:
+        return self.DATABASE_URL.startswith("sqlite")
 
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
@@ -77,10 +96,20 @@ class Settings(BaseSettings):
                 raise ValueError(message)
 
     @model_validator(mode="after")
+    def _require_postgres_in_production(self) -> Self:
+        if self.is_sqlite and self.FASTAPI_ENV != "development":
+            raise ValueError(
+                "SQLite é só para desenvolvimento: em produção defina "
+                "DATABASE_URL com o PostgreSQL (ou FASTAPI_ENV=development)."
+            )
+        return self
+
+    @model_validator(mode="after")
     def _enforce_non_default_secrets(self) -> Self:
         self._check_default_secret("SECRET_KEY", self.SECRET_KEY)
-        for host in self.DATABASE_URL.hosts():
-            self._check_default_secret("DATABASE_URL password", host["password"])
+        self._check_default_secret(
+            "DATABASE_URL password", make_url(self.DATABASE_URL).password
+        )
         self._check_default_secret(
             "FIRST_SUPERUSER_PASSWORD", self.FIRST_SUPERUSER_PASSWORD
         )

@@ -7,3 +7,5 @@ htmlcov
 .cache
 .venv
 .env
+*.db
+*.db-journal

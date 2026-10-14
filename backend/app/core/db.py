@@ -1,10 +1,31 @@
+from typing import Any
+
+from sqlalchemy import event
 from sqlmodel import Session, create_engine, select
 
 from app import crud
 from app.core.config import settings
 from app.models import User, UserCreate
 
-engine = create_engine(str(settings.DATABASE_URL))
+
+def _create_engine() -> Any:
+    if not settings.is_sqlite:
+        return create_engine(settings.DATABASE_URL)
+    sqlite_engine = create_engine(
+        settings.DATABASE_URL, connect_args={"check_same_thread": False}
+    )
+
+    # SQLite só aplica FOREIGN KEY / ON DELETE CASCADE com o pragma ligado.
+    @event.listens_for(sqlite_engine, "connect")
+    def _enable_foreign_keys(dbapi_connection: Any, _record: Any) -> None:
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
+    return sqlite_engine
+
+
+engine = _create_engine()
 
 
 # make sure all SQLModel models are imported (app.models) before initializing DB

@@ -3,6 +3,7 @@ import { buildQuestion } from '../domain/game';
 import { recordResult } from '../domain/recordResult';
 import type { Question, StudyType } from '../domain/types';
 import { useAnimatedNavigate } from '../hooks/useAnimatedNavigate';
+import { progressSync } from '../state/sync';
 import { userStore } from '../state/userStore';
 
 export const PHASE_TRANSITION_DELAY_MS = 900;
@@ -45,6 +46,7 @@ export function useQuestionSession({ dayId, type, isArchive }: SessionInput): {
       const timeMs = Math.round(performance.now() - startedAt.current);
       const result = recordResult(userStore.getSnapshot(), { dayId, type, correct, timeMs, isArchive });
       userStore.update(() => result.data);
+      progressSync.recordPlayed();
       go(`/fim/${dayId}`, { state: { newlyUnlocked: result.newlyUnlocked } });
     }, PHASE_TRANSITION_DELAY_MS);
   };
