@@ -5,6 +5,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PHASE_TRANSITION_DELAY_MS } from '../screens/useQuestionSession';
 import { Accessibility } from '../screens/Accessibility';
+import { Auth } from '../screens/Auth';
+import { ForgotPassword } from '../screens/ForgotPassword';
+import { Intro } from '../screens/Intro';
+import { ResetPassword } from '../screens/ResetPassword';
 import { Achievements } from '../screens/Achievements';
 import { Calendar } from '../screens/Calendar';
 import { End } from '../screens/End';
@@ -34,6 +38,10 @@ function app(path: string) {
         <Route path="/conquistas" element={<Achievements />} />
         <Route path="/acessibilidade" element={<Accessibility />} />
         <Route path="/como-jogar" element={<HowToPlay />} />
+        <Route path="/entrar" element={<Auth />} />
+        <Route path="/recuperar-senha" element={<ForgotPassword />} />
+        <Route path="/redefinir-senha" element={<ResetPassword />} />
+        <Route path="/intro" element={<Intro />} />
       </Routes>
     </MemoryRouter>
   );
@@ -57,6 +65,10 @@ describe('acessibilidade', () => {
     ['Achievements', '/conquistas'],
     ['Accessibility', '/acessibilidade'],
     ['HowToPlay', '/como-jogar'],
+    ['Auth', '/entrar'],
+    ['ForgotPassword', '/recuperar-senha'],
+    ['ResetPassword', '/redefinir-senha?token=abc'],
+    ['Intro', '/intro'],
   ];
 
   it.each(screens)('%s sem violações do axe', async (_name, path) => {
