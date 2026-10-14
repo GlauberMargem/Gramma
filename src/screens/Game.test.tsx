@@ -31,7 +31,11 @@ const day3 = DataStore.getDay(3)!;
 const right = day3.morphology.answer;
 const wrong = day3.morphology.options.find((o) => o !== right)!;
 const optionButtons = () => screen.getAllByRole('button', { name: /^[ABCD]/ });
-const byOption = (text: string) => screen.getByRole('button', { name: new RegExp(`${text}$`) });
+// Nome do botão: letra + texto, com o resultado em texto depois de responder.
+const byOption = (text: string) =>
+  screen.getByRole('button', {
+    name: (name) => /^[ABCD]/.test(name) && name.replace(/^[ABCD]\s*/, '').replace(/\s*\(.+\)$/, '') === text,
+  });
 
 describe('Game', () => {
   beforeEach(() => {
@@ -53,8 +57,48 @@ describe('Game', () => {
 
   it('renderiza a frase com a palavra-alvo destacada, sem HTML cru', () => {
     const { container } = render(tree('/jogo/3'));
-    expect(container.querySelector('.sentence')?.textContent).toBe(day3.sentence.replace(/<\/?span>/g, ''));
-    expect(container.querySelector('.sentence span')).not.toBeNull();
+    const sentence = container.querySelector('.sentence')!.cloneNode(true) as HTMLElement;
+    sentence.querySelectorAll('.sr-only').forEach((node) => node.remove());
+    expect(sentence.textContent).toBe(day3.sentence.replace(/<\/?span>/g, ''));
+    expect(container.querySelector('.sentence mark.target-word')).not.toBeNull();
+  });
+
+  it('leitor de tela: a palavra destacada é marcada em texto', () => {
+    const { container } = render(tree('/jogo/3'));
+    expect(container.querySelector('.sentence mark')?.textContent).toMatch(/\(palavra destacada\)$/);
+  });
+
+  it('teclado: A–D e 1–4 escolhem a alternativa', () => {
+    render(tree('/jogo/3'));
+    const options = optionButtons();
+    fireEvent.keyDown(window, { key: '2' });
+    expect(options[1].className).toMatch(/is-(correct|wrong)/);
+    // Depois de responder, outras teclas não mudam a escolha.
+    fireEvent.keyDown(window, { key: 'a' });
+    expect(options[0].className).not.toMatch(/is-wrong/);
+  });
+
+  it('teclado: ignora teclas com Ctrl/Alt e teclas sem alternativa', () => {
+    render(tree('/jogo/3'));
+    fireEvent.keyDown(window, { key: 'a', ctrlKey: true });
+    fireEvent.keyDown(window, { key: '9' });
+    fireEvent.keyDown(window, { key: 'x' });
+    expect(optionButtons().every((b) => b.className === 'answer-btn')).toBe(true);
+  });
+
+  it('anuncia o resultado e, no erro, a resposta certa', () => {
+    render(tree('/jogo/3'));
+    expect(screen.getByRole('alert')).toBeEmptyDOMElement();
+    click(wrong);
+    expect(screen.getByRole('alert')).toHaveTextContent(`Resposta errada. A resposta certa é ${right}.`);
+    expect(byOption(right)).toHaveAccessibleName(expect.stringMatching(/\(resposta certa\)$/));
+    expect(byOption(wrong)).toHaveAccessibleName(expect.stringMatching(/\(sua resposta, errada\)$/));
+  });
+
+  it('anuncia o acerto', () => {
+    render(tree('/jogo/3'));
+    click(right);
+    expect(screen.getByRole('alert')).toHaveTextContent('Resposta certa!');
   });
 
   it('não reembaralha as opções em re-render', () => {

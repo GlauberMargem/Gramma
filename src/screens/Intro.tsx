@@ -69,10 +69,10 @@ export function Intro() {
       </p>
       <img ref={logoRef} className="intro-logo" src={`${import.meta.env.BASE_URL}unirios-logo.png`} alt="Logo UniRios" />
 
-      <h2 ref={titleRef} className="intro-title">
+      <h1 ref={titleRef} className="intro-title">
         <MaterialIcon name="psychology" />
         GRAMMA
-      </h2>
+      </h1>
       <p ref={subtitleRef} className="intro-subtitle">
         Desafio Gramatical &amp; Sintático Diário
       </p>

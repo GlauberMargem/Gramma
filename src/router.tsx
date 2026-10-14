@@ -45,7 +45,9 @@ export function AppRouter() {
     <HashRouter>
       <Background />
       <TopBar />
-      <AppRoutes />
+      <main>
+        <AppRoutes />
+      </main>
     </HashRouter>
   );
 }

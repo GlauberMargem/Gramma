@@ -14,10 +14,10 @@ export function Achievements() {
     <ScreenTransition className="game-container">
       <section className="screen-panel">
         <header className="header">
-          <p className="screen-title">
+          <h1 className="screen-title">
             <MaterialIcon name="emoji_events" />
             Conquistas
-          </p>
+          </h1>
           <IconButton icon="close" label="Fechar" onClick={() => navigate('/')} />
         </header>
         <div className="achievements-list">

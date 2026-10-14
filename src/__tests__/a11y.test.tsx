@@ -5,6 +5,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PHASE_TRANSITION_DELAY_MS } from '../screens/useQuestionSession';
 import { Accessibility } from '../screens/Accessibility';
+import { Auth } from '../screens/Auth';
+import { ForgotPassword } from '../screens/ForgotPassword';
+import { Intro } from '../screens/Intro';
+import { ResetPassword } from '../screens/ResetPassword';
 import { Achievements } from '../screens/Achievements';
 import { Calendar } from '../screens/Calendar';
 import { End } from '../screens/End';
@@ -34,6 +38,10 @@ function app(path: string) {
         <Route path="/conquistas" element={<Achievements />} />
         <Route path="/acessibilidade" element={<Accessibility />} />
         <Route path="/como-jogar" element={<HowToPlay />} />
+        <Route path="/entrar" element={<Auth />} />
+        <Route path="/recuperar-senha" element={<ForgotPassword />} />
+        <Route path="/redefinir-senha" element={<ResetPassword />} />
+        <Route path="/intro" element={<Intro />} />
       </Routes>
     </MemoryRouter>
   );
@@ -57,6 +65,10 @@ describe('acessibilidade', () => {
     ['Achievements', '/conquistas'],
     ['Accessibility', '/acessibilidade'],
     ['HowToPlay', '/como-jogar'],
+    ['Auth', '/entrar'],
+    ['ForgotPassword', '/recuperar-senha'],
+    ['ResetPassword', '/redefinir-senha?token=abc'],
+    ['Intro', '/intro'],
   ];
 
   it.each(screens)('%s sem violações do axe', async (_name, path) => {
@@ -87,12 +99,13 @@ describe('acessibilidade', () => {
     expect(screen.getByRole('button', { name: 'Morfologia' })).toHaveFocus();
     await user.keyboard('{Enter}');
 
-    // ModeHub: Fechar, Jogar, Dias anteriores, Estatísticas
-    await user.tab();
-    expect(screen.getByRole('button', { name: 'Trocar modo' })).toHaveFocus();
+    // ModeHub: o foco vai ao título da tela; o próximo Tab é a ação principal.
+    expect(screen.getByRole('heading', { level: 1, name: 'Morfologia' })).toHaveFocus();
+    expect(document.title).toBe('Morfologia · GRAMMA');
     await user.tab();
     expect(screen.getByRole('button', { name: /JOGAR DIA 3/ })).toHaveFocus();
     await user.keyboard('{Enter}');
+    expect(screen.getByRole('heading', { level: 1, name: 'Morfologia, dia 3' })).toHaveFocus();
 
     // Jogo: Fechar, Ouvir (se suportado), respostas A..D
     const options = screen.getAllByRole('button', { name: /^[ABCD]/ });
@@ -100,6 +113,7 @@ describe('acessibilidade', () => {
     options[0].focus();
     await user.keyboard('{Enter}');
     expect(await screen.findByRole('heading', { name: / pts$/ }, { timeout: PHASE_TRANSITION_DELAY_MS + 1000 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
     await user.tab();
     expect(screen.getByRole('button', { name: /Compartilhar/ })).toHaveFocus();
     await user.tab();

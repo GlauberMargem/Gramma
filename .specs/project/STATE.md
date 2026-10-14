@@ -1,12 +1,12 @@
 # State
 
 **Last Updated:** 2026-10-13
-**Current Work:** Sprint 2 (`SPRINTS.md`) concluída na branch
-`feature/sprint-2-ranking` (sobre a da Sprint 1): ranking no backend e na tela
-(T45, T54), CI do backend com SQLite + PostgreSQL (T47, ainda não rodado no
-GitHub), testes de fluxo (T56), skill `security-audit` e auditoria em
-`docs/security/AUDIT-2026-10-13.md` (SEC-01 corrigido; médios/baixos aguardam
-aceite da equipe). Próxima: Sprint 3 (acessibilidade).
+**Current Work:** Sprint 3 (`SPRINTS.md`) na branch
+`feature/sprint-3-acessibilidade` (sobre a da Sprint 2): fonte para dislexia,
+alto contraste, foco/títulos/landmarks, teclado (A–D/1–4) e leitor de tela no
+jogo e no calendário. Pendente: teste manual com leitor de tela real
+(`docs/a11y/LEITOR-DE-TELA.md`) e conferência visual. Próxima: Sprint 4
+(modos novos), que depende dos JSONs da equipe.
 
 ---
 
@@ -86,6 +86,15 @@ fila de deltas não traria ganho.
 **Trade-off:** Um GET a mais por jogada logada.
 **Impact:** `src/state/sync.ts`; chamado em `App` (boot/login/online) e em
 `useQuestionSession` (após cada jogada).
+
+### AD-010: Foco no título a cada troca de tela (2026-10-13)
+
+**Decision:** `ScreenTransition` move o foco para o `<h1>` da tela nova e
+atualiza `document.title`. Revoga a decisão da T35 de não mover o foco.
+**Reason:** Sem isso, leitores de tela não percebem a troca de tela na SPA.
+**Trade-off:** A ordem do Tab muda (começa no título); no ModeHub o primeiro
+Tab vai para "JOGAR", não para "Trocar modo".
+**Impact:** Toda tela com `ScreenTransition` precisa de um `<h1>`.
 
 ## Active Blockers
 

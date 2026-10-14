@@ -42,10 +42,10 @@ export function ResetPassword() {
     <ScreenTransition className="game-container">
       <section className="screen-panel">
         <header className="header">
-          <p className="screen-title">
+          <h1 className="screen-title">
             <MaterialIcon name="lock_reset" />
             Redefinir senha
-          </p>
+          </h1>
           <IconButton icon="close" label="Fechar" onClick={() => go('/entrar')} />
         </header>
 

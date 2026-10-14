@@ -4,6 +4,8 @@ export interface Settings {
   dark_mode: boolean;
   study_type: StudyType;
   font_scale_index: number;
+  dyslexia_font: boolean;
+  high_contrast: boolean;
 }
 
 export interface Stats {
