@@ -113,6 +113,26 @@ def played_on_for_day(day_id: int) -> date:
     return GAME_START_DATE + timedelta(days=day_id - 1)
 
 
+def day_id_for(on: date) -> int:
+    """Inverso de `played_on_for_day`: o `day_id` de uma data."""
+    return (on - GAME_START_DATE).days + 1
+
+
+# Regras de pontuação, espelhando src/domain/scoreEngine.ts: o servidor recalcula
+# os pontos em vez de confiar nos enviados pelo cliente.
+BASE_POINTS: dict[str, int] = {"morphology": 100, "syntax": 200, "synonyms": 150}
+STREAK_MILESTONE_STEP = 5
+
+
+def score_for(study_type: str, correct: bool, streak_after: int) -> tuple[int, int]:
+    """(base, bônus) da jogada; errou = 0, acerto em marco de 5 = +10%."""
+    if not correct:
+        return 0, 0
+    base = BASE_POINTS[study_type]
+    is_milestone = streak_after > 0 and streak_after % STREAK_MILESTONE_STEP == 0
+    return base, round(base * 0.1) if is_milestone else 0
+
+
 class StatsBase(SQLModel):
     current_streak: int = Field(default=0, ge=0)
     max_streak: int = Field(default=0, ge=0)

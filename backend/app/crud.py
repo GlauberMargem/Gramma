@@ -23,6 +23,7 @@ from app.models import (
     UserUpdate,
     get_datetime_utc,
     played_on_for_day,
+    score_for,
 )
 
 
@@ -105,14 +106,40 @@ def _is_better(new: HistoryEntryPublic, old: HistoryEntry) -> bool:
     return new.time_ms < old.time_ms
 
 
-def save_progress(*, session: Session, user_id: uuid.UUID, progress: Progress) -> None:
+def _normalize_entry(entry: HistoryEntryPublic) -> HistoryEntryPublic:
+    """Recalcula os pontos pelas regras do jogo (não confia no cliente)."""
+    base, bonus = score_for(entry.study_type, entry.correct, entry.streak_after)
+    return entry.model_copy(
+        update={
+            "base": base,
+            "bonus": bonus,
+            "points": base + bonus,
+            "is_milestone": bonus > 0,
+        }
+    )
+
+
+def save_progress(
+    *,
+    session: Session,
+    user_id: uuid.UUID,
+    progress: Progress,
+    today_day_id: int,
+) -> None:
     """Grava o snapshot de forma idempotente.
 
-    - stats: substituídas pelo snapshot (o cliente já mesclou com a nuvem);
+    - stats: substituídas pelo snapshot (o cliente já mesclou com a nuvem), com
+      a ofensiva limitada à idade do jogo;
     - history: upsert por (dia, modo), mantendo a melhor jogada; nada é apagado;
+      pontos recalculados no servidor; dias futuros (além de amanhã, margem
+      para fusos à frente) são ignorados;
     - conquistas: união com as já registradas.
     """
+    max_day_id = today_day_id + 1
     stats_in = progress.stats.model_dump(exclude={"unlocked_achievements"})
+    for field in ("current_streak", "max_streak"):
+        stats_in[field] = min(stats_in[field], max(today_day_id, 0))
+    stats_in["last_streak_day"] = min(stats_in["last_streak_day"], max_day_id)
     stats = session.get(UserStats, user_id)
     if stats is None:
         stats = UserStats(user_id=user_id)
@@ -125,7 +152,10 @@ def save_progress(*, session: Session, user_id: uuid.UUID, progress: Progress) -
             select(HistoryEntry).where(HistoryEntry.user_id == user_id)
         ).all()
     }
-    for entry_in in progress.history:
+    for raw_entry in progress.history:
+        if raw_entry.day_id > max_day_id:
+            continue
+        entry_in = _normalize_entry(raw_entry)
         key = (entry_in.day_id, entry_in.study_type)
         current = existing.get(key)
         if current is None:

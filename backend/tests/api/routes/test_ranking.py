@@ -36,10 +36,10 @@ def test_logged_user_sees_own_position(client: TestClient) -> None:
         "day_id": _today_day_id(),
         "study_type": "syntax",
         "correct": True,
-        "points": 777,
-        "base": 100,
-        "bonus": 677,
-        "is_milestone": True,
+        "points": 200,
+        "base": 200,
+        "bonus": 0,
+        "is_milestone": False,
         "streak_after": 7,
         "time_ms": 2000,
         "is_archive": False,
@@ -54,7 +54,7 @@ def test_logged_user_sees_own_position(client: TestClient) -> None:
         URL, params={"period": "daily", "study_type": "syntax"}, headers=headers
     ).json()
     assert body["me"]["display_name"] == "Eu Mesmo"
-    assert body["me"]["score"] == 777
+    assert body["me"]["score"] == 200
     assert body["me"]["streak"] == 4
     assert any(e["is_me"] for e in body["entries"])
 
