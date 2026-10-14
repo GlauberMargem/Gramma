@@ -1,10 +1,12 @@
 # State
 
 **Last Updated:** 2026-10-13
-**Current Work:** Sprint 1 (`SPRINTS.md`) concluída na branch
-`feature/sprint-1-progresso`: banco SQLite como padrão, modelos e endpoint de
-progresso (T43, T44), CORS/rate limit (T46), `mergeProgress` (T52) e sync no
-login com fila offline (T53). Próxima: Sprint 2 (ranking + auditoria).
+**Current Work:** Sprint 2 (`SPRINTS.md`) concluída na branch
+`feature/sprint-2-ranking` (sobre a da Sprint 1): ranking no backend e na tela
+(T45, T54), CI do backend com SQLite + PostgreSQL (T47, ainda não rodado no
+GitHub), testes de fluxo (T56), skill `security-audit` e auditoria em
+`docs/security/AUDIT-2026-10-13.md` (SEC-01 corrigido; médios/baixos aguardam
+aceite da equipe). Próxima: Sprint 3 (acessibilidade).
 
 ---
 
