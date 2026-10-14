@@ -2,7 +2,8 @@ from fastapi import APIRouter, status
 
 from app import crud
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Progress
+from app.core.game_time import game_today
+from app.models import Progress, day_id_for
 
 router = APIRouter(prefix="/me", tags=["progress"])
 
@@ -22,4 +23,9 @@ def update_progress(
     """
     Grava o snapshot do progresso. Idempotente: reenviar não duplica nada.
     """
-    crud.save_progress(session=session, user_id=current_user.id, progress=progress_in)
+    crud.save_progress(
+        session=session,
+        user_id=current_user.id,
+        progress=progress_in,
+        today_day_id=day_id_for(game_today()),
+    )

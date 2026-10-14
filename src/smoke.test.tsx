@@ -16,6 +16,7 @@ const placeholders: [string, string][] = [
   ['/como-jogar', 'Escolha seu modo'],
   ['/intro', 'Trabalho da disciplina de Jogos Digitais'],
   ['/entrar', 'E-mail'],
+  ['/ranking', '30 dias'],
   ['/rota-inexistente', 'Desafio Gramatical & Sintático Diário'],
 ];
 

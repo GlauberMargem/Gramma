@@ -18,10 +18,10 @@ function setup() {
 describe('CalendarGrid', () => {
   it('aplica a classe de status em cada dia', () => {
     setup();
-    expect(screen.getByRole('button', { name: '1' })).toHaveClass('status-won');
-    expect(screen.getByRole('button', { name: '2' })).toHaveClass('status-lost');
-    expect(screen.getByRole('button', { name: '3' })).toHaveClass('status-available');
-    expect(screen.getByRole('button', { name: '4' })).toHaveClass('status-future');
+    expect(screen.getByRole('button', { name: '1, acertou' })).toHaveClass('status-won');
+    expect(screen.getByRole('button', { name: '2, errou' })).toHaveClass('status-lost');
+    expect(screen.getByRole('button', { name: /^3, disponível/ })).toHaveClass('status-available');
+    expect(screen.getByRole('button', { name: '4, ainda bloqueado' })).toHaveClass('status-future');
   });
 
   it('renderiza células vazias antes do dia 1', () => {
@@ -31,13 +31,13 @@ describe('CalendarGrid', () => {
 
   it('marca somente hoje com is-today', () => {
     const { container } = setup();
-    expect(screen.getByRole('button', { name: '3' })).toHaveClass('is-today');
+    expect(screen.getByRole('button', { name: '3, disponível, hoje' })).toHaveClass('is-today');
     expect(container.querySelectorAll('.is-today')).toHaveLength(1);
   });
 
   it('desabilita dias futuros e não dispara clique', async () => {
     const { onSelectDay } = setup();
-    const future = screen.getByRole('button', { name: '4' });
+    const future = screen.getByRole('button', { name: '4, ainda bloqueado' });
     expect(future).toBeDisabled();
     await userEvent.click(future);
     expect(onSelectDay).not.toHaveBeenCalled();
@@ -45,7 +45,7 @@ describe('CalendarGrid', () => {
 
   it('chama onSelectDay com o dayId ao clicar em dia liberado', async () => {
     const { onSelectDay } = setup();
-    await userEvent.click(screen.getByRole('button', { name: '2' }));
+    await userEvent.click(screen.getByRole('button', { name: '2, errou' }));
     expect(onSelectDay).toHaveBeenCalledWith(2);
   });
 });

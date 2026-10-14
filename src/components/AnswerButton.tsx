@@ -17,7 +17,10 @@ export function AnswerButton({ letter, text, state = 'idle', disabled = false, o
       <span className="option-letter">{letter}</span>
       <span>{text}</span>
       {state !== 'idle' && (
-        <MaterialIcon name={state === 'correct' ? 'check_circle' : 'cancel'} className="result-icon" />
+        <>
+          <MaterialIcon name={state === 'correct' ? 'check_circle' : 'cancel'} className="result-icon" />
+          <span className="sr-only">{state === 'correct' ? ' (resposta certa)' : ' (sua resposta, errada)'}</span>
+        </>
       )}
     </button>
   );

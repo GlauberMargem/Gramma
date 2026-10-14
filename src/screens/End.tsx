@@ -52,7 +52,7 @@ export function End() {
     <ScreenTransition className="game-container">
       <section className={`end-screen${entry.is_milestone ? ' is-perfect' : ''}`}>
         {(entry.is_milestone || newlyUnlocked.length > 0) && <Sparkles />}
-        <p className="screen-title" aria-live="polite">{entry.correct ? 'Resposta certa!' : 'Não foi dessa vez'}</p>
+        <h1 className="screen-title">{entry.correct ? 'Resposta certa!' : 'Não foi dessa vez'}</h1>
         <h2 className="score-total" aria-live="polite">{entry.points} pts</h2>
         <div className="score-breakdown">
           <div className="row">

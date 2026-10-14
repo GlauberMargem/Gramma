@@ -113,6 +113,26 @@ def played_on_for_day(day_id: int) -> date:
     return GAME_START_DATE + timedelta(days=day_id - 1)
 
 
+def day_id_for(on: date) -> int:
+    """Inverso de `played_on_for_day`: o `day_id` de uma data."""
+    return (on - GAME_START_DATE).days + 1
+
+
+# Regras de pontuação, espelhando src/domain/scoreEngine.ts: o servidor recalcula
+# os pontos em vez de confiar nos enviados pelo cliente.
+BASE_POINTS: dict[str, int] = {"morphology": 100, "syntax": 200, "synonyms": 150}
+STREAK_MILESTONE_STEP = 5
+
+
+def score_for(study_type: str, correct: bool, streak_after: int) -> tuple[int, int]:
+    """(base, bônus) da jogada; errou = 0, acerto em marco de 5 = +10%."""
+    if not correct:
+        return 0, 0
+    base = BASE_POINTS[study_type]
+    is_milestone = streak_after > 0 and streak_after % STREAK_MILESTONE_STEP == 0
+    return base, round(base * 0.1) if is_milestone else 0
+
+
 class StatsBase(SQLModel):
     current_streak: int = Field(default=0, ge=0)
     max_streak: int = Field(default=0, ge=0)
@@ -199,3 +219,27 @@ class Progress(SQLModel):
     history: list[HistoryEntryPublic] = Field(
         default_factory=list, max_length=MAX_HISTORY_ENTRIES
     )
+
+
+RankingPeriod = Literal["daily", "weekly", "monthly"]
+# Tamanho de cada janela em dias, terminando hoje (inclusive).
+RANKING_WINDOW_DAYS: dict[str, int] = {"daily": 1, "weekly": 7, "monthly": 30}
+MAX_RANKING_LIMIT = 100
+
+
+class RankingEntry(SQLModel):
+    rank: int
+    display_name: str
+    score: int
+    streak: int
+    is_me: bool = False
+
+
+class RankingPublic(SQLModel):
+    period: RankingPeriod
+    study_type: StudyType | None
+    start_date: date
+    end_date: date
+    entries: list[RankingEntry]
+    # Posição do usuário logado, mesmo fora do top `limit` (null se não pontuou).
+    me: RankingEntry | None = None

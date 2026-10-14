@@ -16,7 +16,7 @@ export function TopBar() {
   const label = isAuthed ? (user?.full_name?.trim() || user?.email || 'Conta') : 'Entrar';
 
   return (
-    <div id="top-bar" className="top-bar">
+    <nav id="top-bar" className="top-bar" aria-label="Conta e preferências">
       <IconButton
         icon={isAuthed ? 'account_circle' : 'login'}
         label={label}
@@ -24,6 +24,6 @@ export function TopBar() {
       />
       <ThemeToggle />
       <IconButton icon="accessibility_new" label="Acessibilidade" onClick={() => go('/acessibilidade')} />
-    </div>
+    </nav>
   );
 }
