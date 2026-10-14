@@ -3,7 +3,7 @@ import { IconButton } from '../components/IconButton';
 import { MaterialIcon } from '../components/MaterialIcon';
 import { ScreenTransition } from '../components/ScreenTransition';
 import { useAnimatedNavigate } from '../hooks/useAnimatedNavigate';
-import { FONT_SCALES, useDyslexiaFont, useFontScale } from '../state/hooks';
+import { FONT_SCALES, useDyslexiaFont, useFontScale, useHighContrast } from '../state/hooks';
 
 interface SwitchRowProps {
   icon: string;
@@ -45,6 +45,7 @@ export function Accessibility() {
   const go = useAnimatedNavigate();
   const { index, label, change } = useFontScale();
   const dyslexia = useDyslexiaFont();
+  const contrast = useHighContrast();
 
   return (
     <ScreenTransition className="game-container">
@@ -84,6 +85,14 @@ export function Accessibility() {
             hint="Usa a fonte OpenDyslexic, com mais espaço entre letras e linhas"
             checked={dyslexia.enabled}
             onToggle={dyslexia.toggle}
+          />
+
+          <SwitchRow
+            icon="contrast"
+            title="Alto contraste"
+            hint="Texto branco sobre fundo preto e destaques em amarelo; substitui o tema claro/escuro"
+            checked={contrast.enabled}
+            onToggle={contrast.toggle}
           />
         </div>
       </section>

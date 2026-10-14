@@ -14,6 +14,7 @@ describe('createDefaultUserData', () => {
     expect(d.settings.study_type).toBe('morphology');
     expect(d.settings.font_scale_index).toBe(1);
     expect(d.settings.dyslexia_font).toBe(false);
+    expect(d.settings.high_contrast).toBe(false);
     expect(d.stats.games_played).toBe(0);
     expect(d.stats.unlocked_achievements).toEqual([]);
     expect(d.history).toEqual({});
@@ -45,7 +46,7 @@ describe('parseStored', () => {
     const d = parseStored(JSON.stringify(legacy));
     expect(d.uuid).toBe(legacy.uuid);
     expect(d.history).toEqual(legacy.history);
-    expect(d.settings).toEqual({ ...legacy.settings, dyslexia_font: false });
+    expect(d.settings).toEqual({ ...legacy.settings, dyslexia_font: false, high_contrast: false });
     expect(d.stats.total_score).toBe(410);
   });
 

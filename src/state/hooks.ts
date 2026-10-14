@@ -73,3 +73,8 @@ function usePreferenceFlag(flag: Exclude<PreferenceFlag, 'dark_mode'>, attribute
 export function useDyslexiaFont(): { enabled: boolean; toggle: () => void } {
   return usePreferenceFlag('dyslexia_font', 'font', 'dyslexic');
 }
+
+/** Tema de alto contraste, por cima do claro/escuro (`data-contrast="high"`). */
+export function useHighContrast(): { enabled: boolean; toggle: () => void } {
+  return usePreferenceFlag('high_contrast', 'contrast', 'high');
+}

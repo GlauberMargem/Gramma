@@ -1236,3 +1236,54 @@ button {
   background: var(--color-pop-contrast);
   transform: translateX(24px);
 }
+
+/* ===== Alto contraste (Acessibilidade) =====
+ * Substitui os temas claro/escuro. Fica no fim do arquivo para vencer as regras
+ * de tema. Contrastes de texto >= 7:1 (WCAG AAA). */
+:root[data-contrast="high"] {
+  --color-bg: #000000;
+  --color-bg-gradient-end: #000000;
+  --color-surface: #000000;
+  --color-surface-soft: #000000;
+  --color-border-card: #FFFFFF;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-muted: #FFFFFF;
+
+  --color-pop: #FFE500;
+  --color-pop-contrast: #000000;
+
+  --color-answer-default-border: #FFFFFF;
+  --color-answer-default-bg: #000000;
+  --color-answer-correct-bg: #005A28;
+  --color-answer-correct-border: #00FF6A;
+  --color-answer-wrong-bg: #9B0020;
+  --color-answer-wrong-border: #FF6B81;
+
+  --color-divider: #FFFFFF;
+  --color-divider-strong: #FFFFFF;
+
+  --shadow-card: none;
+  --shadow-button: none;
+}
+
+:root[data-contrast="high"] body,
+:root[data-contrast="high"] .intro-screen {
+  background: #000000;
+}
+
+:root[data-contrast="high"] .bg-layer {
+  display: none;
+}
+
+/* Dias futuros: sem transparência, diferenciados pela borda tracejada. */
+:root[data-contrast="high"] .calendar-day.status-future {
+  opacity: 1;
+  border-style: dashed;
+}
+
+:root[data-contrast="high"] .question-card .listen-btn[disabled] {
+  opacity: 1;
+  text-decoration: line-through;
+}
+

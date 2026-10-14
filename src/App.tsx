@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AppRouter } from './router';
 import { authStore } from './state/authStore';
-import { useDyslexiaFont, useFontScale, useTheme } from './state/hooks';
+import { useDyslexiaFont, useFontScale, useHighContrast, useTheme } from './state/hooks';
 import { progressSync } from './state/sync';
 
 // Aplica tema e escala de fonte salvos em todas as telas, não só onde há controle.
@@ -9,6 +9,7 @@ function Preferences() {
   useTheme();
   useFontScale();
   useDyslexiaFont();
+  useHighContrast();
   return null;
 }
 

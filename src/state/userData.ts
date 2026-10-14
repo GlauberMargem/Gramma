@@ -23,6 +23,7 @@ export function createDefaultUserData(): UserData {
       study_type: 'morphology',
       font_scale_index: 1,
       dyslexia_font: false,
+      high_contrast: false,
     },
     stats: {
       current_streak: 0,

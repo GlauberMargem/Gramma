@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { useDyslexiaFont, useFontScale, useTheme, useUserData } from './hooks';
+import { useDyslexiaFont, useFontScale, useHighContrast, useTheme, useUserData } from './hooks';
 import { USER_DATA_KEY, userStore } from './userStore';
 
 function resetSettings(dark_mode: boolean, font_scale_index: number) {
@@ -67,5 +67,16 @@ describe('hooks de estado', () => {
     expect(JSON.parse(localStorage.getItem(USER_DATA_KEY)!).settings.dyslexia_font).toBe(true);
     act(() => result.current.toggle());
     expect(document.documentElement.dataset.font).toBeUndefined();
+  });
+
+  it('useHighContrast aplica data-contrast e persiste', () => {
+    userStore.update((d) => ({ ...d, settings: { ...d.settings, high_contrast: false } }));
+    const { result } = renderHook(() => useHighContrast());
+    expect(document.documentElement.dataset.contrast).toBeUndefined();
+    act(() => result.current.toggle());
+    expect(document.documentElement.dataset.contrast).toBe('high');
+    expect(JSON.parse(localStorage.getItem(USER_DATA_KEY)!).settings.high_contrast).toBe(true);
+    act(() => result.current.toggle());
+    expect(document.documentElement.dataset.contrast).toBeUndefined();
   });
 });
