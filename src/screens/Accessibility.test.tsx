@@ -56,4 +56,26 @@ describe('Accessibility', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Fechar' }));
     expect(await screen.findByText('menu')).toBeInTheDocument();
   });
+
+  it('interruptor da fonte para dislexia liga, persiste e aplica no <html>', async () => {
+    renderScreen();
+    const toggle = screen.getByRole('switch', { name: 'Fonte para dislexia' });
+    expect(toggle).toHaveAttribute('aria-checked', 'false');
+    expect(toggle).toHaveAccessibleDescription(/OpenDyslexic/);
+
+    await userEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-checked', 'true');
+    expect(userStore.getSnapshot().settings.dyslexia_font).toBe(true);
+
+    await userEvent.click(toggle);
+    expect(userStore.getSnapshot().settings.dyslexia_font).toBe(false);
+  });
+
+  it('interruptor de alto contraste liga e persiste', async () => {
+    renderScreen();
+    const toggle = screen.getByRole('switch', { name: 'Alto contraste' });
+    await userEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-checked', 'true');
+    expect(userStore.getSnapshot().settings.high_contrast).toBe(true);
+  });
 });

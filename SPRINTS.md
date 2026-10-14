@@ -62,8 +62,8 @@ Legenda: `[x]` feito · `[~]` parcialmente feito · `[ ]` a fazer · 🔒 bloque
 - [x] Tema claro/escuro
 - [x] Ajuste do tamanho da fonte
 - [x] Leitura da frase em voz alta
-- [~] Navegação por teclado e rótulos de acessibilidade (base feita na T35;
-  falta garantir o jogo 100% pelo teclado — Sprint 3)
+- [x] Navegação por teclado e rótulos de acessibilidade (base na T35,
+  completada na Sprint 3)
 
 ---
 
@@ -116,13 +116,21 @@ antes de abrir para mais jogadores. Branch: `feature/sprint-2-ranking`.
 ## Sprint 3 — Acessibilidade
 
 Objetivo: o jogo é jogável por pessoas com dislexia, baixa visão e cegas.
+Branch: `feature/sprint-3-acessibilidade`.
 
-- [ ] Opção de fonte para dislexia na tela de Acessibilidade
-- [ ] Tema de alto contraste
-- [ ] Jogo 100% pelo teclado (todas as telas, incluindo resposta e calendário)
-- [ ] Investigar leitor de tela (NVDA / leitor do Windows / TalkBack) jogando
-  uma partida completa e registrar o que falha
-- [ ] Corrigir o que for viável: anúncio de acerto/erro, troca de tela, foco
+- [x] Opção de fonte para dislexia na tela de Acessibilidade (OpenDyslexic)
+- [x] Tema de alto contraste (preto/branco/amarelo, contraste ≥ 8:1)
+- [x] Jogo 100% pelo teclado: foco visível, atalhos A–D / 1–4 no jogo,
+  foco no título a cada tela
+- [x] Preparar para leitor de tela: títulos `<h1>`, landmarks, palavra
+  destacada lida em texto, resultado anunciado, calendário com a situação de
+  cada dia
+- [ ] Testar com leitor de tela real (NVDA / Narrador / TalkBack) seguindo
+  `docs/a11y/LEITOR-DE-TELA.md` e registrar os resultados — **precisa de uma
+  pessoa da equipe**
+- [ ] Corrigir o que o teste manual apontar (riscos já listados no roteiro)
+- [ ] Conferir visualmente alto contraste e fonte para dislexia (claro,
+  escuro e celular)
 
 ## Sprint 4 — Novos modos de jogo
 

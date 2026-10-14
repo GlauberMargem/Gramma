@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { AnswerButton } from '../components/AnswerButton';
 import type { AnswerState } from '../components/AnswerButton';
@@ -21,7 +21,21 @@ const PHASE_LABEL: Record<StudyType, string> = {
   synonyms: 'SINÔNIMOS — ESCOLHA O EQUIVALENTE',
 };
 
+const PHASE_TITLE: Record<StudyType, string> = {
+  morphology: 'Morfologia',
+  syntax: 'Sintaxe',
+  synonyms: 'Sinônimos',
+};
+
 const LETTERS = ['A', 'B', 'C', 'D'];
+
+/** Índice da alternativa para a tecla (A–D ou 1–4), ou null. */
+export function keyToOption(key: string): number | null {
+  const letter = LETTERS.indexOf(key.toUpperCase());
+  if (letter >= 0) return letter;
+  const digit = Number(key);
+  return Number.isInteger(digit) && digit >= 1 && digit <= LETTERS.length ? digit - 1 : null;
+}
 
 interface SessionProps {
   dayId: number;
@@ -35,6 +49,27 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
   const { supported, speak } = useSpeech(question.prompt.map((part) => part.text).join(''));
   const badge = isArchive ? `DIA ${dayId} (ARQUIVO)` : `DIA ${dayId} / ${DataStore.getTotalDays()}`;
 
+  // Atalhos: A–D ou 1–4 escolhem a alternativa (sem modificadores).
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey || event.altKey || event.repeat) return;
+      const index = keyToOption(event.key);
+      const option = index === null ? undefined : question.options[index];
+      if (option === undefined) return;
+      event.preventDefault();
+      select(option);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [question.options, select]);
+
+  const announcement =
+    selected === null
+      ? ''
+      : selected === question.answer
+        ? 'Resposta certa!'
+        : `Resposta errada. A resposta certa é ${question.answer}.`;
+
   const stateOf = (option: string): AnswerState => {
     if (selected === null) return 'idle';
     if (option === question.answer) return 'correct';
@@ -44,6 +79,7 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
   return (
     <ScreenTransition className="game-container">
       <section className="screen-panel">
+        <h1 className="sr-only">{`${PHASE_TITLE[type]}, dia ${dayId}${isArchive ? ', arquivo' : ''}`}</h1>
         <header className="header">
           <span className="day-counter">{badge}</span>
           <IconButton icon="close" label="Fechar" onClick={() => go('/modo')} />
@@ -52,7 +88,16 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
         <div className="question-card">
           <MaterialIcon name="quiz" className="icon-question" />
           <p className="sentence">
-            {question.prompt.map((part, i) => (part.highlight ? <span key={i}>{part.text}</span> : part.text))}
+            {question.prompt.map((part, i) =>
+              part.highlight ? (
+                <mark key={i} className="target-word">
+                  {part.text}
+                  <span className="sr-only"> (palavra destacada)</span>
+                </mark>
+              ) : (
+                part.text
+              ),
+            )}
           </p>
           <IconButton
             icon="volume_up"
@@ -66,7 +111,11 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
 
         <p className="phase-label">{PHASE_LABEL[type]}</p>
 
-        <div className="answers-grid">
+        <p className="keyboard-hint" id="keyboard-hint">
+          Atalhos: teclas A a D ou 1 a 4
+        </p>
+
+        <div className="answers-grid" aria-describedby="keyboard-hint">
           {question.options.map((option, i) => (
             <AnswerButton
               key={option}
@@ -78,6 +127,9 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
             />
           ))}
         </div>
+        <p className="sr-only" role="alert">
+          {announcement}
+        </p>
       </section>
     </ScreenTransition>
   );
