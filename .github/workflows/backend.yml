@@ -1,0 +1,58 @@
+name: Backend
+
+on:
+  push:
+    branches: [main]
+    paths: ["backend/**", ".github/workflows/backend.yml"]
+  pull_request:
+    paths: ["backend/**", ".github/workflows/backend.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Testes (${{ matrix.database }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # SQLite é o banco de desenvolvimento; PostgreSQL é o de produção.
+        database: [sqlite, postgres]
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-postgres-password
+          POSTGRES_DB: gramma_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      FASTAPI_ENV: development
+      PROJECT_NAME: GRAMMA
+      SECRET_KEY: ci-secret-key-only-for-tests-0123456789
+      FIRST_SUPERUSER: admin@example.com
+      FIRST_SUPERUSER_PASSWORD: ci-admin-password
+      TEST_DATABASE_URL: ${{ matrix.database == 'postgres' && 'postgresql://postgres:ci-postgres-password@localhost:5432/gramma_test' || 'sqlite:///./test.db' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - run: uv sync --locked
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check app tests
+      - name: Tipos
+        run: uv run mypy app
+      - name: Testes
+        run: uv run pytest -q
