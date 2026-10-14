@@ -31,10 +31,10 @@ export function Stats() {
     <ScreenTransition className="game-container">
       <section className="screen-panel">
         <header className="header">
-          <p className="screen-title">
+          <h1 className="screen-title">
             <MaterialIcon name="query_stats" />
             Estatísticas
-          </p>
+          </h1>
           <IconButton icon="close" label="Fechar" onClick={() => go('/modo')} />
         </header>
         <div className="stats-list">

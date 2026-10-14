@@ -90,6 +90,18 @@ button {
   font-family: inherit;
 }
 
+/* Foco visível em todos os controles (teclado), afastado para não sumir sobre
+ * botões na cor de destaque. */
+:where(button, a, select, input, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid var(--color-pop);
+  outline-offset: 3px;
+}
+
+/* O título recebe foco por script ao trocar de tela; não é um controle. */
+h1[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Fonte para dislexia (Acessibilidade): peso normal, mais espaço entre letras e linhas. */
 :root[data-font="dyslexic"] body {
   font-family: 'OpenDyslexic', sans-serif;

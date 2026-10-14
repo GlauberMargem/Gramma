@@ -21,6 +21,12 @@ const PHASE_LABEL: Record<StudyType, string> = {
   synonyms: 'SINÔNIMOS — ESCOLHA O EQUIVALENTE',
 };
 
+const PHASE_TITLE: Record<StudyType, string> = {
+  morphology: 'Morfologia',
+  syntax: 'Sintaxe',
+  synonyms: 'Sinônimos',
+};
+
 const LETTERS = ['A', 'B', 'C', 'D'];
 
 interface SessionProps {
@@ -44,6 +50,7 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
   return (
     <ScreenTransition className="game-container">
       <section className="screen-panel">
+        <h1 className="sr-only">{`${PHASE_TITLE[type]}, dia ${dayId}${isArchive ? ', arquivo' : ''}`}</h1>
         <header className="header">
           <span className="day-counter">{badge}</span>
           <IconButton icon="close" label="Fechar" onClick={() => go('/modo')} />

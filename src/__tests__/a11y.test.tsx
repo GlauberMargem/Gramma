@@ -87,12 +87,13 @@ describe('acessibilidade', () => {
     expect(screen.getByRole('button', { name: 'Morfologia' })).toHaveFocus();
     await user.keyboard('{Enter}');
 
-    // ModeHub: Fechar, Jogar, Dias anteriores, Estatísticas
-    await user.tab();
-    expect(screen.getByRole('button', { name: 'Trocar modo' })).toHaveFocus();
+    // ModeHub: o foco vai ao título da tela; o próximo Tab é a ação principal.
+    expect(screen.getByRole('heading', { level: 1, name: 'Morfologia' })).toHaveFocus();
+    expect(document.title).toBe('Morfologia · GRAMMA');
     await user.tab();
     expect(screen.getByRole('button', { name: /JOGAR DIA 3/ })).toHaveFocus();
     await user.keyboard('{Enter}');
+    expect(screen.getByRole('heading', { level: 1, name: 'Morfologia, dia 3' })).toHaveFocus();
 
     // Jogo: Fechar, Ouvir (se suportado), respostas A..D
     const options = screen.getAllByRole('button', { name: /^[ABCD]/ });
@@ -100,6 +101,7 @@ describe('acessibilidade', () => {
     options[0].focus();
     await user.keyboard('{Enter}');
     expect(await screen.findByRole('heading', { name: / pts$/ }, { timeout: PHASE_TRANSITION_DELAY_MS + 1000 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
     await user.tab();
     expect(screen.getByRole('button', { name: /Compartilhar/ })).toHaveFocus();
     await user.tab();

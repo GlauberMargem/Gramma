@@ -34,7 +34,7 @@ export function ModeHub() {
         </header>
 
         <MaterialIcon name={STUDY_TYPE_ICON[studyType]} className="mode-hub-icon" />
-        <p className="mode-hub-title">{STUDY_TYPE_LABEL[studyType]}</p>
+        <h1 className="mode-hub-title">{STUDY_TYPE_LABEL[studyType]}</h1>
 
         <button type="button" className="cta-btn" onClick={() => go(`/jogo/${day}`)}>
           <MaterialIcon name={alreadyPlayed ? 'check_circle' : 'play_arrow'} />
