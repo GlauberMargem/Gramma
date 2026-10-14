@@ -281,7 +281,6 @@ h1[tabindex="-1"]:focus {
   font-size: clamp(1.4rem, 4.6vw, 2.1rem);
 }
 
-.sentence span,
 .target-word {
   background: var(--color-pop);
   color: var(--color-pop-contrast);
@@ -289,6 +288,20 @@ h1[tabindex="-1"]:focus {
   border-radius: 8px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+
+.keyboard-hint {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+/* Em telas de toque não há teclado: a dica só aparece com mouse/teclado. */
+@media (hover: none) {
+  .keyboard-hint {
+    display: none;
+  }
 }
 
 .phase-label {

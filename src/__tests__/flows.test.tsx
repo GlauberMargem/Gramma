@@ -22,7 +22,10 @@ function app(path: string) {
   );
 }
 
-const byOption = (text: string) => screen.getByRole('button', { name: new RegExp(`${text}$`) });
+const byOption = (text: string) =>
+  screen.getByRole('button', {
+    name: (name) => /^[ABCD]/.test(name) && name.replace(/^[ABCD]\s*/, '').replace(/\s*\(.+\)$/, '') === text,
+  });
 const press = (name: RegExp | string) => fireEvent.click(screen.getByRole('button', { name }));
 const stored = (): UserData => JSON.parse(localStorage.getItem(USER_DATA_KEY)!) as UserData;
 const settle = () => act(() => vi.advanceTimersByTimeAsync(900));

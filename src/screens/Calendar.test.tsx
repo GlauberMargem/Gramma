@@ -37,7 +37,8 @@ function entry(dayId: number, studyType: StudyType, correct: boolean): HistoryEn
   };
 }
 
-const dayButton = (n: number) => screen.getByRole('button', { name: String(n) });
+// O nome do dia é "<número>, <situação>[, hoje]".
+const dayButton = (n: number) => screen.getByRole('button', { name: new RegExp(`^${n},`) });
 
 describe('Calendar', () => {
   beforeEach(() => {
@@ -84,6 +85,8 @@ describe('Calendar', () => {
     expect(dayButton(17)).toHaveClass('status-won');
     expect(dayButton(18)).toHaveClass('status-lost');
     expect(dayButton(19)).toHaveClass('status-available', 'is-today');
+    expect(dayButton(19)).toHaveAccessibleName('19, disponível, hoje');
+    expect(dayButton(17)).toHaveAccessibleName('17, acertou');
     expect(dayButton(20)).toHaveClass('status-future');
     expect(dayButton(20)).toBeDisabled();
     expect(dayButton(16)).toHaveClass('status-future');
