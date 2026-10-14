@@ -22,6 +22,7 @@ export function createDefaultUserData(): UserData {
       dark_mode: prefersDarkByDefault(),
       study_type: 'morphology',
       font_scale_index: 1,
+      dyslexia_font: false,
     },
     stats: {
       current_streak: 0,

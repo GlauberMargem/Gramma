@@ -1,5 +1,5 @@
 import { useEffect, useSyncExternalStore } from 'react';
-import type { UserData } from '../domain/types';
+import type { Settings, UserData } from '../domain/types';
 import { userStore } from './userStore';
 
 export const FONT_SCALES = [
@@ -50,4 +50,26 @@ export function useFontScale(): { index: number; label: string; change: (directi
     });
 
   return { index: stored, label: scale.label, change };
+}
+
+type PreferenceFlag = { [K in keyof Settings]: Settings[K] extends boolean ? K : never }[keyof Settings];
+
+/** Preferência liga/desliga aplicada como `data-<attribute>` no <html> (o CSS reage). */
+function usePreferenceFlag(flag: Exclude<PreferenceFlag, 'dark_mode'>, attribute: string, value: string) {
+  const enabled = Boolean(useUserData().settings[flag]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (enabled) root.dataset[attribute] = value;
+    else delete root.dataset[attribute];
+  }, [enabled, attribute, value]);
+
+  const toggle = () => userStore.update((d) => ({ ...d, settings: { ...d.settings, [flag]: !d.settings[flag] } }));
+
+  return { enabled, toggle };
+}
+
+/** Fonte OpenDyslexic em todo o jogo (`data-font="dyslexic"`). */
+export function useDyslexiaFont(): { enabled: boolean; toggle: () => void } {
+  return usePreferenceFlag('dyslexia_font', 'font', 'dyslexic');
 }

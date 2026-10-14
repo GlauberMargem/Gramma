@@ -47,7 +47,7 @@ describe('mergeProgress', () => {
 
   it('mantém uuid e preferências locais', () => {
     const local = createDefaultUserData();
-    local.settings = { dark_mode: false, study_type: 'syntax', font_scale_index: 3 };
+    local.settings = { dark_mode: false, study_type: 'syntax', font_scale_index: 3, dyslexia_font: true };
     const merged = mergeProgress(local, toCloud(playAll([{ dayId: 1 }])));
     expect(merged.uuid).toBe(local.uuid);
     expect(merged.settings).toEqual(local.settings);

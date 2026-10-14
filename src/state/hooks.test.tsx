@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { useFontScale, useTheme, useUserData } from './hooks';
+import { useDyslexiaFont, useFontScale, useTheme, useUserData } from './hooks';
 import { USER_DATA_KEY, userStore } from './userStore';
 
 function resetSettings(dark_mode: boolean, font_scale_index: number) {
@@ -55,5 +55,17 @@ describe('hooks de estado', () => {
     const { result } = renderHook(() => useFontScale());
     expect(result.current.label).toBe('Normal');
     expect(document.documentElement.style.getPropertyValue('--font-scale')).toBe('1');
+  });
+
+  it('useDyslexiaFont aplica data-font e persiste', () => {
+    userStore.update((d) => ({ ...d, settings: { ...d.settings, dyslexia_font: false } }));
+    const { result } = renderHook(() => useDyslexiaFont());
+    expect(document.documentElement.dataset.font).toBeUndefined();
+    act(() => result.current.toggle());
+    expect(result.current.enabled).toBe(true);
+    expect(document.documentElement.dataset.font).toBe('dyslexic');
+    expect(JSON.parse(localStorage.getItem(USER_DATA_KEY)!).settings.dyslexia_font).toBe(true);
+    act(() => result.current.toggle());
+    expect(document.documentElement.dataset.font).toBeUndefined();
   });
 });
