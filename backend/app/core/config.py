@@ -40,7 +40,8 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None
-    # SQLite (padrão do projeto) ou PostgreSQL, ex.: postgresql://u:p@host/db
+    # SQLite só em desenvolvimento/testes; produção usa PostgreSQL,
+    # ex.: postgresql://usuario:senha@host:5432/app
     DATABASE_URL: str = "sqlite:///./gramma.db"
 
     @field_validator("DATABASE_URL", mode="before")
@@ -93,6 +94,15 @@ class Settings(BaseSettings):
                 warnings.warn(message, stacklevel=1)
             else:
                 raise ValueError(message)
+
+    @model_validator(mode="after")
+    def _require_postgres_in_production(self) -> Self:
+        if self.is_sqlite and self.FASTAPI_ENV != "development":
+            raise ValueError(
+                "SQLite é só para desenvolvimento: em produção defina "
+                "DATABASE_URL com o PostgreSQL (ou FASTAPI_ENV=development)."
+            )
+        return self
 
     @model_validator(mode="after")
     def _enforce_non_default_secrets(self) -> Self:

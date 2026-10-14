@@ -65,12 +65,14 @@ prontos, menos risco que escrever do zero.
 **Impact:** Feature `backend-auth` (T41–T57). Preferências ficam só no
 `localStorage`; nuvem guarda apenas progresso competitivo.
 
-### AD-008: SQLite como banco padrão (2026-10-13)
+### AD-008: SQLite em dev/testes, PostgreSQL em produção (2026-10-13)
 
 **Decision:** `DATABASE_URL` padrão `sqlite:///./gramma.db`; testes em
-`test.db` próprio, recriado pelas migrações. PostgreSQL continua suportado.
-**Reason:** Escolha do usuário; roda sem Docker/serviço.
-**Trade-off:** SQLite tem escrita concorrente limitada; reavaliar na hospedagem.
+`test.db` próprio, recriado pelas migrações. Produção usa PostgreSQL: a config
+recusa SQLite fora de `FASTAPI_ENV=development`.
+**Reason:** Escolha do usuário; dev roda sem Docker/serviço.
+**Trade-off:** Diferenças de dialeto só aparecem no Postgres: o CI do backend
+(T47) deve rodar os testes também com `TEST_DATABASE_URL` em Postgres.
 **Impact:** `render_as_batch` no Alembic; pragma `foreign_keys` ligado.
 
 ### AD-009: Sync por snapshot completo (2026-10-13)

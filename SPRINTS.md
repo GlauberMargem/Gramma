@@ -72,7 +72,7 @@ Legenda: `[x]` feito · `[~]` parcialmente feito · `[ ]` a fazer · 🔒 bloque
 Objetivo: o progresso e a ofensiva do jogador ficam salvos na conta dele.
 Branch: `feature/sprint-1-progresso`.
 
-- [x] Banco **SQLite** como padrão (dev e testes); PostgreSQL segue opcional
+- [x] Banco **SQLite** em dev e testes; **PostgreSQL em produção** (SQLite é recusado fora de dev)
 - [x] Modelo de progresso no banco: partidas, pontuação e ofensiva por usuário (T43)
 - [x] Endpoint de progresso `GET/PUT /api/v1/me/progress` (T44)
 - [x] Merge do progresso local com o da conta (T52)
@@ -92,7 +92,7 @@ antes de abrir para mais jogadores.
 - [ ] Endpoint de ranking diário / semanal / mensal, por modo e geral (T45)
 - [ ] Tela de Ranking no front (T54)
 - [ ] Histórico do jogador acessível pela conta
-- [ ] CI do backend (T47)
+- [ ] CI do backend (T47), rodando os testes também em PostgreSQL
 - [ ] Testes de fluxo e a11y das telas de conta/ranking (T56)
 - [ ] Importar uma skill de auditoria de segurança para o projeto
 - [ ] Rodar a auditoria (front + backend) e registrar os achados

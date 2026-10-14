@@ -12,8 +12,9 @@ consome estes endpoints.
 
 ## Local Development
 
-O banco padrão é **SQLite** (arquivo `backend/gramma.db`, fora do git), então
-não é preciso subir nenhum serviço. A partir de `backend/`, copie o
+Em desenvolvimento o banco é **SQLite** (arquivo `backend/gramma.db`, fora do
+git), então não é preciso subir nenhum serviço. **Produção usa PostgreSQL**: fora
+de `FASTAPI_ENV=development` o backend se recusa a iniciar com SQLite. A partir de `backend/`, copie o
 `.env.example` para `.env`, instale as dependências, prepare o banco e inicie o
 servidor:
 
