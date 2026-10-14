@@ -87,17 +87,31 @@ local de uma vai para a conta da outra (comportamento "link device" do design).
 ## Sprint 2 — Ranking e auditoria de segurança
 
 Objetivo: ranking diário, semanal e mensal e uma auditoria de segurança
-antes de abrir para mais jogadores.
+antes de abrir para mais jogadores. Branch: `feature/sprint-2-ranking`.
 
-- [ ] Endpoint de ranking diário / semanal / mensal, por modo e geral (T45)
-- [ ] Tela de Ranking no front (T54)
-- [ ] Histórico do jogador acessível pela conta
-- [ ] CI do backend (T47), rodando os testes também em PostgreSQL
-- [ ] Testes de fluxo e a11y das telas de conta/ranking (T56)
-- [ ] Importar uma skill de auditoria de segurança para o projeto
-- [ ] Rodar a auditoria (front + backend) e registrar os achados
-- [ ] Corrigir os achados críticos/altos
+- [x] Endpoint de ranking diário / semanal / mensal, por modo e geral (T45)
+- [x] Tela de Ranking no front, com acesso pelo Menu e pelo Perfil (T54)
+- [x] Histórico do jogador acessível pela conta (o sync traz o histórico da
+  conta para Calendário e Estatísticas em qualquer aparelho)
+- [x] CI do backend (T47), rodando os testes também em PostgreSQL —
+  ⚠️ só roda no GitHub após o push
+- [x] Testes de fluxo e a11y das telas de conta/ranking (T56)
+- [x] Importar uma skill de auditoria de segurança para o projeto
+  (`.claude/skills/security-audit/SKILL.md`)
+- [x] Rodar a auditoria (front + backend) e registrar os achados
+  (`docs/security/AUDIT-2026-10-13.md`)
+- [x] Corrigir os achados críticos/altos (SEC-01: pontos do ranking
+  recalculados no servidor)
 - 🔒 Hospedagem do backend + Postgres e env do front (T48, T57) — decisão da equipe
+
+**Propostas da auditoria (aguardando aceite da equipe):**
+
+- [ ] SEC-02: compose sem `FASTAPI_ENV=development` por padrão (junto da hospedagem)
+- [ ] SEC-03: rate limit compartilhado entre processos e IP real atrás do proxy
+- [ ] SEC-04: token de redefinição de uso único e revogar sessões ao trocar a senha
+- [ ] SEC-05: apelido no ranking para quem não informou nome (ou nome obrigatório)
+- [ ] SEC-06/07/09/12: chave forte, limite por e-mail na recuperação,
+  autoescape nos e-mails e claim de tipo nos tokens
 
 ## Sprint 3 — Acessibilidade
 
