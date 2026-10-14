@@ -11,3 +11,16 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 );
+
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        console.info('Service Worker registrado:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Falha ao registrar o Service Worker:', error);
+      });
+  });
+}
