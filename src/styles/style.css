@@ -59,6 +59,60 @@
   --shadow-button: 0 4px 0 rgba(0, 0, 0, 0.35);
 }
 
+/* ---- Alto contraste ---- */
+:root.high-contrast {
+  --color-bg: #000000;
+  --color-bg-gradient-end: #000000;
+  --color-surface: #000000;
+  --color-surface-soft: rgba(255, 255, 255, 0.08);
+  --color-border-card: #FFFFFF;
+
+  --color-text-primary: #FFFFFF;
+  --color-text-muted: #FFFF00;
+
+  --color-pop: #FFFF00;
+  --color-pop-contrast: #000000;
+
+  --color-answer-default-border: #FFFFFF;
+  --color-answer-default-bg: #000000;
+  --color-answer-correct-bg: #00FF00;
+  --color-answer-correct-border: #00FF00;
+  --color-answer-wrong-bg: #FF0000;
+  --color-answer-wrong-border: #FF0000;
+
+  --color-divider: #FFFFFF;
+  --color-divider-strong: #FFFFFF;
+
+  --shadow-card: none;
+  --shadow-button: none;
+}
+
+:root[data-theme="dark"].high-contrast {
+  --color-bg: #000000;
+  --color-bg-gradient-end: #000000;
+  --color-surface: #000000;
+  --color-text-primary: #FFFFFF;
+  --color-text-muted: #FFFF00;
+  --color-pop: #FFFF00;
+  --color-pop-contrast: #000000;
+  --color-answer-default-bg: #000000;
+  --color-answer-correct-bg: #00FF00;
+  --color-answer-wrong-bg: #FF0000;
+}
+
+:root.dyslexia-font,
+:root.dyslexia-font body,
+:root.dyslexia-font button,
+:root.dyslexia-font input {
+  font-family: 'OpenDyslexic', 'Atkinson Hyperlegible', 'Comic Sans MS', system-ui, -apple-system, sans-serif !important;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: local('OpenDyslexic'), local('OpenDyslexic Regular');
+  font-display: swap;
+}
+
 html {
   --font-scale: 1;
   font-size: calc(19px * var(--font-scale));
@@ -260,6 +314,23 @@ button {
   font-size: clamp(1.4rem, 4.6vw, 2.1rem);
 }
 
+/* Questões do ENEM costumam trazer um texto-base longo: usa fonte menor,
+ * alinhamento à esquerda e rolagem interna para não empurrar as alternativas
+ * para fora da tela. */
+.question-card--long {
+  align-items: flex-start;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+
+.question-card--long .sentence {
+  text-align: left;
+  white-space: pre-line;
+  font-weight: 500;
+  line-height: 1.55;
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+}
+
 .sentence span,
 .target-word {
   background: var(--color-pop);
@@ -282,6 +353,11 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
+}
+
+/* ENEM tem 5 alternativas (A–E); a última ocupa a linha inteira. */
+.answers-grid--five .answer-btn:last-child {
+  grid-column: 1 / -1;
 }
 
 .answer-btn {
@@ -468,36 +544,34 @@ button {
 
 .study-type-toggle {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
   border: 2px solid var(--color-border-card);
-  border-radius: 999px;
-  padding: 4px;
-  gap: 4px;
+  border-radius: var(--radius-button);
+  padding: 6px;
+  gap: 6px;
   background: var(--color-surface-soft);
-  /* Contém qualquer botão filho dentro da forma arredondada do container,
-     mesmo que o texto quebre linha e o botão fique momentaneamente mais
-     alto/largo do que o esperado — evita o efeito de "vazar" pra fora. */
-  overflow: hidden;
 }
 
 .study-type-btn {
-  flex: 1;
+  flex: 1 1 calc(50% - 6px);
   min-width: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  justify-content: flex-start;
+  gap: 8px;
   border: none;
   background: transparent;
   color: var(--color-text-primary);
-  padding: 12px 10px;
-  border-radius: 999px;
+  padding: 10px 14px;
+  border-radius: var(--radius-button);
   font-weight: 700;
-  font-size: clamp(0.72rem, 2.4vw, 0.95rem);
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
   font-family: inherit;
   cursor: pointer;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: left;
 }
 
 .study-type-btn .material-symbols-outlined {
@@ -509,18 +583,15 @@ button {
   color: var(--color-pop-contrast);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 420px) {
   .study-type-toggle {
-    flex-direction: column;
-    border-radius: var(--radius-button);
+    max-width: 100%;
   }
 
   .study-type-btn {
-    border-radius: var(--radius-button);
-    justify-content: flex-start;
+    flex: 1 1 100%;
     padding: 12px 16px;
-    font-size: 1rem;
-    white-space: normal;
+    font-size: 0.95rem;
   }
 }
 
@@ -1107,4 +1178,29 @@ button {
   font-size: 0.85rem;
   color: var(--color-text-muted);
   font-weight: 500;
+}
+
+/* ===== Acessibilidade extras ===== */
+.a11y-toggle {
+  border: 2px solid var(--color-border-card);
+  border-radius: var(--radius-button);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  box-shadow: var(--shadow-button);
+  cursor: pointer;
+}
+
+.a11y-toggle.active {
+  background: var(--color-pop);
+  color: var(--color-pop-contrast);
+}
+
+/* Foco visível para navegação por teclado */
+:focus-visible {
+  outline: 3px solid var(--color-pop);
+  outline-offset: 2px;
 }

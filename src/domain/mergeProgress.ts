@@ -8,7 +8,10 @@ const MODE_KEYS = {
   morphology: { streak: 'morph_correct_streak', streakMax: 'morph_correct_streak_max', totalCorrect: 'total_correct_morph' },
   syntax: { streak: 'syntax_correct_streak', streakMax: 'syntax_correct_streak_max', totalCorrect: 'total_correct_syntax' },
   synonyms: { streak: 'synonyms_correct_streak', streakMax: 'synonyms_correct_streak_max', totalCorrect: 'total_correct_synonyms' },
-} as const satisfies Record<StudyType, Record<string, keyof Stats>>;
+  antonyms: { streak: 'synonyms_correct_streak', streakMax: 'synonyms_correct_streak_max', totalCorrect: 'total_correct_synonyms' },
+  enem: { streak: 'syntax_correct_streak', streakMax: 'syntax_correct_streak_max', totalCorrect: 'total_correct_syntax' },
+  random: { streak: 'morph_correct_streak', streakMax: 'morph_correct_streak_max', totalCorrect: 'total_correct_morph' },
+} as const;
 
 /** Mesma regra do backend: mais pontos; empate → menos tempo. */
 function isBetter(candidate: HistoryEntry, current: HistoryEntry): boolean {
@@ -66,9 +69,19 @@ export function mergeProgress(local: UserData, cloud: ProgressDTO): UserData {
     const keys = MODE_KEYS[type];
     const ofMode = entries.filter((e) => e.study_type === type);
     const correct = ofMode.filter((e) => e.correct).length;
-    const latest = ofMode.reduce<HistoryEntry | null>((best, e) => (!best || e.day_id > best.day_id ? e : best), null);
     stats[keys.totalCorrect] = Math.max(a[keys.totalCorrect], b[keys.totalCorrect], correct);
-    stats[keys.streak] = latest ? latest.streak_after : a[keys.streak];
+    const localLatest = Object.values(local.history)
+      .filter((e) => e.study_type === type)
+      .reduce<HistoryEntry | null>((best, e) => (!best || e.day_id > best.day_id ? e : best), null);
+    const cloudLatest = cloud.history
+      .filter((e) => e.study_type === type)
+      .reduce<HistoryEntry | null>((best, e) => (!best || e.day_id > best.day_id ? e : best), null);
+    const candidates = [localLatest, cloudLatest].filter((e): e is HistoryEntry => Boolean(e));
+    const chosen =
+      candidates.length === 0
+        ? null
+        : candidates.reduce<HistoryEntry>((best, e) => (e.day_id > best.day_id ? e : best), candidates[0]);
+    stats[keys.streak] = chosen ? chosen.streak_after : a[keys.streak];
     stats[keys.streakMax] = Math.max(a[keys.streakMax], b[keys.streakMax], stats[keys.streak]);
   }
 

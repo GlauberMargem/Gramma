@@ -15,6 +15,9 @@ const STUDY_TYPE_LABEL: Record<StudyType, string> = {
   morphology: 'Morfologia',
   syntax: 'Sintaxe',
   synonyms: 'Sinônimos',
+  antonyms: 'Antônimos',
+  enem: 'ENEM',
+  random: 'Aleatório',
 };
 
 export function End() {
@@ -26,11 +29,18 @@ export function End() {
   const [toast, setToast] = useState<string | null>(null);
   const dismissToast = useCallback(() => setToast(null), []);
 
-  const studyType = settings.study_type;
-  const entry = history[`${Number(dia)}:${studyType}`];
-  if (!entry) return <Navigate to="/" replace />;
+  const raw = dia ?? '';
+  const specialType: StudyType | null = raw.startsWith('enem-')
+    ? 'enem'
+    : raw.startsWith('random-')
+      ? 'random'
+      : null;
+  const dayId = specialType ? Number(raw.slice(specialType.length + 1)) : Number(raw);
 
-  const state = location.state as { newlyUnlocked?: string[] } | null;
+  const state = location.state as { newlyUnlocked?: string[]; type?: StudyType } | null;
+  const studyType = state?.type ?? specialType ?? settings.study_type;
+  const entry = Number.isInteger(dayId) ? history[`${dayId}:${studyType}`] : undefined;
+  if (!entry) return <Navigate to="/" replace />;
   const newlyUnlocked = state?.newlyUnlocked ?? [];
   const achievements = newlyUnlocked
     .map((id) => getAchievement(id))

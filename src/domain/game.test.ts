@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { DataStore, SynonymStore } from '../data/stores';
-import { buildQuestion, resolveDay, shuffle, splitHighlight } from './game';
+import { AntonymStore, DataStore, EnemStore, SynonymStore } from '../data/stores';
+import { buildQuestion, pickRandomMode, resolveDay, shuffle, splitHighlight } from './game';
 
 describe('splitHighlight', () => {
   it('usa o <span> existente', () => {
@@ -97,5 +97,35 @@ describe('buildQuestion', () => {
     ]);
     expect([...q.options].sort()).toEqual([...entry.options].sort());
     expect(q.answer).toBe(entry.answer);
+  });
+
+  it('antônimos: prompt "Qual é o antônimo de X?"', () => {
+    const entry = AntonymStore.getDay(1);
+    const q = buildQuestion('antonyms', 1);
+    expect(q.prompt).toEqual([
+      { text: 'Qual é o antônimo de ' },
+      { text: entry.word, highlight: true },
+      { text: '?' },
+    ]);
+    expect([...q.options].sort()).toEqual([...entry.options].sort());
+    expect(q.answer).toBe(entry.answer);
+  });
+
+  it('ENEM: junta texto-base e enunciado, com 5 alternativas', () => {
+    const entry = EnemStore.getDay(1);
+    const q = buildQuestion('enem', 1);
+    expect(q.prompt).toHaveLength(1);
+    expect(q.prompt[0].text).toContain(entry.question);
+    expect(q.prompt[0].text).toContain(entry.statement ?? '');
+    expect(q.options).toHaveLength(5);
+    expect([...q.options].sort()).toEqual([...entry.options].sort());
+    expect(q.answer).toBe(entry.answer);
+  });
+});
+
+describe('pickRandomMode', () => {
+  it('sorteia entre os modos com banco disponível', () => {
+    expect(pickRandomMode(() => 0)).toBe('morphology');
+    expect(pickRandomMode(() => 0.999999)).toBe('antonyms');
   });
 });

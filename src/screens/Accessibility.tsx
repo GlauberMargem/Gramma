@@ -2,11 +2,12 @@ import { IconButton } from '../components/IconButton';
 import { MaterialIcon } from '../components/MaterialIcon';
 import { ScreenTransition } from '../components/ScreenTransition';
 import { useAnimatedNavigate } from '../hooks/useAnimatedNavigate';
-import { FONT_SCALES, useFontScale } from '../state/hooks';
+import { FONT_SCALES, useAccessibility, useFontScale } from '../state/hooks';
 
 export function Accessibility() {
   const go = useAnimatedNavigate();
   const { index, label, change } = useFontScale();
+  const { dyslexiaFont, highContrast, toggleDyslexiaFont, toggleHighContrast } = useAccessibility();
 
   return (
     <ScreenTransition className="game-container">
@@ -38,6 +39,42 @@ export function Accessibility() {
                 onClick={() => change(1)}
               />
             </span>
+          </div>
+
+          <div className="a11y-row">
+            <span className="a11y-label">
+              <MaterialIcon name="spellcheck" />
+              <span>
+                <span className="a11y-title">Fonte para dislexia</span>
+                <span className="a11y-hint">Usa fonte mais legível para dislexia</span>
+              </span>
+            </span>
+            <button
+              type="button"
+              className={`a11y-toggle ${dyslexiaFont ? 'active' : ''}`}
+              onClick={toggleDyslexiaFont}
+              aria-pressed={dyslexiaFont}
+            >
+              {dyslexiaFont ? 'Ativado' : 'Desativado'}
+            </button>
+          </div>
+
+          <div className="a11y-row">
+            <span className="a11y-label">
+              <MaterialIcon name="contrast" />
+              <span>
+                <span className="a11y-title">Alto contraste</span>
+                <span className="a11y-hint">Melhora o contraste para baixa visão</span>
+              </span>
+            </span>
+            <button
+              type="button"
+              className={`a11y-toggle ${highContrast ? 'active' : ''}`}
+              onClick={toggleHighContrast}
+              aria-pressed={highContrast}
+            >
+              {highContrast ? 'Ativado' : 'Desativado'}
+            </button>
           </div>
         </div>
       </section>

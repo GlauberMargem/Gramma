@@ -23,6 +23,9 @@ const STAT_KEYS: Record<StudyType, { streak: NumericStatKey; streakMax: NumericS
   morphology: { streak: 'morph_correct_streak', streakMax: 'morph_correct_streak_max', totalCorrect: 'total_correct_morph' },
   syntax: { streak: 'syntax_correct_streak', streakMax: 'syntax_correct_streak_max', totalCorrect: 'total_correct_syntax' },
   synonyms: { streak: 'synonyms_correct_streak', streakMax: 'synonyms_correct_streak_max', totalCorrect: 'total_correct_synonyms' },
+  antonyms: { streak: 'synonyms_correct_streak', streakMax: 'synonyms_correct_streak_max', totalCorrect: 'total_correct_synonyms' },
+  enem: { streak: 'syntax_correct_streak', streakMax: 'syntax_correct_streak_max', totalCorrect: 'total_correct_syntax' },
+  random: { streak: 'morph_correct_streak', streakMax: 'morph_correct_streak_max', totalCorrect: 'total_correct_morph' },
 };
 
 /**

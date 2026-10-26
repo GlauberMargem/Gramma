@@ -35,7 +35,7 @@ export function useTheme(): { isDark: boolean; toggle: () => void } {
 }
 
 export function useFontScale(): { index: number; label: string; change: (direction: number) => void } {
-  const stored = useUserData().settings.font_scale_index;
+  const stored = useUserData().settings.font_scale_index ?? 1;
   // Índice fora da faixa (dados corrompidos) cai em Normal, como no legado.
   const scale = FONT_SCALES[stored] ?? FONT_SCALES[1];
 
@@ -45,9 +45,36 @@ export function useFontScale(): { index: number; label: string; change: (directi
 
   const change = (direction: number) =>
     userStore.update((d) => {
-      const index = Math.min(FONT_SCALES.length - 1, Math.max(0, d.settings.font_scale_index + direction));
+      const currentIndex = typeof d.settings.font_scale_index === 'number' ? d.settings.font_scale_index : 1;
+      const index = Math.min(FONT_SCALES.length - 1, Math.max(0, currentIndex + direction));
       return { ...d, settings: { ...d.settings, font_scale_index: index } };
     });
 
   return { index: stored, label: scale.label, change };
+}
+
+export function useAccessibility(): {
+  dyslexiaFont: boolean;
+  highContrast: boolean;
+  toggleDyslexiaFont: () => void;
+  toggleHighContrast: () => void;
+} {
+  const dyslexiaFont = Boolean(useUserData().settings.dyslexia_font);
+  const highContrast = Boolean(useUserData().settings.high_contrast);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dyslexia-font', dyslexiaFont);
+  }, [dyslexiaFont]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('high-contrast', highContrast);
+  }, [highContrast]);
+
+  const toggleDyslexiaFont = () =>
+    userStore.update((d) => ({ ...d, settings: { ...d.settings, dyslexia_font: !d.settings.dyslexia_font } }));
+
+  const toggleHighContrast = () =>
+    userStore.update((d) => ({ ...d, settings: { ...d.settings, high_contrast: !d.settings.high_contrast } }));
+
+  return { dyslexiaFont, highContrast, toggleDyslexiaFont, toggleHighContrast };
 }

@@ -47,7 +47,12 @@ export function useQuestionSession({ dayId, type, isArchive }: SessionInput): {
       const result = recordResult(userStore.getSnapshot(), { dayId, type, correct, timeMs, isArchive });
       userStore.update(() => result.data);
       progressSync.recordPlayed();
-      go(`/fim/${dayId}`, { state: { newlyUnlocked: result.newlyUnlocked } });
+      const isSpecial = type === 'enem' || type === 'random';
+      if (isSpecial) {
+        go(`/fim/${type === 'enem' ? `enem-${dayId}` : `random-${dayId}`}`, { state: { newlyUnlocked: result.newlyUnlocked, type } });
+      } else {
+        go(`/fim/${dayId}`, { state: { newlyUnlocked: result.newlyUnlocked, type } });
+      }
     }, PHASE_TRANSITION_DELAY_MS);
   };
 

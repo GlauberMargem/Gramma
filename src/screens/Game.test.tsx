@@ -94,7 +94,9 @@ describe('Game', () => {
     expect(screen.queryByTestId('where')).toBeNull();
     await act(() => vi.advanceTimersByTimeAsync(1));
     expect(userStore.getSnapshot().history['3:morphology']?.correct).toBe(true);
-    expect(screen.getByTestId('where')).toHaveTextContent(/^\/fim\/3 \{"newlyUnlocked":\[.*\]\}$/);
+    expect(screen.getByTestId('where')).toHaveTextContent(
+      /^\/fim\/3 \{"newlyUnlocked":\[.*\],"type":"morphology"\}$/,
+    );
   });
 
   it('registra o resultado uma única vez em StrictMode', async () => {

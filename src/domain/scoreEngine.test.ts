@@ -8,10 +8,20 @@ describe('calculatePoints', () => {
   });
 
   it('bases por modo', () => {
-    expect(BASE_POINTS).toEqual({ morphology: 100, syntax: 200, synonyms: 150 });
+    expect(BASE_POINTS).toEqual({
+      morphology: 100,
+      syntax: 200,
+      synonyms: 150,
+      antonyms: 150,
+      enem: 250,
+      random: 175,
+    });
     expect(calculatePoints('morphology', true, 1).total).toBe(100);
     expect(calculatePoints('syntax', true, 1).total).toBe(200);
     expect(calculatePoints('synonyms', true, 1).total).toBe(150);
+    expect(calculatePoints('antonyms', true, 1).total).toBe(150);
+    expect(calculatePoints('enem', true, 1).total).toBe(250);
+    expect(calculatePoints('random', true, 1).total).toBe(175);
   });
 
   it.each([5, 10, 15])('marco em %i', (streak) => {

@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:cov": "vitest run --coverage"
+    "test:cov": "vitest run --coverage",
+    "data:enem": "node scripts/fetch-enem.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

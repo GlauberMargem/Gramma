@@ -1,4 +1,4 @@
-import { DataStore, SynonymStore } from '../data/stores';
+import { AntonymStore, DataStore, EnemStore, SynonymStore } from '../data/stores';
 import type { PromptPart, Question, StudyType } from './types';
 
 /**
@@ -47,12 +47,31 @@ export function resolveDay(
   return { dayId, isArchive: requested > 0 && dayId !== current };
 }
 
+const RANDOM_MODES: StudyType[] = ['morphology', 'syntax', 'synonyms', 'antonyms'];
+
+export function pickRandomMode(rng: () => number = Math.random): StudyType {
+  const modes = RANDOM_MODES.filter((mode) => {
+    if (mode === 'antonyms') {
+      try {
+        return AntonymStore.getPoolSize() > 0;
+      } catch {
+        return false;
+      }
+    }
+    return true;
+  });
+  if (modes.length === 0) return 'morphology';
+  return modes[Math.floor(rng() * modes.length)];
+}
+
 export function buildQuestion(
   type: StudyType,
   dayId: number,
   rng: () => number = Math.random,
 ): Question {
-  if (type === 'synonyms') {
+  const effectiveType = type === 'random' ? pickRandomMode(rng) : type;
+
+  if (effectiveType === 'synonyms') {
     const entry = SynonymStore.getDay(dayId);
     return {
       prompt: [
@@ -65,6 +84,31 @@ export function buildQuestion(
     };
   }
 
+  if (effectiveType === 'antonyms') {
+    const entry = AntonymStore.getDay(dayId);
+    return {
+      prompt: [
+        { text: 'Qual é o antônimo de ' },
+        { text: entry.word, highlight: true },
+        { text: '?' },
+      ],
+      options: shuffle(entry.options, rng),
+      answer: entry.answer,
+    };
+  }
+
+  if (effectiveType === 'enem') {
+    const entry = EnemStore.getDay(dayId);
+    // O contexto (texto/base) e o enunciado são exibidos juntos; sem isso a
+    // questão fica sem o trecho a que as alternativas se referem.
+    const text = [entry.question, entry.statement].filter(Boolean).join('\n\n').trim();
+    return {
+      prompt: [{ text: text || 'Selecione a alternativa correta:' }],
+      options: shuffle(entry.options, rng),
+      answer: entry.answer,
+    };
+  }
+
   const entry = DataStore.getDay(dayId);
   if (!entry) throw new Error(`Dia ${dayId} não encontrado`);
   const { before, highlight, after } = splitHighlight(entry.sentence, entry.target_word);
@@ -72,9 +116,12 @@ export function buildQuestion(
   if (before) prompt.push({ text: before });
   if (highlight) prompt.push({ text: highlight, highlight: true });
   if (after) prompt.push({ text: after });
+  if (effectiveType !== 'morphology' && effectiveType !== 'syntax') {
+    throw new Error(`Tipo de questão não suportado: ${effectiveType}`);
+  }
   return {
     prompt,
-    options: shuffle(entry[type].options, rng),
-    answer: entry[type].answer,
+    options: shuffle(entry[effectiveType].options, rng),
+    answer: entry[effectiveType].answer,
   };
 }
