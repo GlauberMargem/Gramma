@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { AppRouter } from './router';
 import { authStore } from './state/authStore';
-import { useFontScale, useTheme } from './state/hooks';
+import { useAccessibility, useFontScale, useTheme } from './state/hooks';
 import { progressSync } from './state/sync';
 
-// Aplica tema e escala de fonte salvos em todas as telas, não só onde há controle.
+// Aplica tema, escala de fonte e opções de acessibilidade salvos em todas as
+// telas, não só onde há controle (antes o alto contraste/fonte para dislexia
+// só valia enquanto a tela de Acessibilidade estava montada).
 function Preferences() {
   useTheme();
   useFontScale();
+  useAccessibility();
   return null;
 }
 

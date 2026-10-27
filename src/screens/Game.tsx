@@ -35,7 +35,7 @@ interface SessionProps {
 function GameSession({ dayId, type, isArchive }: SessionProps) {
   const go = useAnimatedNavigate();
   const { question, selected, select } = useQuestionSession({ dayId, type, isArchive });
-  const { supported, speak } = useSpeech(question.prompt.map((part) => part.text).join(''));
+  const { supported, speaking, toggle } = useSpeech(question.prompt.map((part) => part.text).join(''));
   const badge =
     type === 'enem'
       ? 'ENEM — MODO LIVRE'
@@ -65,10 +65,10 @@ function GameSession({ dayId, type, isArchive }: SessionProps) {
             {question.prompt.map((part, i) => (part.highlight ? <span key={i}>{part.text}</span> : part.text))}
           </p>
           <IconButton
-            icon="volume_up"
-            label="Ouvir a frase em voz alta"
+            icon={speaking ? 'volume_off' : 'volume_up'}
+            label={speaking ? 'Parar leitura em voz alta' : 'Ouvir a frase em voz alta'}
             className="listen-btn"
-            onClick={speak}
+            onClick={toggle}
             disabled={!supported}
             title={supported ? undefined : 'Leitura em voz alta não é suportada neste navegador'}
           />

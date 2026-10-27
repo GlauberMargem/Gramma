@@ -517,6 +517,22 @@ button {
   flex: 1;
 }
 
+/*
+ * Alto contraste: o texto dessas telas é branco, mas elas não tinham
+ * superfície própria (ficavam direto sobre o fundo claro). Dá o mesmo bloco
+ * preto das linhas da tela de Acessibilidade para manter a leitura.
+ * Cobre o menu, o hub de cada modo de jogo, o jogo, o calendário e as
+ * estatísticas (as três últimas usam .screen-panel).
+ */
+:root.high-contrast .menu-screen,
+:root.high-contrast .mode-hub-screen,
+:root.high-contrast .screen-panel {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border-card);
+  border-radius: var(--radius-card);
+  padding: 32px 24px;
+}
+
 .menu-title {
   display: flex;
   align-items: center;

@@ -39,6 +39,27 @@ describe('useSpeech', () => {
     expect(synth.speak).not.toHaveBeenCalled();
   });
 
+  it('stop interrompe a leitura e desliga o estado', () => {
+    const { synth } = installSpeech();
+    const { result } = renderHook(() => useSpeech('O gato dorme.'));
+    act(() => result.current.speak());
+    expect(result.current.speaking).toBe(true);
+    act(() => result.current.stop());
+    expect(result.current.speaking).toBe(false);
+    expect(synth.cancel).toHaveBeenCalledTimes(2);
+  });
+
+  it('toggle interrompe a leitura ao clicar de novo', () => {
+    const { synth } = installSpeech();
+    const { result } = renderHook(() => useSpeech('O gato dorme.'));
+    act(() => result.current.toggle());
+    expect(synth.speak).toHaveBeenCalledTimes(1);
+    expect(result.current.speaking).toBe(true);
+    act(() => result.current.toggle());
+    expect(result.current.speaking).toBe(false);
+    expect(synth.cancel).toHaveBeenCalledTimes(2);
+  });
+
   it('sem suporte: supported=false e speak é no-op', () => {
     const { result } = renderHook(() => useSpeech('oi'));
     expect(result.current.supported).toBe(false);
