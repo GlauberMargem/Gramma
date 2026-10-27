@@ -9,6 +9,9 @@ const STUDY_TYPES: { type: StudyType; icon: string; label: string }[] = [
   { type: 'morphology', icon: 'psychology', label: 'Morfologia' },
   { type: 'syntax', icon: 'account_tree', label: 'Sintaxe' },
   { type: 'synonyms', icon: 'sync_alt', label: 'Sinônimos' },
+  { type: 'antonyms', icon: 'swap_horiz', label: 'Antônimos' },
+  { type: 'random', icon: 'shuffle', label: 'Aleatório' },
+  { type: 'enem', icon: 'school', label: 'ENEM' },
 ];
 
 export function Menu() {

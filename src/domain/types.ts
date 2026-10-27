@@ -1,9 +1,11 @@
-export type StudyType = 'morphology' | 'syntax' | 'synonyms';
+export type StudyType = 'morphology' | 'syntax' | 'synonyms' | 'antonyms' | 'enem' | 'random';
 
 export interface Settings {
   dark_mode: boolean;
   study_type: StudyType;
   font_scale_index: number;
+  dyslexia_font: boolean;
+  high_contrast: boolean;
 }
 
 export interface Stats {
@@ -62,6 +64,26 @@ export interface GrammarDay {
 export interface SynonymEntry {
   word_id: number;
   word: string;
+  answer: string;
+  options: string[];
+}
+
+export interface AntonymEntry {
+  word_id?: number;
+  day_id?: number;
+  word: string;
+  answer: string;
+  options: string[];
+}
+
+export interface EnemEntry {
+  question_id?: number;
+  day_id?: number;
+  year?: number;
+  index?: number;
+  discipline?: string;
+  question: string;
+  statement?: string;
   answer: string;
   options: string[];
 }

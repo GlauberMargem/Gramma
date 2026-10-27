@@ -22,7 +22,11 @@ export function AppRoutes() {
       <Route path="/" element={<Menu />} />
       <Route path="/modo" element={<ModeHub />} />
       <Route path="/jogo/:dia" element={<Game />} />
+      <Route path="/jogo/enem-:id" element={<Game />} />
+      <Route path="/jogo/random-:id" element={<Game />} />
       <Route path="/fim/:dia" element={<End />} />
+      <Route path="/fim/enem-:id" element={<End />} />
+      <Route path="/fim/random-:id" element={<End />} />
       <Route path="/calendario" element={<Calendar />} />
       <Route path="/estatisticas" element={<Stats />} />
       <Route path="/conquistas" element={<Achievements />} />

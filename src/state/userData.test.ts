@@ -44,7 +44,7 @@ describe('parseStored', () => {
     const d = parseStored(JSON.stringify(legacy));
     expect(d.uuid).toBe(legacy.uuid);
     expect(d.history).toEqual(legacy.history);
-    expect(d.settings).toEqual(legacy.settings);
+    expect(d.settings).toEqual({ ...legacy.settings, dyslexia_font: false, high_contrast: false });
     expect(d.stats.total_score).toBe(410);
   });
 

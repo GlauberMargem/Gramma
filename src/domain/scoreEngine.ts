@@ -4,6 +4,9 @@ export const BASE_POINTS: Record<StudyType, number> = {
   morphology: 100,
   syntax: 200,
   synonyms: 150,
+  antonyms: 150,
+  enem: 250,
+  random: 175,
 };
 
 const STREAK_MILESTONE_STEP = 5;
